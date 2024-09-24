@@ -1,0 +1,16 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2021, // or 6, 2015, 12 (for ES6+ features)
+    "sourceType": "module" // Allows `import`/`export`
+  },
+  "env": {
+    "es6": true, // Support ECMAScript 6 features (automatically enables ES6 globals)
+    "browser": true, // if you are in a browser environment
+    "node": true // if you are using Node.js
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "react/prop-types": "off"
+  }
+}
