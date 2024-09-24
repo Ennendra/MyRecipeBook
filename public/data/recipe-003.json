@@ -1,0 +1,39 @@
+{
+    "recipeIDNumber": 3,
+    "recipeName": "Chili Con Carne",
+    "recipeDescription": "Delicious, filling meal. Can eat with tortillas or rice",
+    "imageSrc": "",
+    "prepDurationMinutes": 20,
+    "cookDurationMinutes": 60,
+    "recipeServings": 5,
+    "ingredients": [
+      { "amount": "2", "measurement": "tsp", "item": "cayenne pepper (can add less for a milder spice mix)" },
+      { "amount": "4", "measurement": "tsp", "item": "sweet paprika" },
+      { "amount": "5", "measurement": "tsp", "item": "cumin" },
+      { "amount": "2", "measurement": "tsp", "item": "onion powder" },
+      { "amount": "2", "measurement": "tsp", "item": "garlic powder (or additional onion powder)" },
+      { "amount": "2", "measurement": "tsp", "item": "oregano" },
+      { "amount": "1", "measurement": "tbsp", "item": "olive oil" },
+      { "amount": "3", "measurement": "item", "item": "garlic cloves, minced or finely chopped" },
+      { "amount": "1", "measurement": "item", "item": "large onion, diced" },
+      { "amount": "1", "measurement": "item", "item": "red capsicum, diced" },
+      { "amount": "700", "measurement": "g", "item": "beef mince" },
+      { "amount": "800", "measurement": "g", "item": "diced tomatoes" },
+      { "amount": "400", "measurement": "g", "item": "red kidney beans" },
+      { "amount": "2", "measurement": "item", "item": "beef stock cubes" },
+      { "amount": "1.5", "measurement": "tsp", "item": "sugar" },
+      { "amount": "0.5", "measurement": "cup", "item": "water" }
+    ],
+    "cookingSteps": [
+      "Prepare the spice mix by mixing together the cayenne, paprika, cumin, oregano and the onion and garlic powders into a bowl",
+      "Heat oil in a large pan at medium heat",
+      "Add garlic and onion to the pan and cook for one minute",
+      "Add capsicum and cook until onions look translucent",
+      "Turn heat to high and add the beef mince, breaking it into nibble-sized chunks as you go, until mince is mostly browned",
+      "Add the spice mix and cook until beef is fully browned and covered with the spice mix",
+      "Add the tomatoes and kidney beans and stir through.",
+      "Add the stock cubes, water and sugar and stir through, bring heat down to a medium-low",
+      "Let it simmer and reduce for around 40 minutes, it should be gently bubbling at the medium-low heat",
+      "Serve with rice, tortillas or corn chips"
+    ]
+}

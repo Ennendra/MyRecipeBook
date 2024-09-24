@@ -1,0 +1,41 @@
+{
+    "recipeIDNumber": 4,
+    "recipeName": "Crumbed spicy chicken",
+    "recipeDescription": "Tasty and savoury crumbed chicken with a satisfying bite. Served with salad or steamed vegies.",
+    "imageSrc": "",
+    "prepDurationMinutes": 50,
+    "cookDurationMinutes": 40,
+    "recipeServings": 5,
+    "ingredients": [
+      
+      { "amount": "0.66", "measurement": "tbsp", "item": "salt" },
+      { "amount": "0.5", "measurement": "tbsp", "item": "thyme" },
+      { "amount": "0.5", "measurement": "tbsp", "item": "basil" },
+      { "amount": "0.33", "measurement": "tbsp", "item": "oregano" },
+      { "amount": "1", "measurement": "tbsp", "item": "celery salt" },
+      { "amount": "1", "measurement": "tbsp", "item": "black pepper" },
+      { "amount": "1", "measurement": "tbsp", "item": "dried mustard" },
+      { "amount": "4", "measurement": "tbsp", "item": "sweet paprika (can replace some with hot paprika for an extra kick)" },
+      { "amount": "2", "measurement": "tbsp", "item": "garlic salt" },
+      { "amount": "1", "measurement": "tbsp", "item": "ground ginger" },
+      { "amount": "3", "measurement": "tbsp", "item": "white pepper" },
+      { "amount": "350", "measurement": "g", "item": "breadcrumbs (or crushed corn flakes)" },
+      { "amount": "1000", "measurement": "g", "item": "chicken breast (chicken thigh with excess fat trimmed also works and easier to not dry out)" },
+      { "amount": "4", "measurement": "item", "item": "eggs, beaten" },
+      { "amount": "100", "measurement": "g", "item": "flour (can use tapioca or corn flour if wanting to avoid gluten)" }
+    ],
+    "cookingSteps": [
+      "Prepare the spice mix by mixing all the salts and peppers, thyme, basil, oregano, mustard, paprika and ginger",
+      "Mix the spice mix with the breadcrumbs thoroughly into a container",
+      "Prepare 3 separate bowls, one with the eggs, one with the flour, and one with about half of the prepared spiced crumbs",
+      "Prepare a large baking tray with a layer of baking paper",
+      "Perform the following 3 steps below with each piece of chicken",
+      "Put the chicken in the flour bowl and cover with the flour",
+      "Dunk the chicken into the beaten eggs until covered, let the excess drip off a bit",
+      "Put the chicken into the breadcrumb bowl and cover thoroughly. Place the crumbed chicken onto the baking tray",
+      "If any of the bowls run out before all the chicken is crumbed, add some more as necessary",
+      "Any remaining breadcrumbs left in the container (and not in the bowl that had chicken and egg touch it!) can be stored for future use",
+      "Bake the crumbed chicken in an oven at 180C fan-forced for around 40-50 minutes, turning once",
+      "Serve with salad or steamed vegies"
+    ]
+}

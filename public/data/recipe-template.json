@@ -1,0 +1,15 @@
+{
+    "recipeIDNumber": 256,
+    "recipeName": "",
+    "recipeDescription": "",
+    "imageSrc": "",
+    "prepDurationMinutes": 0,
+    "cookDurationMinutes": 0,
+    "recipeServings": 0,
+    "ingredients": [
+      { "amount": "", "measurement": "", "item": "" }
+    ],
+    "cookingSteps": [
+      ""
+    ]
+}
