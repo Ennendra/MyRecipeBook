@@ -4,7 +4,19 @@ import { RecipeCards } from "./components/RecipeCards";
 import { SearchBar } from "./components/SearchBar";
 
 function App() {
-  const recipes = [
+
+  //Acquire an array of all recipes from the recipes.json file
+  let recipes = require('./data/recipes.json').Recipes;
+  console.log(recipes);
+
+  //Selects <amountOfRecipe> recipes from <recipeList> and returns the subset of recipes as an array
+  function ChooseRandomRecipes(recipeList, amountOfRecipes){
+    const shuffledRecipes = [...recipeList].sort(() => 0.5 - Math.random());
+    return shuffledRecipes.slice(0, amountOfRecipes);
+  }
+
+
+  /*const oldrecipes = [
     {
       recipeIDNumber: 1,
       recipeName: "Fish soup.",
@@ -26,7 +38,7 @@ function App() {
       cookDurationMinutes: "30 minutes",
       portions: 6,
     },
-  ];
+  ];*/
 
   return (
     <div className="App">
@@ -37,7 +49,7 @@ function App() {
         <SearchBar />
       </div>
       <h1 className="h1" />
-      <RecipeCards recipes={recipes} />
+      <RecipeCards recipes={ChooseRandomRecipes(recipes, 3)} />
     </div>
   );
 }
