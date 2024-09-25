@@ -2,43 +2,32 @@ import React from "react";
 import "./App.css";
 import { RecipeCards } from "./components/RecipeCards";
 import { SearchBar } from "./components/SearchBar";
+import { useState, useEffect } from "react";
 
 function App() {
 
-  //Acquire an array of all recipes from the recipes.json file
-  let recipes = require('./data/recipes.json').Recipes;
-  console.log(recipes);
+  //A usestate that will hold all the recipe JSON data
+  //Usestate initially set to null to ensure other functions do not try to use the data until after it's successfully fetched
+  const [recipeList, setRecipeList] = useState(null);
+
+  //Obtain the data from the JSON file and set it to recipeList as an array of all recipes
+  useEffect(() => {
+    fetch('./data/recipes.json')
+      .then(response => response.json())
+      .then (recipeList => {
+        setRecipeList(recipeList.Recipes);
+      })
+      .catch(error => {
+        console.error(`Error in fetch: ${error.message}`);
+      });
+  }, []);
 
   //Selects <amountOfRecipe> recipes from <recipeList> and returns the subset of recipes as an array
-  function ChooseRandomRecipes(recipeList, amountOfRecipes){
-    const shuffledRecipes = [...recipeList].sort(() => 0.5 - Math.random());
+  function ChooseRandomRecipes(givenRecipeList, amountOfRecipes){
+    const shuffledRecipes = [...givenRecipeList].sort(() => 0.5 - Math.random());
     return shuffledRecipes.slice(0, amountOfRecipes);
   }
 
-
-  /*const oldrecipes = [
-    {
-      recipeIDNumber: 1,
-      recipeName: "Fish soup.",
-      resipeImage: "images/fishSoup.jpeg",
-      cookDurationMinutes: "1 hour",
-      portions: 4,
-    },
-    {
-      recipeIDNumber: 2,
-      recipeName: "Pizza Margherita.",
-      resipeImage: "images/pizzaMargherita.jpg",
-      cookDurationMinutes: "1.5 hours",
-      portions: 3,
-    },
-    {
-      recipeIDNumber: 3,
-      recipeName: "Pasta Bolognese.",
-      resipeImage: "images/pastaBolognese.jpg",
-      cookDurationMinutes: "30 minutes",
-      portions: 6,
-    },
-  ];*/
 
   return (
     <div className="App">
@@ -49,7 +38,15 @@ function App() {
         <SearchBar />
       </div>
       <h1 className="h1" />
-      <RecipeCards recipes={ChooseRandomRecipes(recipes, 3)} />
+
+      {recipeList ? (
+        //Display recipe cards after the recipes have been successfully fetched from the JSON files
+        <RecipeCards recipes={ChooseRandomRecipes(recipeList, 3)} />
+      ) : ( 
+        //Show a loading tag until data is fetched
+        <p>Fetching recipe data...</p>
+      )}
+      
     </div>
   );
 }
