@@ -10,7 +10,6 @@ export const SearchBar = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //alert(Searching for: ${ searchTerm });
   };
 
   return (

@@ -1,12 +1,15 @@
+/* Cards styling */
 .recipe-cards {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
+/* Styling the recipe card */
 .recipe-card {
-  width: 240px;
+  width: 250px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -15,26 +18,31 @@
   transition: transform 0.3s ease;
 }
 
+/* Recipe card hover effect */
 .recipe-card:hover {
   transform: translateY(-10px);
 }
 
+/* Styling recipe image */
 .recipe-image {
   width: 250px;
   height: 250px;
   object-fit: contain;
 }
 
+/* Styling recipe info */
 .recipe-info {
   padding: 16px;
 }
 
+/* Styling recipe title */
 .recipe-title {
   font-size: 1.5em;
   margin-bottom: 8px;
   color: #333;
 }
 
+/* Styling recipe additional info */
 .recipe-description {
   font-size: 1em;
   color: #777;

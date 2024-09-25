@@ -1,68 +1,22 @@
+/* App styling */
 .App {
+  width: 100%;
   max-width: 960px;
   margin: 0 auto;
-  padding: 64px 16px 16px;
+  padding: 0px 16px 16px;
 }
 
+/* Body styling */
 body {
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
 }
 
-.search {
-  display: flex;
-}
-
-.h1 {
-  display: flex;
-  justify-content: center;
-  font-family: "Georgia", serif;
-  font-size: 48px;
-  font-weight: bold;
-  color: #528a54;
-  letter-spacing: 2px;
-  text-align: center;
-}
-
-.search .search-button {
-  width: 20px;
-  height: 20px;
-  /*background-image: url("images/search-icon.png");*/
-  background-size: contain;
-  background-color: #cccccc;
-}
-
-.searchbar {
-  overflow: hidden;
-  background-color: #be6081;
-  backdrop-filter: blur(2px);
-}
-
-.searchbar-icon {
-  position: absolute;
-  right: 27px;
-  top: 25px;
-  background-color: transparent;
-  color: #be6081;
-  cursor: pointer;
-}
-
-.search-field {
-  padding: 9px;
-  border: none;
-  margin: 16px 14px;
-  font-size: 18px;
-  background-color: #f4adcd;
-  text-align: left;
-  text-indent: 8px;
-  outline: none;
-}
-
-.searchbar,
-.search-field {
-  border-radius: 30px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+/* Separator styling */
+.separator {
+  border-color: #819082;
+  margin: 0;
 }

@@ -1,0 +1,17 @@
+/* Header styling */
+.h1 {
+  display: flex;
+  justify-content: center;
+  font-family: "Montserrat";
+  font-size: 52px;
+  font-weight: bold;
+  color: #528a54;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.textStyle {
+  display: flex;
+  font-family: "Arial", serif;
+  font-size: 26px;
+}
