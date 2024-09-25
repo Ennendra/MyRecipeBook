@@ -30,7 +30,7 @@ body {
 .search .search-button {
   width: 20px;
   height: 20px;
-  background-image: url("images/search-icon.png");
+  /*background-image: url("images/search-icon.png");*/
   background-size: contain;
   background-color: #cccccc;
 }
