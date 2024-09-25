@@ -37,7 +37,7 @@
             "recipeIDNumber": 2,
             "recipeName": "Jungle Curry",
             "recipeDescription": "A spicy soup. Makes for a nice dinner if your nose is feeling a little blocked.",
-            "imageSrc": "",
+            "imageSrc": "images/jungle-curry.jpg",
             "prepDurationMinutes": 45,
             "cookDurationMinutes": 15,
             "recipeServings": 4,
