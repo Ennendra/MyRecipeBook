@@ -7,16 +7,16 @@ export const RecipeCards = ({ recipes }) => {
       {recipes.map((recipe, i) => (
         <div key={i} className="recipe-card">
           <img
-            src={recipe.resipeImage}
+            src={recipe.imageSrc}
             alt={recipe.recipeName}
             className="recipe-image"
           />
           <div className="recipe-info">
             <h2 className="recipe-title"> {recipe.recipeName} </h2>
             <p className="recipe-description">
-              {recipe.cookDurationMinutes +
-                ", " +
-                recipe.portions +
+              {(recipe.prepDurationMinutes + recipe.cookDurationMinutes) +
+                " minutes, " +
+                recipe.recipeServings +
                 " portions."}
             </p>
           </div>
