@@ -127,15 +127,16 @@ export function RoundingWholeNumber(amount) {
     }
     return rounding;
 }
-//Others: Round to nearest 3 decimal places. If result is under 0.125 (ie: 1/8) then set to 0.125
+//Others: Round to nearest 3 decimal places.
 export function RoundingFraction(amount) {
     var rounding = Math.round(amount * 1000) / 1000;
-    //if (rounding < 0.125) { rounding = 0.125; }
     return rounding;
 }
 
-//Final display function: Will display the recipe in fraction form (e.g. '1/8, 2 1/3')
-export function DisplayAsFraction(amount){
+//Convert a a decimal number into a string displaying the number in a simplified fraction form (e.g. '1/8, 2 1/3')
+//Fraction conversion rounds to nearest /8, /4, /3 or /2
+//If given number is smaller than 0.06, the end result will be "< 1/8"
+export function DecimalAsFraction(amount){
     //Prepare the final value as a string
     var fractionValue = ``;
 
