@@ -33,6 +33,7 @@
 /* Styling recipe info */
 .recipe-info {
   padding: 16px;
+  text-align: left;
 }
 
 /* Styling recipe title */
@@ -47,4 +48,16 @@
   font-size: 1em;
   color: #777;
   margin-bottom: 16px;
+}
+
+/* Read more button styling */
+.read-more-button {
+  background-color: white;
+  border: none;
+  font-size: 22px;
+  font-weight: bolder;
+  color: #528a54;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Arial', serif;
 }

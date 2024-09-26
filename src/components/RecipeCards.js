@@ -14,13 +14,13 @@ export const RecipeCards = ({ recipes }) => {
           <div className="recipe-info">
             <h2 className="recipe-title"> {recipe.recipeName} </h2>
             <p className="recipe-description">
-              {'Total time: ' +
+              {'🕒 Total time: ' +
                 (recipe.prepDurationMinutes + recipe.cookDurationMinutes) +
                 ' minutes'}{' '}
               <br />
-              {'Serves: ' + recipe.recipeServings + ' portion(s)'}
+              {'🍴 Serves: ' + recipe.recipeServings + ' portion(s)'}
             </p>
-            {/*  <button > Read more </button> */}
+            <button className="read-more-button"> Read more → </button>
           </div>
         </div>
       ))}
