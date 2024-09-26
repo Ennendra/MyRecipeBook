@@ -12,7 +12,7 @@ export const Header = () => {
           Home
         </button>
         <button className="nav-button" onClick={() => navigate('/addNewRecipe')}>
-          Add new recipe
+          Add recipe
         </button>
         <button className="nav-button" onClick={() => navigate('/about')}>
           About
