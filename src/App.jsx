@@ -3,6 +3,7 @@ import "./App.css";
 import { RecipeCards } from "./components/RecipeCards";
 import { SearchBar } from "./components/SearchBar";
 import { useState, useEffect } from "react";
+//import * as conversionUtility from "./components/IngredientConversionUtilities"
 
 function App() {
 
@@ -10,17 +11,24 @@ function App() {
   //Usestate initially set to null to ensure other functions do not try to use the data until after it's successfully fetched
   const [recipeList, setRecipeList] = useState(null);
 
-  //Obtain the data from the JSON file and set it to recipeList as an array of all recipes
-  useEffect(() => {
-    fetch('./data/recipes.json')
-      .then(response => response.json())
-      .then (recipeList => {
-        setRecipeList(recipeList.Recipes);
-      })
-      .catch(error => {
-        console.error(`Error in fetch: ${error.message}`);
-      });
-  }, []);
+
+  //Called on startup and whenever the JSON file is modified (ie. create, edit and delete recipe)
+  //Obtains the data from the JSON file and set it to recipeList as an array of all recipes
+  function RefreshRecipeList(){
+    useEffect(() => {
+      fetch('./data/recipes.json')
+        .then(response => response.json())
+        .then (recipeList => {
+          setRecipeList(recipeList.Recipes);
+        })
+        .catch(error => {
+          console.error(`Error in fetch: ${error.message}`);
+        });
+    }, []);
+  }
+
+  //Call the above function here to initialise the list on startup
+  RefreshRecipeList();
 
   //Selects <amountOfRecipe> recipes from <recipeList> and returns the subset of recipes as an array
   function ChooseRandomRecipes(givenRecipeList, amountOfRecipes){
@@ -29,16 +37,19 @@ function App() {
   }
 
 
+  
+
   return (
     <div className="App">
       {" "}
-      {}
+      
       <div>
         <h1 className="h1"> My recipe book</h1>
         <SearchBar />
       </div>
       <h1 className="h1" />
-
+      
+      
       {recipeList ? (
         //Display recipe cards after the recipes have been successfully fetched from the JSON files
         <RecipeCards recipes={ChooseRandomRecipes(recipeList, 3)} />
