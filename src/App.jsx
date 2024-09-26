@@ -11,7 +11,6 @@ function App() {
   //Usestate initially set to null to ensure other functions do not try to use the data until after it's successfully fetched
   const [recipeList, setRecipeList] = useState(null);
 
-
   //Called on startup and whenever the JSON file is modified (ie. create, edit and delete recipe)
   //Obtains the data from the JSON file and set it to recipeList as an array of all recipes
   function RefreshRecipeList(){
@@ -36,8 +35,6 @@ function App() {
     return shuffledRecipes.slice(0, amountOfRecipes);
   }
 
-
-  
 
   return (
     <div className="App">
