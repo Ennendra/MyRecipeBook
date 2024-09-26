@@ -119,17 +119,16 @@ export function TablespoonsToTeaspoons(amountToConvert) {
 
 
 //Rounding functions --------
-//Grams: Round to nearest integer (or 1 if the result is too small)
+//Grams: Round to nearest integer (or 1 if the given amount is too small)
 export function RoundingWholeNumber(amount) {
     var rounding = Math.round(amount);
-    if (rounding<=0) {
-        rounding = 1;
-    }
+    if (rounding<=0) { rounding = 1; }
     return rounding;
 }
-//Others: Round to nearest 3 decimal places.
+//Others: Round to nearest 3 decimal places (or 0.001 if the given amount is too small)
 export function RoundingFraction(amount) {
     var rounding = Math.round(amount * 1000) / 1000;
+    if (rounding<=0) { rounding = 0.001; }
     return rounding;
 }
 
@@ -146,15 +145,15 @@ export function DecimalAsFraction(amount){
     
     //Declare the variable that will be used to display the decimal point as a fraction
     var decimalToFraction = ``;
+
     //Convert the decimal value to a fraction based on the values below
     /*
-        
-    0       1/8         1/4         1/3         3/8         1/2         5/8         2/3         3/4         7/8             1
-    0       .125        .25         .333        .375        .5          .625        .666        .75         .875            1
+    <1/8    1/8         1/4         1/3         3/8         1/2         5/8         2/3         3/4         7/8             1
+            .125        .25         .333        .375        .5          .625        .666        .75         .875            1
     <0.06   <0.187      <0.291      <0.354      <0.437      <0.562      <0.645      <0.708      <0.812      <0.937          >=0.937
     */     
     if (decimalNumber<0.06) {
-        //check if we have a whole number value, if we don't, set to 1/8 anyway, so we avoid a full 0 value
+        //check if we have a whole number value, if we don't, set to '< 1/8', so we avoid a full 0 value
         if (wholeNumber <=0) { decimalToFraction=`< 1/8`; }
     }
     else if (decimalNumber<0.187) {
@@ -191,9 +190,9 @@ export function DecimalAsFraction(amount){
     
     //Add the whole number to the final value if it is not 0 (to avoid values like '0 1/8')
     if (wholeNumber>0) { fractionValue+=`${wholeNumber} `; }
-    //add the fraction value (if not a fraction, value will be blank)
+    //add the fraction value (if not a fraction, value will be blank so no real change will happen)
     fractionValue += decimalToFraction;
     
-    return fractionValue
+    return fractionValue;
 }
 
