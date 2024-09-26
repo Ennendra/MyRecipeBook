@@ -2,16 +2,58 @@
 .h1 {
   display: flex;
   justify-content: center;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-size: 52px;
   font-weight: bold;
   color: #528a54;
   letter-spacing: 2px;
   text-align: center;
+  margin-top: 50px;
 }
 
 .textStyle {
   display: flex;
-  font-family: "Arial", serif;
+  font-family: 'Arial', serif;
   font-size: 26px;
+}
+
+/* Add button styling */
+.add-button {
+  padding: 10px 20px;
+  background-color: #528a54;
+  border: none;
+  color: white;
+  font-size: 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Arial', serif;
+}
+
+/* Add button  hover effect */
+.add-button:hover {
+  background-color: #477748; /* Darker green on hover */
+}
+
+/* Add button  bar styling */
+.add-button-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.footer {
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Footer bar styling */
+.footer-bar {
+  display: flex;
+  justify-content: center;
 }

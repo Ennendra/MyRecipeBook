@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import "./SearchBar.css";
+import React, { useState } from 'react';
+import './SearchBar.css';
 
 export const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
   };
 
@@ -16,7 +16,7 @@ export const SearchBar = () => {
     <form className="search-bar" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Search recipe..."
+        placeholder="Search for recipes"
         value={searchTerm}
         onChange={handleInputChange}
       />
