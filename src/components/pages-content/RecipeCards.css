@@ -16,6 +16,7 @@
   overflow: hidden;
   text-align: center;
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 /* Recipe card hover effect */
@@ -38,15 +39,19 @@
 
 /* Styling recipe title */
 .recipe-title {
-  font-size: 1.5em;
+  font-size: 1.2em;
   margin-bottom: 8px;
   color: #333;
+}
+/* Styling recipe title */
+.time-and-potrions-title {
+  font-weight: bolder;
 }
 
 /* Styling recipe additional info */
 .recipe-description {
-  font-size: 1em;
-  color: #777;
+  font-size: 1.1em;
+  color: #333;
   margin-bottom: 16px;
 }
 
@@ -55,9 +60,13 @@
   background-color: white;
   border: none;
   font-size: 22px;
+  cursor: pointer;
   font-weight: bolder;
   color: #528a54;
-  cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: 'Arial', serif;
+}
+
+.bold {
+  font-weight: bolder;
 }

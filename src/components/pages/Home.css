@@ -1,5 +1,5 @@
 /* Header styling */
-.h1 {
+.page-title {
   display: flex;
   justify-content: center;
   font-family: 'Montserrat';
@@ -9,12 +9,6 @@
   letter-spacing: 2px;
   text-align: center;
   margin-top: 50px;
-}
-
-.textStyle {
-  display: flex;
-  font-family: 'Arial', serif;
-  font-size: 26px;
 }
 
 /* Add button styling */
@@ -41,19 +35,4 @@
   justify-content: center;
   margin-top: 30px;
   margin-bottom: 30px;
-}
-
-.footer {
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  padding: 10px 0;
-  font-size: 14px;
-  color: #6c757d;
-}
-
-/* Footer bar styling */
-.footer-bar {
-  display: flex;
-  justify-content: center;
 }
