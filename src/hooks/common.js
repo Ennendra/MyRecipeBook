@@ -9,7 +9,7 @@ export function chooseRandomRecipes(givenRecipeList, amountOfRecipes) {
   return shuffledRecipes.slice(0, amountOfRecipes);
 }
 
-export const useRecipes = () => {
+export const useRecipes = searchPattern => {
   //A usestate that will hold all the recipe JSON data
   //Usestate initially separator to null to ensure other functions do not try to use the data until after it's successfully fetched
   const [recipeList, setRecipeList] = useState(null);
@@ -26,7 +26,13 @@ export const useRecipes = () => {
       });
   }, []);
 
-  return recipeList;
+  // if searchPattern = undefined return recipeList,
+  // else make search (filter) by recipeName in lower case.
+  return !searchPattern
+    ? recipeList
+    : recipeList?.filter(recipe =>
+        recipe.recipeName.toLowerCase().includes(searchPattern.toLowerCase())
+      );
 };
 
 /**

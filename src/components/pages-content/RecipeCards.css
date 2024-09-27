@@ -43,10 +43,6 @@
   margin-bottom: 8px;
   color: #333;
 }
-/* Styling recipe title */
-.time-and-potrions-title {
-  font-weight: bolder;
-}
 
 /* Styling recipe additional info */
 .recipe-description {
@@ -67,6 +63,7 @@
   font-family: 'Arial', serif;
 }
 
+/* Bold style for some fonts in recipe card */
 .bold {
   font-weight: bolder;
 }
