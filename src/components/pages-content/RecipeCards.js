@@ -52,12 +52,10 @@ export const RecipeCards = ({ recipes }) => {
           <div className="recipe-info">
             <h3 className="recipe-title"> {recipe.recipeName} </h3>
             <p className="recipe-description">
-              <span className="time-and-potrions-title">{'🕒 Total time: '}</span>
+              <span className="bold">{'🕒 Total time: '}</span>
               {convertMinutesToHours(recipe.prepDurationMinutes + recipe.cookDurationMinutes)}
               <br />
-              <span className="time-and-potrions-title">
-                {'🍴 Serves: ' + recipe.recipeServings}{' '}
-              </span>
+              <span className="bold">{'🍴 Serves: ' + recipe.recipeServings} </span>
               {recipe.recipeServings > 1 ? ' portions' : ' portion'}
             </p>
             <button className="read-more-button"> Read more → </button>

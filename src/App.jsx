@@ -19,7 +19,7 @@ function App() {
           {/* Set default path. */}
           <Route path="/" element={<Navigate to="/home" />} />
 
-          <Route path="/home" element={<Home />} />
+          <Route path="/home/:searchPattern?" element={<Home />} />
           <Route path="/addNewRecipe" element={<AddNewRecipe />} />
           <Route path="/about" element={<About />} />
           <Route path="/settings" element={<Settings />} />
