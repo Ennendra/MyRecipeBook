@@ -5,7 +5,7 @@
             "recipeName": "Chicken Peri-peri",
             "recipeDescription": "A tasty savoury dish with a little kick. Works well as is or with rice.",
             "imageSrc": "images/chicken-peri-peri.jpg",
-            "prepDurationMinutes": 40,
+            "prepDurationMinutes": 90,
             "cookDurationMinutes": 50,
             "recipeServings": 6,
             "ingredients": [

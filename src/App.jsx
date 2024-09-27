@@ -1,8 +1,10 @@
 import React from "react";
 import "./App.css";
+//import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { RecipeCards } from "./components/RecipeCards";
 import { SearchBar } from "./components/SearchBar";
 import { useState, useEffect } from "react";
+import { ViewRecipe } from "./components/ViewRecipe"
 //import * as conversionUtility from "./components/IngredientConversionUtilities"
 
 function App() {
@@ -46,14 +48,20 @@ function App() {
       </div>
       <h1 className="h1" />
       
-      
       {recipeList ? (
         //Display recipe cards after the recipes have been successfully fetched from the JSON files
-        <RecipeCards recipes={ChooseRandomRecipes(recipeList, 3)} />
+        <div>
+          
+          <RecipeCards recipes={ChooseRandomRecipes(recipeList, 3)} />
+
+          <ViewRecipe recipeList={recipeList} recipeID={1} />
+        </div>
+        
       ) : ( 
         //Show a loading tag until data is fetched
         <p>Fetching recipe data...</p>
       )}
+      <hr />    
       
     </div>
   );
