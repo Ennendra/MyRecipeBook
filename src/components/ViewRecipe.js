@@ -1,7 +1,7 @@
 import { React } from "react";
 
 //Converts a given number of minutes into a string reading '#h ##min'
-function ConvertMinutesToHoursAndMinutes(minutes) {
+export function ConvertMinutesToHoursAndMinutes(minutes) {
     var result = ``;
     var hours = Math.floor(minutes/60);
     if (hours>0) { result += `${hours}h `; }
