@@ -1,5 +1,6 @@
 import React from "react";
 import "./RecipeCards.css";
+import { ConvertMinutesToHoursAndMinutes } from "./ViewRecipe";
 
 export const RecipeCards = ({ recipes }) => {
   return (
@@ -14,8 +15,8 @@ export const RecipeCards = ({ recipes }) => {
           <div className="recipe-info">
             <h2 className="recipe-title"> {recipe.recipeName} </h2>
             <p className="recipe-description">
-              {(recipe.prepDurationMinutes + recipe.cookDurationMinutes) +
-                " minutes, " +
+              {ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes + recipe.cookDurationMinutes) +
+                " " +
                 recipe.recipeServings +
                 " portions."}
             </p>
