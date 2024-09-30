@@ -1,0 +1,19 @@
+/* Header styling */
+.page-title {
+  display: flex;
+  justify-content: center;
+  font-family: 'Montserrat';
+  font-size: 52px;
+  font-weight: bold;
+  color: #528a54;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Temporary text styling */
+.textStyle {
+  display: flex;
+  font-family: 'Arial', serif;
+  font-size: 26px;
+}
