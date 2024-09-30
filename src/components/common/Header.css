@@ -1,0 +1,41 @@
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0px;
+  color: #528a54;
+  width: 100%;
+}
+
+/* Styling for the title text */
+.header-title {
+  font-family: 'Montserrat';
+  font-size: 22px;
+  margin: 0;
+}
+
+/* Navigation menu styling */
+.nav {
+  display: flex;
+  gap: 2px; /* Space between buttons */
+}
+
+/* Button styling */
+.nav-button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background-color: #528a54;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Arial', serif;
+}
+
+/* Button hover effect */
+.nav-button:hover {
+  background-color: #477748; /* Darker green on hover */
+}
