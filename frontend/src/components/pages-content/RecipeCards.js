@@ -42,7 +42,7 @@ export const RecipeCards = ({ recipes }) => {
         <div
           key={i}
           className="recipe-card"
-          onClick={() => navigate(`/viewRecipe/${recipe.recipeIDNumber}`)}
+          onClick={() => navigate(`/viewRecipe/${recipe._id}`)}
         >
           <img
             src={recipe.imageSrc === '' ? 'images/noImageIcon.png' : recipe.imageSrc}
