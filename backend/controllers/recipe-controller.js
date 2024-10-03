@@ -1,4 +1,9 @@
 
+//Some recipe IDs for testing reference
+// 66fe3dd424a3d8d395d48a3c
+// 66fe3ded5b31e4110936d95d
+// 66fe3e0b5b31e4110936d95e
+
 
 //Schema models and the error handler model
 const HttpError = require('../models/httpError');
@@ -11,33 +16,49 @@ const getAllRecipes = async (req, res, next) => {
     try {
         recipes = await Recipe.find({});
     } catch(error) {
-        console.log('Error finding recipes:' + error);
-        return next(error);
+        const newError = new HttpError(500,"Something went wrong obtaining the recipe list: ");
+        return next(newError);
     }
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 
 const getRecipeById = async (req, res, next) => {
+    //define the ID parameter
     const recipeId = req.params.recipeID;
-    let recipes;
+    //defiine the result
+    let recipe;
+    //attempt the search
     try {
-        recipes = await Recipe.findById(recipeId);
+        recipe = await Recipe.findById(recipeId);
     } catch(error) {
-        console.log('Error finding recipe by id:' + error);
-        return next(error);
+        const newError = new HttpError(500,"Something went wrong when searching for a recipe by ID: ");
+        return next(newError);
+    }
+    //return a 404 error if no recipe is found
+    if (!recipe) {
+        const newError = new HttpError(404,"Could not find a recipe with the given ID.");
+        return next(newError);
     }
     
-    res.json({recipes: recipes.toObject({getters: true}) });
+    res.json({recipes: recipe.toObject({getters: true}) });
 };
 
 const getRecipeByName = async (req, res, next) => {
-    const recipeSearch = req.params.recipeSearch;
+    //define the search parameter, convert the parameter into utf format
+    const recipeSearch = encodeURIComponent(req.params.recipeSearch);
+    console.log(recipeSearch);
+    
     let recipes;
     try {
-        recipes = await Recipe.find({recipeName: recipeSearch});
+        recipes = await Recipe.find({recipeName: {$regex: `(.*)${recipeSearch}(.*)`} });
     } catch(error) {
-        console.log('Error finding recipe by id:' + error);
-        return next(error);
+        const newError = new HttpError(500,"Something went wrong when searching for a recipe by name: ");
+        return next(newError);
+    }
+
+    if (!recipes || recipes.length === 0) {
+        const newError = new HttpError(404,"Could not find any recipes with a name containing the search term.");
+        return next(newError);
     }
     
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
