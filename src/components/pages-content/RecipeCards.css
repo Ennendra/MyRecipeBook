@@ -11,7 +11,7 @@
 .recipe-card {
   width: 250px;
   background-color: white;
-  border-radius: 2px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   text-align: center;
@@ -33,20 +33,22 @@
 
 /* Styling recipe info */
 .recipe-info {
-  padding: 16px;
+  padding: 0px 16px 16px 16px;
   text-align: left;
 }
 
 /* Styling recipe title */
 .recipe-title {
-  font-size: 1.2em;
-  margin-bottom: 8px;
+  font-size: 22px;
+  font-family: 'Montserrat';
+  font-weight: bolder;
+  margin-bottom: 0;
   color: #333;
 }
 
 /* Styling recipe additional info */
 .recipe-description {
-  font-size: 1.1em;
+  font-size: 18px;
   color: #333;
   margin-bottom: 16px;
 }
@@ -55,11 +57,10 @@
 .read-more-button {
   background-color: white;
   border: none;
-  font-size: 22px;
+  font-size: 16px;
   cursor: pointer;
   font-weight: bolder;
   color: #528a54;
-  transition: background-color 0.3s ease;
   font-family: 'Arial', serif;
 }
 
