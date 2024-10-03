@@ -4,7 +4,6 @@
 const HttpError = require('../models/httpError');
 const Recipe = require('../models/recipe');
 
-
 const getAllRecipes = async (req, res, next) => {
     //Define the result
     let recipes;
@@ -22,7 +21,7 @@ const getRecipeById = async (req, res, next) => {
     const recipeId = req.params.recipeID;
     let recipes;
     try {
-        recipes = await Recipe.find({_id: recipeId});
+        recipes = await Recipe.findById(recipeId);
     } catch(error) {
         console.log('Error finding recipe by id:' + error);
         return next(error);
