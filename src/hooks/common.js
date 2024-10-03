@@ -19,7 +19,10 @@ export const useRecipes = searchPattern => {
     fetch('/data/recipes.json')
       .then(response => response.json())
       .then(recipeList => {
-        setRecipeList(recipeList.Recipes);
+        // Local recipes storing until backend is not implemented
+        const storageLocalRecipes = localStorage.getItem('localRecipes');
+        const localRecipes = storageLocalRecipes ? JSON.parse(storageLocalRecipes) : [];
+        setRecipeList([...recipeList.Recipes, ...localRecipes]);
       })
       .catch(error => {
         console.error(`Error in fetch: ${error.message}`);
