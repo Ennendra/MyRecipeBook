@@ -51,7 +51,6 @@ const getRecipeByName = async (req, res, next) => {
     
     let recipes;
     try {
-        //recipes = await Recipe.find({recipeName: {$regex: `(.*)${recipeSearch}(.*)`} });
         recipes = await Recipe.find().searchByName(recipeSearch);
     } catch(error) {
         const newError = new HttpError(500,"Something went wrong when searching for a recipe by name: ");
@@ -95,57 +94,3 @@ exports.getRecipeByName = getRecipeByName;
 exports.addNewRecipe = addNewRecipe;
 exports.updateRecipe = updateRecipe;
 exports.deleteRecipe = deleteRecipe;
-
-
-
-
-
-
-
-
-
-
-/* getrecipebyid local dummy data
-const getRecipeById = (req, res, next) => {
-    
-    //Define the ID to be checked for
-    const recipeId = req.params.recipeID;
-    //Define the result
-    let recipe;
-    //Attempt to run the search
-    try {
-        recipe = DUMMY_RECIPES.find(r => {
-            return r._id === recipeId;
-        });
-    } catch(err) {
-        const error = new HttpError(500,'Something happened, could not find recipe');
-        return next(error);
-    }
-    //Exit with an error if no result is found
-    if (!recipe) {
-        const error = new HttpError(404,'Could not find a recipe of the provided id');
-        return next(error);
-    }
-
-    res.json({recipe});
-};
-
-
-const getRecipeByName = async (req, res, next) => {
-    //define the search parameter
-    const searchName = req.params.recipeSearch;
-    //define the results matching the search parameter as an object
-    const recipe = DUMMY_RECIPES.find(r => {
-        return r.recipeName.includes(recipeSearch);
-    });
-
-    //Exit with a status response error if no result was found
-    if (!recipe) {
-        return next(error);
-        return res.status(404).json({message: 'Could not find a recipe of the provided id'});
-        
-    }
-    
-    res.json({recipe});
-};
-*/
