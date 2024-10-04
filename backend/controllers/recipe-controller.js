@@ -46,11 +46,13 @@ const getRecipeById = async (req, res, next) => {
 const getRecipeByName = async (req, res, next) => {
     //define the search parameter, convert the parameter into utf format
     const recipeSearch = encodeURIComponent(req.params.recipeSearch);
+    
     console.log(recipeSearch);
     
     let recipes;
     try {
-        recipes = await Recipe.find({recipeName: {$regex: `(.*)${recipeSearch}(.*)`} });
+        //recipes = await Recipe.find({recipeName: {$regex: `(.*)${recipeSearch}(.*)`} });
+        recipes = await Recipe.find().searchByName(recipeSearch);
     } catch(error) {
         const newError = new HttpError(500,"Something went wrong when searching for a recipe by name: ");
         return next(newError);
