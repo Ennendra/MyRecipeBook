@@ -37,7 +37,7 @@ app.use('', recipeRoutes);
 app.use((req, res, next) => {
     const error = new HttpError(404,'Could not find this route')
     throw error;
-});
+});//
 //A middleware route that will act any time an error is returned on other routes
 app.use((error, req, res, next) => {
     //Check if an error has already been sent
@@ -50,4 +50,4 @@ app.use((error, req, res, next) => {
 });
 
 //establish a connection to the MongoDB database and start the server listening when successful
-mongooseAPI.ConnectMongooseDBAPI();
+mongooseAPI.ConnectMongooseDBAPI(app, PORT);
