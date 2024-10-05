@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const recipeRoutes = require('./routes/recipe-routes');
 const HttpError = require('./models/httpError');
 
+//Holds the function to connect Mongoose to the mongoDB API
+const mongooseAPI = require('./mongoose-connect-api');
+
 //initialise the express API
 const app = express();
 //use the library to automatically parse body requests into JSON format
@@ -47,9 +50,4 @@ app.use((error, req, res, next) => {
 });
 
 //establish a connection to the MongoDB database and start the server listening when successful
-mongoose.connect('mongodb+srv://GeneralUser:qp6bWVUXYqJSTK26@myrecipebookdb.bmiie.mongodb.net/MyRecipeBook?retryWrites=true&w=majority&appName=MyRecipeBookDB')
-.then(() => {
-    app.listen(PORT);
-}).catch((err) => {
-    console.log(err);
-});
+mongooseAPI.ConnectMongooseDBAPI();

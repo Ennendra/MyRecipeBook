@@ -6,6 +6,7 @@
 /backend/node_modules
 /.pnp
 .pnp.js
+/backend/mongoose-connect-api.js
 
 # testing
 /coverage
