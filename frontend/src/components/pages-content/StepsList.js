@@ -17,20 +17,16 @@ export const StepsList = ({ steps, onStepsUpdate }) => {
 
   // Step removing
   const handleRemoveRow = (e, index) => {
-    e.preventDefault();
-    const updatedSteps = steps.filter((_, i) => i !== index);
-    onStepsUpdate(updatedSteps);
+    if (index != 0) {
+      e.preventDefault();
+      const updatedSteps = steps.filter((_, i) => i !== index);
+      onStepsUpdate(updatedSteps);
+    } else alert('You should add at least one cooking step.');
   };
 
   return (
     <div className="container">
       <table className="ingredient-step-table">
-        <thead>
-          <tr className="table-cell">
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
         <tbody>
           {steps.map((step, index) => (
             <tr className="table-cell" key={index}>
