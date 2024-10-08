@@ -196,3 +196,134 @@ export function DecimalAsFraction(amount){
     return fractionValue;
 }
 
+
+//Takes the given ingredientType and returns the ingredientType that the given type was wanting to be converted to via localStorage
+function DeterminePreferredType(ingredientType) {
+    //Get the localStorage settings
+    const localStorageSettings = JSON.parse(localStorage.getItem('ingredientPreference'));
+
+    //Do not convert if no settings were found
+    if (!localStorageSettings) {return ingredientType;}
+
+
+    switch(ingredientType) {
+        case 'g':
+            return localStorageSettings.preferenceGrams;
+        case 'oz':
+            return localStorageSettings.preferenceOunces;
+        case 'cup':
+            return localStorageSettings.preferenceCups;
+        case 'tsp':
+            return localStorageSettings.preferenceTeaspoons;
+        case 'tbsp':
+            return localStorageSettings.preferenceTablespoons;
+    }
+
+    //No conversion needed, just return the same value
+    return ingredientType;
+}
+
+//THE MAIN FUNCTION
+//Takes the given ingredient object and converts the data based on settings, returning a revised ingredient object
+export function ConvertIngredientData(ingredient) {
+    //set a variable for the revised ingredient object
+    var revisedIngredient = ingredient;
+
+    //If the ingredient type is 'items', then return without changes
+    if (revisedIngredient.measurement === 'items') { return revisedIngredient; }
+
+    //Set what we wish this ingredient to be converted to
+    var preferredIngredientType = DeterminePreferredType(ingredient.measurement)
+    //If the ingredient types match, then return without changes
+    if (ingredient.measurement === preferredIngredientType) { return revisedIngredient; }
+
+    //Run the conversion based on the ingredient measurement and the preferred measurement and change the amount accordingly
+    switch(revisedIngredient.measurement) {
+        case 'g':
+            switch(preferredIngredientType) {
+                case 'oz': 
+                    revisedIngredient.amount = GramsToOunces(revisedIngredient.amount);
+                    break;
+                case 'cup': 
+                    revisedIngredient.amount = GramsToCups(revisedIngredient.amount);
+                    break;
+                case 'tsp': 
+                    revisedIngredient.amount = GramsToTeaspoons(revisedIngredient.amount);
+                    break;
+                case 'tbsp': 
+                    revisedIngredient.amount = GramsToTablespoons(revisedIngredient.amount);
+                    break;
+            }
+            break;
+        case 'oz':
+            switch(preferredIngredientType) {
+                case 'g': 
+                    revisedIngredient.amount = OuncesToGrams(revisedIngredient.amount);
+                    break;
+                case 'cup': 
+                    revisedIngredient.amount = OuncesToCups(revisedIngredient.amount);
+                    break;
+                case 'tsp': 
+                    revisedIngredient.amount = OuncesToTeaspoons(revisedIngredient.amount);
+                    break;
+                case 'tbsp': 
+                    revisedIngredient.amount = OuncesToTablespoons(revisedIngredient.amount);
+                    break;
+            }
+            break;
+        case 'cup':
+            switch(preferredIngredientType) {
+                case 'g': 
+                    revisedIngredient.amount = CupsToGrams(revisedIngredient.amount);
+                    break;
+                case 'oz': 
+                    revisedIngredient.amount = CupsToOunces(revisedIngredient.amount);
+                    break;
+                case 'tsp': 
+                    revisedIngredient.amount = CupsToTeaspoons(revisedIngredient.amount);
+                    break;
+                case 'tbsp': 
+                    revisedIngredient.amount = CupsToTablespoons(revisedIngredient.amount);
+                    break;
+            }
+            break;
+        case 'tsp':
+            switch(preferredIngredientType) {
+                case 'g': 
+                    revisedIngredient.amount = TeaspoonsToGrams(revisedIngredient.amount);
+                    break;
+                case 'oz': 
+                    revisedIngredient.amount = TeaspoonsToOunces(revisedIngredient.amount);
+                    break;
+                case 'cup': 
+                    revisedIngredient.amount = TeaspoonsToCups(revisedIngredient.amount);
+                    break;
+                case 'tbsp': 
+                    revisedIngredient.amount = TeaspoonsToTablespoons(revisedIngredient.amount);
+                    break;
+            }
+            break;
+        case 'tbsp':
+            switch(preferredIngredientType) {
+                case 'g': 
+                    revisedIngredient.amount = TablespoonsToGrams(revisedIngredient.amount);
+                    break;
+                case 'oz': 
+                    revisedIngredient.amount = TablespoonsToOunces(revisedIngredient.amount);
+                    break;
+                case 'cup': 
+                    revisedIngredient.amount = TablespoonsToCups(revisedIngredient.amount);
+                    break;
+                case 'tsp': 
+                    revisedIngredient.amount = TablespoonsToTeaspoons(revisedIngredient.amount);
+                    break;
+            }
+            break;
+    }
+
+    //change the measurement value to match the preferred measurement
+    revisedIngredient.measurement = preferredIngredientType;
+
+    //Return the revised ingredient
+    return revisedIngredient;
+}

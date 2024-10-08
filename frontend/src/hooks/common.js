@@ -45,5 +45,5 @@ export const useRecipes = searchPattern => {
  */
 export const useRecipe = recipeId => {
   const recipeList = useRecipes();
-  return recipeList?.find(recipe => recipe.recipeIDNumber == recipeId);
+  return recipeList?.find(recipe => recipe._id == recipeId);
 };
