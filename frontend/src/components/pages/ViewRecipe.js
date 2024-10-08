@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecipe } from '../../hooks/common';
 import './Styles.css';
+import { ConvertIngredientData} from '../../hooks/IngredientConversionUtilities';
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -14,7 +15,21 @@ export function ConvertMinutesToHoursAndMinutes(minutes) {
 }
 // returns each item in the ingredients list as a list item to render
 function ExpandIngredientsList(ingredientList) {
-  const ingredientItems = ingredientList.map((ingredient, index) => <li key={`ingredientItem${index}`}>{ingredient.amount + ' ' + ingredient.measurement + ' --- ' + ingredient.item}</li>);
+  
+  //Creating a direct copy of the ingredient list array to safely convert values
+  const revisedIngredientList = JSON.parse(JSON.stringify(ingredientList));
+
+  //converting the ingredients to their preferred measurement type, and into fraction form
+  revisedIngredientList.forEach(ingredient => {
+    ingredient = ConvertIngredientData(ingredient);
+    console.log("After conversion: " + ingredient.amount);
+  });
+
+  const ingredientItems = revisedIngredientList.map((ingredient, index) => 
+    <li key={`ingredientItem${index}`}>
+      {ingredient.amount + ' ' + ingredient.measurement + ' --- ' + ingredient.item}
+    </li>);
+
   return (
       <ul>
           {ingredientItems}
