@@ -201,7 +201,7 @@ export function DecimalAsFraction(amount){
 function DeterminePreferredType(ingredientType) {
     //Get the localStorage settings
     const localStorageSettings = JSON.parse(localStorage.getItem('ingredientPreference'));
-
+    console.log(localStorageSettings);
     //Do not convert if no settings were found
     if (!localStorageSettings) {return ingredientType;}
 
@@ -229,13 +229,21 @@ export function ConvertIngredientData(ingredient) {
     //set a variable for the revised ingredient object
     var revisedIngredient = ingredient;
 
+    console.log("Before conversion:" + revisedIngredient.amount);
+
     //If the ingredient type is 'items', then return without changes
-    if (revisedIngredient.measurement === 'items') { return revisedIngredient; }
+    if (revisedIngredient.measurement === 'items') { 
+        revisedIngredient.amount = DecimalAsFraction(revisedIngredient.amount);
+        return revisedIngredient; 
+    }
 
     //Set what we wish this ingredient to be converted to
     var preferredIngredientType = DeterminePreferredType(ingredient.measurement)
     //If the ingredient types match, then return without changes
-    if (ingredient.measurement === preferredIngredientType) { return revisedIngredient; }
+    if (ingredient.measurement === preferredIngredientType) { 
+        revisedIngredient.amount = DecimalAsFraction(revisedIngredient.amount);
+        return revisedIngredient; 
+    }
 
     //Run the conversion based on the ingredient measurement and the preferred measurement and change the amount accordingly
     switch(revisedIngredient.measurement) {
@@ -323,7 +331,7 @@ export function ConvertIngredientData(ingredient) {
 
     //change the measurement value to match the preferred measurement
     revisedIngredient.measurement = preferredIngredientType;
-
+    revisedIngredient.amount = DecimalAsFraction(revisedIngredient.amount);
     //Return the revised ingredient
     return revisedIngredient;
 }
