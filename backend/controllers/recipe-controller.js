@@ -35,7 +35,7 @@ const getRandomRecipes = async (req, res, next) => {
 
     const randomisedRecipes = [...recipes].sort(() => 0.5 - Math.random()).slice(0,3);
 
-    res.json({randomisedRecipes: randomisedRecipes.map(recipe => recipe.toObject( {getters:true} )) });
+    res.json({recipes: randomisedRecipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 
 const getRecipeById = async (req, res, next) => {
