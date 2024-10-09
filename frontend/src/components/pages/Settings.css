@@ -12,6 +12,12 @@
   align-items: center;
 }
 
+/* List styling */
+.listStyle {
+  font-family: 'Arial', serif;
+  font-size: 26px;
+}
+
 /*Styling calls */
 .table-cell {
   padding: 5px;
