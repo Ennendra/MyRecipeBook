@@ -9,6 +9,7 @@ export const Home = () => {
   const navigate = useNavigate();
   const { searchPattern } = useParams();
   const recipeList = useRecipes(searchPattern);
+  console.log(recipeList);
 
   return (
     <div>
@@ -23,6 +24,16 @@ export const Home = () => {
           + Add recipe
         </button>
       </div>
+      {/* If users use the search function, check the results, show no results or the results for something */}
+      {!searchPattern === false &&
+        (recipeList.length === 0 ? (
+          <h2>
+            We could not find any recipes matching your search. Please try using different
+            ingredients or keywords.
+          </h2>
+        ) : (
+          <h2>Results for {searchPattern}</h2>
+        ))}
 
       {recipeList ? (
         //Display recipe cards after the recipes have been successfully fetched from the JSON files
