@@ -22,6 +22,22 @@ const getAllRecipes = async (req, res, next) => {
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 
+const getRandomRecipes = async (req, res, next) => {
+    //Define the result
+    let recipes;
+    //Attempt to find all recipes
+    try {
+        recipes = await Recipe.find({});
+    } catch(error) {
+        const newError = new HttpError(500,"Something went wrong obtaining the recipe list: ");
+        return next(newError);
+    }
+
+    const randomisedRecipes = [...recipes].sort(() => 0.5 - Math.random()).slice(0,3);
+
+    res.json({randomisedRecipes: randomisedRecipes.map(recipe => recipe.toObject( {getters:true} )) });
+};
+
 const getRecipeById = async (req, res, next) => {
     //define the ID parameter
     const recipeId = req.params.recipeID;
@@ -89,6 +105,7 @@ const deleteRecipe = async (req, res, next) => {
 };
 
 exports.getAllRecipes = getAllRecipes;
+exports.getRandomRecipes = getRandomRecipes;
 exports.getRecipeById = getRecipeById;
 exports.getRecipeByName = getRecipeByName;
 exports.addNewRecipe = addNewRecipe;
