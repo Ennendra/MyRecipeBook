@@ -42,7 +42,7 @@ export const RecipeCards = ({ recipes }) => {
         <div
           key={i}
           className="recipe-card"
-          onClick={() => navigate(`/viewRecipe/${recipe.recipeIDNumber}`)}
+          onClick={() => navigate(`/viewRecipe/${recipe._id}`)}
         >
           <img
             src={recipe.imageSrc === '' ? 'images/noImageIcon.png' : recipe.imageSrc}
@@ -50,7 +50,7 @@ export const RecipeCards = ({ recipes }) => {
             className="recipe-image"
           />
           <div className="recipe-info">
-            <h3 className="recipe-title"> {recipe.recipeName} </h3>
+            <div className="recipe-title"> {recipe.recipeName} </div>
             <p className="recipe-description">
               <span className="bold">{'🕒 Total time: '}</span>
               {convertMinutesToHours(recipe.prepDurationMinutes + recipe.cookDurationMinutes)}
