@@ -17,9 +17,11 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
 
   // Ingredient removing
   const handleRemoveRow = (e, index) => {
-    e.preventDefault();
-    const updatedIngredients = ingredients.filter((_, i) => i !== index);
-    onIngredientsUpdate(updatedIngredients);
+    if (index != 0) {
+      e.preventDefault();
+      const updatedIngredients = ingredients.filter((_, i) => i !== index);
+      onIngredientsUpdate(updatedIngredients);
+    } else alert('You should add at least one ingredient.');
   };
 
   return (

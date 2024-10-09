@@ -39,7 +39,7 @@ export const RecipeEditor = () => {
 
     const newRecipe = {
       recipeName,
-      recipeIDNumber,
+      _id: recipeIDNumber, //NOTE: This will need to be removed when completing integration with backend
       recipeDescription,
       prepDurationMinutes,
       cookDurationMinutes,
