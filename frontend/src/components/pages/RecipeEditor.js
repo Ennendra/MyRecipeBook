@@ -39,7 +39,7 @@ export const RecipeEditor = () => {
 
     const newRecipe = {
       recipeName,
-      recipeIDNumber,
+      _id: recipeIDNumber,
       recipeDescription,
       prepDurationMinutes,
       cookDurationMinutes,
