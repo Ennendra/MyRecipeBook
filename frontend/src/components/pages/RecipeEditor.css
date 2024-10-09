@@ -1,0 +1,133 @@
+/* Header styling */
+.page-title {
+  display: flex;
+  justify-content: center;
+  font-family: 'Montserrat';
+  font-size: 52px;
+  font-weight: bold;
+  color: #528a54;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Title for "name of recipe" styling */
+.recipe-name-title {
+  display: flex;
+  font-size: 22px;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  font-family: 'Arial', serif;
+}
+
+/* Title for styling description */
+.title-style {
+  display: flex;
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-family: 'Arial', serif;
+  margin-right: 5px;
+}
+
+/* Title for styling some headers */
+.title {
+  display: flex;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: 'Arial', serif;
+  margin-right: 5px;
+}
+
+/*Big margin for line with servings, and cook times*/
+.title-big-margin {
+  display: flex;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: 'Arial', serif;
+  margin-right: 40px;
+}
+
+/* Title for styling some number inputs */
+.number-input {
+  display: flex;
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-family: 'Arial', serif;
+  max-width: 50px;
+  margin-right: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Textarea for "name of recipe" and "description" styling */
+.textarea-name {
+  display: flex;
+  width: 100%;
+  font-size: 20px;
+  background-color: rgb(231, 230, 230);
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-family: 'Arial', serif;
+}
+
+/* Bold style for some fonts*/
+.title-bold {
+  display: flex;
+  /*font-weight: bolder;*/
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: 'Arial', serif;
+}
+
+/*Styling for line with servings, and cook times*/
+.one-line-class {
+  display: flex;
+}
+
+/* Separator styling */
+.hr-separator {
+  border-color: #819082;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+/* Submit button styling */
+.submit-button {
+  padding: 10px 20px;
+  background-color: #528a54;
+  border: none;
+  color: white;
+  font-size: 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: 'Arial', serif;
+}
+
+/* Submit button  hover effect */
+.submit-button:hover {
+  background-color: #477748; /* Darker green on hover */
+}
+
+/* Cancel button styling */
+.cancel-button {
+  padding: 10px 20px;
+  background-color: rgb(231, 230, 230);
+  border: none;
+  color: black;
+  font-size: 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: 'Arial', serif;
+  margin-right: 50px;
+}
+
+/* Cancel button  hover effect */
+.cancel-button:hover {
+  background-color: rgb(228, 188, 188); /* Darker color on hover */
+}
+
+/* Styling container with cancel and submit buttons */
+.cancel-submit-button-container {
+  padding: 10px;
+  float: right;
+}

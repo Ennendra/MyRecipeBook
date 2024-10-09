@@ -1,0 +1,70 @@
+/* Styling image  container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styling ingredients table */
+.ingredient-step-table {
+  width: 100%;
+  border: none;
+}
+
+/*Styling calls */
+.table-cell {
+  padding: 5px;
+  text-align: left;
+  font-size: 20px;
+}
+
+/*Styling rows */
+.table-rows {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  background-color: rgb(231, 230, 230);
+}
+
+/*Styling add button*/
+.add-ingredient-step-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  color: black;
+  background-color: rgb(231, 230, 230);
+  font-size: 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: 'Arial', serif;
+  margin-bottom: 10px;
+}
+
+/* Add button  hover effect */
+.add-ingredient-step-button:hover {
+  background-color: rgb(178, 177, 177); /* Darker color on hover */
+}
+
+/*Styling remove button*/
+.remove-ingredient-step-button {
+  padding: 12px 10px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/*Width remove row*/
+.width-remove-button {
+  width: 10px;
+}
+
+/*Width amount row*/
+.width-amount {
+  width: 150px;
+}
+
+/*Width measure type row*/
+.width-measure {
+  width: 150px;
+}
