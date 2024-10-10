@@ -29,7 +29,7 @@ router.post('/addNewRecipe', recipeController.addNewRecipe);
 router.patch('/editRecipe/:recipeID', recipeController.updateRecipe);
 
 //deleteRecipe - delete recipe matching a given param ID
-router.delete('/:recipeID', recipeController.deleteRecipe)
+router.delete('/deleteRecipe/:recipeID', recipeController.deleteRecipe)
 
 
 module.exports = router;
