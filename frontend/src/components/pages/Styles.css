@@ -25,6 +25,7 @@
   margin-top: 50px;
   margin-bottom: 20px;
 }
+
 .recipeImg {
   border-radius: 50%;
   border: 7px solid #fff;
@@ -41,4 +42,36 @@
 
 .recipeNameCard h2 {
   font-size: 2.5rem;
+}
+
+/* About page css */
+.aboutContainer {
+  align-items: center;
+  /* background-color: #528a54; */
+}
+
+.aboutInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 30px;
+  gap: 50px;
+}
+
+.aboutTitle {
+  float: left;
+  font-size: 1.5rem; 
+}
+
+.aboutContent {
+  float: left;
+  font-size: 1.5rem;         /* Smaller font size for paragraph */
+  color: rgb(202, 207, 207);          
+  font-family: 'Georgia', serif;
+  margin: 0;                 /* Remove default margin */
+}
+
+.aboutImageList {
+  justify-content: center;
+  margin: 120px 30px;
 }
