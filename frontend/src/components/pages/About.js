@@ -1,6 +1,6 @@
 import React from 'react';
 import './Styles.css';
-import AboutImageList from './AboutImageList';
+import AboutImageList from '../pages-content/AboutImageList';
 
 export const About = () => {
   return (
