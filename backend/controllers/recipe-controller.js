@@ -159,7 +159,7 @@ const updateRecipe = async (req, res, next) => {
         await recipeToUpdate.save();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong creating the recipe.");
+        const newError = new HttpError(500,"Something went wrong updating the recipe.");
         return next(newError);
     }
 
@@ -168,6 +168,23 @@ const updateRecipe = async (req, res, next) => {
 
 const deleteRecipe = async (req, res, next) => {
 
+    let recipeToDelete;
+    try {
+        recipeToDelete = await Recipe.findById(req.params.recipeID);
+    } catch(error) {
+        const newError = new HttpError(404,"Could not find recipe to delete: ");
+        return next(newError);
+    }
+
+    try {
+        await recipeToDelete.deleteOne();
+    }
+    catch(error) {
+        const newError = new HttpError(500,"Something went wrong attempting to delete recipe."+error);
+        return next(newError);
+    }
+
+    res.status(200).json({message: "Successfully deleted recipe."});
 };
 
 exports.getAllRecipes = getAllRecipes;
