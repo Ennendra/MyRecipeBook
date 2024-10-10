@@ -6,8 +6,9 @@
   padding: 0px 20px;
   color: #528a54;
   width: 96%; 
+  /* width: 100vh; */
   /* Setting witdth to 96% to leave some space to padding */
-  background-color:  #93a5c98a;
+  background-color:  #eeeeee;
 }
 
 /* Styling for the title text */

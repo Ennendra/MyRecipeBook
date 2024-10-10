@@ -5,10 +5,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background-color: #282c34; */
-  background-color: #616161;
-  
+  background-color: #e0e0e0;
   min-height: 100vh;
-  color: white;
+  color: #212121;
 }
 
 code {
