@@ -83,8 +83,8 @@ export const Settings = () => {
                     <option value="g">g</option>
                     <option value="oz">oz</option>
                     <option value="cups">cups</option>
-                    <option value="tbsp">tbsp</option>
                     <option value="tsp">tsp</option>
+                    <option value="tbsp">tbsp</option>
                   </select>
                 </td>
               </tr>
