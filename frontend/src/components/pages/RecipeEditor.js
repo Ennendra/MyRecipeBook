@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ConfirmLeaveModal } from '../pages-content/ConfirmLeaveModal';
 import { ImageUpload } from '../pages-content/ImageUpload';
 import { IngredientsTable } from '../pages-content/IngredientsTable';
 import { StepsList } from '../pages-content/StepsList';
@@ -13,6 +14,7 @@ export const RecipeEditor = () => {
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Handler when the image is uploaded
   const handleImageUpload = e => {
@@ -55,8 +57,24 @@ export const RecipeEditor = () => {
     localStorage.setItem('localRecipes', JSON.stringify([...localRecipes, newRecipe]));
 
     navigate(`/viewRecipe/${newRecipe.recipeIDNumber}`);
-    // alert(JSON.stringify(jsonObject, null, 2));
   }
+
+  // Function to open the modal
+  const handleCancelClick = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Function to handle leaving the page
+  const handleLeavePage = () => {
+    setIsModalOpen(false);
+    //console.log('Leaving the page...');
+    navigate(`/home`);
+  };
 
   return (
     <form onSubmit={addNewRecipe}>
@@ -70,7 +88,6 @@ export const RecipeEditor = () => {
         className="textarea-name"
         placeholder="Name of recipe"
         rows={'1'}
-        required
       />
 
       <label className="title-style">Description</label>
@@ -111,9 +128,15 @@ export const RecipeEditor = () => {
       <hr className="hr-separator" />
 
       <div className="cancel-submit-button-container">
-        <button className="cancel-button" type="cancel">
+        {/* Cancel button that triggers the modal */}
+        <button className="cancel-button" onClick={handleCancelClick} type="cancel">
           Cancel
         </button>
+        <ConfirmLeaveModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onLeave={handleLeavePage}
+        />
 
         <button className="submit-button" type="submit">
           Submit
