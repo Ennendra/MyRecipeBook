@@ -31,10 +31,12 @@ function ExpandIngredientsList(ingredientList) {
   //Creating a direct copy of the ingredient list array to safely convert values
   const revisedIngredientList = JSON.parse(JSON.stringify(ingredientList));
 
+  const localStorageSettings = JSON.parse(localStorage.getItem('localTypesSettings'));
+  console.log(localStorageSettings);
+
   //converting the ingredients to their preferred measurement type, and into fraction form
   revisedIngredientList.forEach(ingredient => {
-    ingredient = ConvertIngredientData(ingredient);
-    console.log("After conversion: " + ingredient.amount);
+    ConvertIngredientData(ingredient);
   });
 
   const ingredientItems = revisedIngredientList.map((ingredient, index) => 

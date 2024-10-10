@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './Settings.css';
 
 //temporary setup of localstorage preferences
-const tempSettings = {
+/*const tempSettings = {
   'preferenceGrams': 'oz',
   'preferenceOunces': 'oz',
   'preferenceCups': 'cup',
   'preferenceTeaspoons': 'oz',
   'preferenceTablespoons': 'oz'
 };
-localStorage.setItem('ingredientPreference', JSON.stringify(tempSettings));
+localStorage.setItem('ingredientPreference', JSON.stringify(tempSettings));*/
 
 export const Settings = () => {
   const types = ['g', 'oz', 'cups', 'tsp', 'tbsp'];
