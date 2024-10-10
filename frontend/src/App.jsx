@@ -8,13 +8,16 @@ import { Home } from './components/pages/Home';
 import { RecipeEditor } from './components/pages/RecipeEditor';
 import { Settings } from './components/pages/Settings';
 import { ViewRecipe } from './components/pages/ViewRecipe';
+// import Divider from '@mui/material/Divider';
+
 
 function App() {
   return (
     <>
       <Router>
         <Header />
-        <hr className="separator" />
+        {/* <Divider /> */}
+        {/* <hr className="separator" /> */}
         <Routes>
           {/* Set default path. */}
           <Route path="/" element={<Navigate to="/home" />} />
