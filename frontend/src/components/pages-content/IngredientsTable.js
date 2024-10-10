@@ -41,7 +41,7 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
               <td className="width-amount">
                 <input
                   className="table-rows"
-                  //type="number"
+                  type="number"
                   value={ingredient.amount}
                   onChange={e => handleInputChange(index, 'amount', e.target.value)}
                   placeholder="Amount"
