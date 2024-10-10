@@ -72,7 +72,6 @@ export const RecipeEditor = () => {
   // Function to handle leaving the page
   const handleLeavePage = () => {
     setIsModalOpen(false);
-    //console.log('Leaving the page...');
     navigate(`/home`);
   };
 
@@ -88,6 +87,7 @@ export const RecipeEditor = () => {
         className="textarea-name"
         placeholder="Name of recipe"
         rows={'1'}
+        required
       />
 
       <label className="title-style">Description</label>
