@@ -55,7 +55,7 @@ export const Settings = () => {
       <div className="table-button-center">
         <table className="type-table">
           <thead>
-            <tr className="table-cell">
+            <tr className="table-cells">
               <th>Original type</th>
               <th>Goal type</th>
             </tr>
@@ -66,13 +66,13 @@ export const Settings = () => {
                 <td>{type}</td>
                 <td>
                   <select
-                    className="table-rows"
+                    className="table-cells"
                     value={selections[type]}
                     onChange={event => handleSelectionChange(event, type)}
                   >
                     <option value="g">g</option>
                     <option value="oz">oz</option>
-                    <option value="cups">cup</option>
+                    <option value="cups">cups</option>
                     <option value="tbsp">tbsp</option>
                     <option value="tsp">tsp</option>
                   </select>
