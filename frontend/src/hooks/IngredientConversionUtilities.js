@@ -200,23 +200,21 @@ export function DecimalAsFraction(amount){
 //Takes the given ingredientType and returns the ingredientType that the given type was wanting to be converted to via localStorage
 function DeterminePreferredType(ingredientType) {
     //Get the localStorage settings
-    const localStorageSettings = JSON.parse(localStorage.getItem('ingredientPreference'));
-    console.log(localStorageSettings);
+    const localStorageSettings = JSON.parse(localStorage.getItem('localTypesSettings'));
     //Do not convert if no settings were found
     if (!localStorageSettings) {return ingredientType;}
 
-
     switch(ingredientType) {
-        case 'g':
-            return localStorageSettings.preferenceGrams;
-        case 'oz':
-            return localStorageSettings.preferenceOunces;
-        case 'cup':
-            return localStorageSettings.preferenceCups;
-        case 'tsp':
-            return localStorageSettings.preferenceTeaspoons;
-        case 'tbsp':
-            return localStorageSettings.preferenceTablespoons;
+        case "g":
+            return localStorageSettings.g;
+        case "oz":
+            return localStorageSettings.oz;
+        case "cup":
+            return localStorageSettings.cups;
+        case "tsp":
+            return localStorageSettings.tsp;
+        case "tbsp":
+            return localStorageSettings.tbsp;
     }
 
     //No conversion needed, just return the same value
@@ -229,8 +227,6 @@ export function ConvertIngredientData(ingredient) {
     //set a variable for the revised ingredient object
     var revisedIngredient = ingredient;
 
-    console.log("Before conversion:" + revisedIngredient.amount);
-
     //If the ingredient type is 'items', then return without changes
     if (revisedIngredient.measurement === 'items') { 
         revisedIngredient.amount = DecimalAsFraction(revisedIngredient.amount);
@@ -238,7 +234,7 @@ export function ConvertIngredientData(ingredient) {
     }
 
     //Set what we wish this ingredient to be converted to
-    var preferredIngredientType = DeterminePreferredType(ingredient.measurement)
+    var preferredIngredientType = DeterminePreferredType(revisedIngredient.measurement)
     //If the ingredient types match, then return without changes
     if (ingredient.measurement === preferredIngredientType) { 
         revisedIngredient.amount = DecimalAsFraction(revisedIngredient.amount);
@@ -252,7 +248,7 @@ export function ConvertIngredientData(ingredient) {
                 case 'oz': 
                     revisedIngredient.amount = GramsToOunces(revisedIngredient.amount);
                     break;
-                case 'cup': 
+                case 'cups': 
                     revisedIngredient.amount = GramsToCups(revisedIngredient.amount);
                     break;
                 case 'tsp': 
@@ -268,7 +264,7 @@ export function ConvertIngredientData(ingredient) {
                 case 'g': 
                     revisedIngredient.amount = OuncesToGrams(revisedIngredient.amount);
                     break;
-                case 'cup': 
+                case 'cups': 
                     revisedIngredient.amount = OuncesToCups(revisedIngredient.amount);
                     break;
                 case 'tsp': 
@@ -303,7 +299,7 @@ export function ConvertIngredientData(ingredient) {
                 case 'oz': 
                     revisedIngredient.amount = TeaspoonsToOunces(revisedIngredient.amount);
                     break;
-                case 'cup': 
+                case 'cups': 
                     revisedIngredient.amount = TeaspoonsToCups(revisedIngredient.amount);
                     break;
                 case 'tbsp': 
@@ -319,7 +315,7 @@ export function ConvertIngredientData(ingredient) {
                 case 'oz': 
                     revisedIngredient.amount = TablespoonsToOunces(revisedIngredient.amount);
                     break;
-                case 'cup': 
+                case 'cups': 
                     revisedIngredient.amount = TablespoonsToCups(revisedIngredient.amount);
                     break;
                 case 'tsp': 
