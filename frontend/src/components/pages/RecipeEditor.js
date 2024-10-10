@@ -5,6 +5,7 @@ import { ImageUpload } from '../pages-content/ImageUpload';
 import { IngredientsTable } from '../pages-content/IngredientsTable';
 import { StepsList } from '../pages-content/StepsList';
 
+import { NumericInput } from '../pages-content/NumericInput';
 import './RecipeEditor.css';
 
 const reader = new FileReader();
@@ -60,17 +61,20 @@ export const RecipeEditor = () => {
   }
 
   // Function to open the modal
-  const handleCancelClick = () => {
+  const handleCancelClick = event => {
+    event.preventDefault();
     setIsModalOpen(true);
   };
 
   // Function to close the modal
-  const handleCloseModal = () => {
+  const handleCloseModal = event => {
+    event.preventDefault();
     setIsModalOpen(false);
   };
 
   // Function to handle leaving the page
-  const handleLeavePage = () => {
+  const handleLeavePage = event => {
+    event.preventDefault();
     setIsModalOpen(false);
     navigate(`/home`);
   };
@@ -87,7 +91,6 @@ export const RecipeEditor = () => {
         className="textarea-name"
         placeholder="Name of recipe"
         rows={'1'}
-        required
       />
 
       <label className="title-style">Description</label>
@@ -101,19 +104,19 @@ export const RecipeEditor = () => {
 
       <div className="one-line-class">
         <span className="title-bold">{'🍴 Serves: '} </span>
-        <input name="recipeServes" className="number-input" type="number" min={0} max={99} />
+        <NumericInput name="recipeServes" />
         <span className="title-big-margin">{'persons'} </span>
 
         <span className="title-bold">{' 🕒 Prep. time: '} </span>
-        <input name="recipePrepTimeHours" className="number-input" type="number" min={0} max={99} />
+        <NumericInput name="recipePrepTimeHours" />
         <span className="title">{'h'} </span>
-        <input name="recipePrepTimeMins" className="number-input" type="number" min={0} max={99} />
+        <NumericInput name="recipePrepTimeMins" />
         <span className="title-big-margin">{'min'} </span>
 
         <span className="title-bold">{' Cook time: '} </span>
-        <input name="recipeCookTimeHours" className="number-input" type="number" min={0} max={99} />
+        <NumericInput name="recipeCookTimeHours" />
         <span className="title">{'h'} </span>
-        <input name="recipeCookTimeMins" className="number-input" type="number" min={0} max={99} />
+        <NumericInput name="recipeCookTimeMins" />
         <span className="title-big-margin">{'min'} </span>
       </div>
 
