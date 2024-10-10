@@ -1,5 +1,6 @@
 import React from 'react';
 import './IngredientsAndSteps.css';
+import { handleKeyDown } from './NumericInput';
 
 export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
   // Handle input changes
@@ -43,6 +44,7 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
                   className="table-rows"
                   type="number"
                   value={ingredient.amount}
+                  onKeyDown={handleKeyDown}
                   onChange={e => handleInputChange(index, 'amount', e.target.value)}
                   placeholder="Amount"
                 />
