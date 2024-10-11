@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { default as React, useEffect, useRef, useState } from 'react';
 import { useBlocker, useNavigate } from 'react-router-dom';
 import { ConfirmLeaveModal } from '../pages-content/ConfirmLeaveModal';
 import { ImageUpload } from '../pages-content/ImageUpload';
@@ -20,7 +20,7 @@ const recipeHasChanges = recipe => {
   }
   if (!hasChanges) {
     hasChanges = recipe?.ingredients.some(
-      ingredient => ingredient.amount || ingredient.measurement || ingredient.item
+      ingredient => ingredient.amount || ingredient.measurement !== 'items' || ingredient.item
     );
   }
   if (!hasChanges) {
@@ -30,15 +30,23 @@ const recipeHasChanges = recipe => {
 };
 
 export const RecipeEditor = () => {
-  const [ingredients, setIngredients] = useState([{ amount: '', measurement: '', item: '' }]);
+  const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '' }]);
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isSubmitRef = useRef(false);
+  const [invalidIngredients, setInvalidIngredients] = useState([]); // Store invalid ingredient rows
+  const [invalidSteps, setInvalidSteps] = useState([]); // Store invalid steps
+  // const [isSubmit, setIsSubmit] = useState(false);
   const formRef = useRef(null);
 
   // Block navigation elsewhere when there are unsaved changes
   let blocker = useBlocker(({ currentLocation, nextLocation }) => {
+    if (isSubmitRef.current) {
+      return false;
+    }
     const currentRecipe = getRecipeData();
     const hasChanges = recipeHasChanges(currentRecipe);
     return hasChanges && currentLocation.pathname !== nextLocation.pathname;
@@ -47,6 +55,14 @@ export const RecipeEditor = () => {
   useEffect(() => {
     setIsModalOpen(blocker.state === 'blocked');
   }, [blocker]);
+
+  useEffect(() => {
+    setInvalidIngredients([]);
+  }, [ingredients]);
+
+  useEffect(() => {
+    setInvalidSteps([]);
+  }, [cookingSteps]);
 
   // Handler when the image is uploaded
   const handleImageUpload = e => {
@@ -87,15 +103,70 @@ export const RecipeEditor = () => {
     return newRecipe;
   };
 
+  // Function to validate required fields
+  const validateRecipe = recipe => {
+    if (!recipe.recipeName) {
+      setErrorMessage('Recipe name is required.');
+      return false;
+    }
+
+    // Validate ingredients
+    const invalidIngredientIndices = recipe.ingredients
+      .map((ingredient, index) => {
+        if (!ingredient.amount || !ingredient.measurement || !ingredient.item) {
+          return index; // Mark the index of invalid ingredients
+        }
+        return null;
+      })
+      .filter(index => index !== null); // Filter out valid ingredients
+
+    setInvalidIngredients(invalidIngredientIndices); // Store invalid ingredient indices
+
+    if (invalidIngredientIndices.length > 0) {
+      setErrorMessage('Please fill in all the ingredient fields.');
+      return false;
+    }
+
+    // Validate cooking steps
+    const invalidStepIndices = recipe.cookingSteps
+      .map((step, index) => {
+        if (!step) {
+          return index; // Mark empty or invalid steps
+        }
+        return null;
+      })
+      .filter(index => index !== null);
+
+    setInvalidSteps(invalidStepIndices); // Store invalid step indices
+
+    if (invalidStepIndices.length > 0) {
+      setErrorMessage('Please fill in all the cooking steps.');
+      return false;
+    }
+
+    setErrorMessage(''); // Clear the error message if everything is valid
+    setInvalidIngredients([]); // Clear the invalid ingredient state
+    setInvalidSteps([]); // Clear the invalid steps state
+    return true;
+  };
+
   function addNewRecipe(event) {
     event.preventDefault();
 
     const newRecipe = getRecipeData();
+
+    // Validate required fields before submitting
+    if (!validateRecipe(newRecipe)) {
+      return; // Prevent form submission if validation fails
+    }
+
     // Temporal solution to store new recipes since we can't edit JSON file.
     const storageLocalRecipes = localStorage.getItem('localRecipes');
     const localRecipes = storageLocalRecipes ? JSON.parse(storageLocalRecipes) : [];
     localStorage.setItem('localRecipes', JSON.stringify([...localRecipes, newRecipe]));
 
+    // flushSync(() => setIsSubmit(true));
+    isSubmitRef.current = true;
     navigate(`/viewRecipe/${newRecipe._id}`);
   }
 
@@ -162,12 +233,19 @@ export const RecipeEditor = () => {
       <hr className="hr-separator" />
 
       <label className="title-style">Ingredients(*)</label>
-      <IngredientsTable ingredients={ingredients} onIngredientsUpdate={setIngredients} />
+      <IngredientsTable
+        ingredients={ingredients}
+        onIngredientsUpdate={setIngredients}
+        invalidIngredients={invalidIngredients}
+      />
 
       <label className="title-style">Instructions(*)</label>
-      <StepsList steps={cookingSteps} onStepsUpdate={setCookingSteps} />
+      <StepsList steps={cookingSteps} onStepsUpdate={setCookingSteps} invalidSteps={invalidSteps} />
 
       <hr className="hr-separator" />
+
+      {/* Display error message if validation fails */}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <div className="cancel-submit-button-container">
         {/* Cancel button that triggers the modal */}

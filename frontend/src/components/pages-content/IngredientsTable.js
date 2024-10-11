@@ -1,8 +1,8 @@
-import React from 'react';
+import { default as React } from 'react';
 import './IngredientsAndSteps.css';
 import { handleKeyDown } from './NumericInput';
 
-export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
+export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngredients }) => {
   // Handle input changes
   const handleInputChange = (index, field, value) => {
     const updateIngredients = [...ingredients];
@@ -13,7 +13,7 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
   // Adding ingredient
   const handleAddRow = e => {
     e.preventDefault();
-    onIngredientsUpdate([...ingredients, { amount: '', measurement: '', item: '' }]);
+    onIngredientsUpdate([...ingredients, { amount: '', measurement: 'items', item: '' }]);
   };
 
   // Ingredient removing
@@ -38,11 +38,15 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
         </thead>
         <tbody>
           {ingredients.map((ingredient, index) => (
-            <tr className="table-cell" key={index}>
+            <tr
+              key={index}
+              className={invalidIngredients.includes(index) ? 'error-row' : 'table-cell'}
+            >
               <td className="width-amount">
                 <input
                   className="table-rows"
                   type="number"
+                  min={0}
                   value={ingredient.amount}
                   onKeyDown={handleKeyDown}
                   onChange={e => handleInputChange(index, 'amount', e.target.value)}
