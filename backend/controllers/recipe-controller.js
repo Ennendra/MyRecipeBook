@@ -1,13 +1,8 @@
 
-//Some recipe IDs for testing reference
-// 66fe3dd424a3d8d395d48a3c
-// 66fe3ded5b31e4110936d95d
-// 66fe3e0b5b31e4110936d95e
-
-
 //Schema models and the error handler model
 const HttpError = require('../models/httpError');
 const Recipe = require('../models/recipe');
+//The mongoose API
 const mongoose = require("mongoose");
 
 const getAllRecipes = async (req, res, next) => {
@@ -82,7 +77,6 @@ const getRecipeByName = async (req, res, next) => {
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 
-
 const addNewRecipe = async (req, res, next) => {
     
     //Assemble the request into a JSON object
@@ -104,11 +98,12 @@ const addNewRecipe = async (req, res, next) => {
     }
     
     //save the result to the database
+    let result
     try {
-        const result = await createdRecipe.save();
+        result = await createdRecipe.save();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong creating the recipe.");
+        const newError = new HttpError(500,"Something went wrong creating the recipe: "+error);
         return next(newError);
     }
 
