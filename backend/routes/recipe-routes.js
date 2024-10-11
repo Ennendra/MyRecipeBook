@@ -14,7 +14,7 @@ const router = express.Router();
         /deleteRecipe/:recipeID - find the recipe that matches the ID and DELETE it
 */
 //Home - find all recipes (Frontend will then show 3 random recipes)
-router.get('/home', recipeController.getAllRecipes);
+router.get('/home', recipeController.getRandomRecipes);
 
 //Home/:recipeSearch - Find all recipes containing the phrase in the recipe search
 router.get('/home/:recipeSearch', recipeController.getRecipeByName);

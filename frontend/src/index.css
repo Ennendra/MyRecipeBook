@@ -4,6 +4,9 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #282c34;
+  /* background-color: #8a0027; */
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
   /* background-color: #282c34; */
   background-color: #e0e0e0;
   min-height: 100vh;
