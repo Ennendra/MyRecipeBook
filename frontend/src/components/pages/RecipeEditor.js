@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useBlocker, useNavigate } from 'react-router-dom';
 import { ConfirmLeaveModal } from '../pages-content/ConfirmLeaveModal';
 import { ImageUpload } from '../pages-content/ImageUpload';
 import { IngredientsTable } from '../pages-content/IngredientsTable';
-import { StepsList } from '../pages-content/StepsList';
-
 import { NumericInput } from '../pages-content/NumericInput';
+import { StepsList } from '../pages-content/StepsList';
 import './RecipeEditor.css';
 
 const reader = new FileReader();
+
+const SPECIAL_RECIPE_KEYS = ['_id', 'imageSrc', 'ingredients', 'cookingSteps'];
+
+// Checks current recipe for changes done by the user
+const recipeHasChanges = recipe => {
+  const keys = Object.keys(recipe);
+  let hasChanges = keys.some(key => !SPECIAL_RECIPE_KEYS.includes(key) && recipe[key]);
+  if (!hasChanges) {
+    hasChanges = recipe?.imageSrc !== '/images/noImageIcon.png';
+  }
+  if (!hasChanges) {
+    hasChanges = recipe?.ingredients.some(
+      ingredient => ingredient.amount || ingredient.measurement || ingredient.item
+    );
+  }
+  if (!hasChanges) {
+    hasChanges = recipe?.cookingSteps.some(step => step);
+  }
+  return hasChanges;
+};
 
 export const RecipeEditor = () => {
   const [ingredients, setIngredients] = useState([{ amount: '', measurement: '', item: '' }]);
@@ -16,6 +35,18 @@ export const RecipeEditor = () => {
   const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const formRef = useRef(null);
+
+  // Block navigation elsewhere when there are unsaved changes
+  let blocker = useBlocker(({ currentLocation, nextLocation }) => {
+    const currentRecipe = getRecipeData();
+    const hasChanges = recipeHasChanges(currentRecipe);
+    return hasChanges && currentLocation.pathname !== nextLocation.pathname;
+  });
+
+  useEffect(() => {
+    setIsModalOpen(blocker.state === 'blocked');
+  }, [blocker]);
 
   // Handler when the image is uploaded
   const handleImageUpload = e => {
@@ -28,9 +59,11 @@ export const RecipeEditor = () => {
     }
   };
 
-  function addNewRecipe(event) {
-    event.preventDefault();
-    const { target } = event;
+  const getRecipeData = () => {
+    const target = formRef.current;
+    if (target === null) {
+      return {};
+    }
     const recipeName = target.recipeName.value;
     const recipeIDNumber = Date.now();
     const recipeDescription = target.recipeDescription.value;
@@ -51,36 +84,42 @@ export const RecipeEditor = () => {
       imageSrc,
       cookingSteps,
     };
+    return newRecipe;
+  };
 
+  function addNewRecipe(event) {
+    event.preventDefault();
+
+    const newRecipe = getRecipeData();
     // Temporal solution to store new recipes since we can't edit JSON file.
     const storageLocalRecipes = localStorage.getItem('localRecipes');
     const localRecipes = storageLocalRecipes ? JSON.parse(storageLocalRecipes) : [];
     localStorage.setItem('localRecipes', JSON.stringify([...localRecipes, newRecipe]));
 
-    navigate(`/viewRecipe/${newRecipe.recipeIDNumber}`);
+    navigate(`/viewRecipe/${newRecipe._id}`);
   }
 
   // Function to open the modal
   const handleCancelClick = event => {
     event.preventDefault();
-    setIsModalOpen(true);
+    navigate(`/home`); // Navigate without showing modal if no changes
   };
 
   // Function to close the modal
   const handleCloseModal = event => {
     event.preventDefault();
     setIsModalOpen(false);
+    blocker.reset(); // Reset the blocker to allow navigation again
   };
 
   // Function to handle leaving the page
   const handleLeavePage = event => {
     event.preventDefault();
-    setIsModalOpen(false);
-    navigate(`/home`);
+    blocker.proceed(); // Proceed with the navigation
   };
 
   return (
-    <form onSubmit={addNewRecipe}>
+    <form onSubmit={addNewRecipe} ref={formRef}>
       <h1 className="page-title">Add recipe</h1>
       <ImageUpload name="recipeImage" image={imageSrc} onImageUpload={handleImageUpload} />
 
@@ -132,7 +171,7 @@ export const RecipeEditor = () => {
 
       <div className="cancel-submit-button-container">
         {/* Cancel button that triggers the modal */}
-        <button className="cancel-button" onClick={handleCancelClick} type="cancel">
+        <button className="cancel-button" onClick={handleCancelClick} type="button">
           Cancel
         </button>
         <ConfirmLeaveModal
