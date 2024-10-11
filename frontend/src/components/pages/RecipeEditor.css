@@ -131,3 +131,14 @@
   padding: 10px;
   float: right;
 }
+
+/* Styling error message */
+.error-message {
+  color: rgb(198, 35, 35);
+  font-size: 20px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffe6e6;
+  border: 1px solid rgb(198, 35, 35);
+  border-radius: 5px;
+}

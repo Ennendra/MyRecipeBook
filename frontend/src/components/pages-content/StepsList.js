@@ -1,7 +1,7 @@
 import React from 'react';
 import './IngredientsAndSteps.css';
 
-export const StepsList = ({ steps, onStepsUpdate }) => {
+export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
   // Handle input changes
   const handleInputChange = (index, value) => {
     const updateSteps = [...steps];
@@ -29,7 +29,7 @@ export const StepsList = ({ steps, onStepsUpdate }) => {
       <table className="ingredient-step-table">
         <tbody>
           {steps.map((step, index) => (
-            <tr className="table-cell" key={index}>
+            <tr key={index} className={invalidSteps.includes(index) ? 'error-row' : 'table-cell'}>
               <td>
                 <textarea
                   className="table-rows"
