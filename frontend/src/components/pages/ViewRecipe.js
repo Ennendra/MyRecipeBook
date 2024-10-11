@@ -6,6 +6,7 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import { ConvertIngredientData} from '../../hooks/IngredientConversionUtilities';
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -26,12 +27,28 @@ export function ConvertMinutesToHoursAndMinutes(minutes) {
 // }
 // returns each item in the ingredients list as a list item to render
 function ExpandIngredientsList(ingredientList) {
-  const ingredientItems = ingredientList.map((ingredient, index) => (
+  
+  //Creating a direct copy of the ingredient list array to safely convert values
+  const revisedIngredientList = JSON.parse(JSON.stringify(ingredientList));
+
+  const localStorageSettings = JSON.parse(localStorage.getItem('localTypesSettings'));
+  console.log(localStorageSettings);
+
+  //converting the ingredients to their preferred measurement type, and into fraction form
+  revisedIngredientList.forEach(ingredient => {
+    ConvertIngredientData(ingredient);
+  });
+
+  const ingredientItems = revisedIngredientList.map((ingredient, index) => 
     <li key={`ingredientItem${index}`}>
       {ingredient.amount + ' ' + ingredient.measurement + ' --- ' + ingredient.item}
-    </li>
-  ));
-  return <ul>{ingredientItems}</ul>;
+    </li>);
+
+  return (
+      <ul>
+          {ingredientItems}
+      </ul>
+  );
 }
 //Return each step in the cookingSteps as a list item to render
 function ExpandStepsList(stepList) {
