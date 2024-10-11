@@ -1,15 +1,40 @@
-import React from 'react';
+import React, {  useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { chooseRandomRecipes, useRecipes } from '../../hooks/common';
+//import { chooseRandomRecipes, useRecipes } from '../../hooks/common';
 import { RecipeCards } from '../pages-content/RecipeCards';
 import { SearchBar } from '../pages-content/SearchBar';
 import './Home.css';
+import { useHttpClient } from '../../hooks/HttpHooks';
 
 export const Home = () => {
   const navigate = useNavigate();
   const { searchPattern } = useParams();
-  const recipeList = useRecipes(searchPattern);
-  console.log(recipeList);
+  //const recipeList = useRecipes(searchPattern);
+
+  //Define the backend API connection 
+  const {sendAPIRequest} = useHttpClient();
+  //Define the recipeList as a state
+  const[recipeList, setRecipeList] = useState();
+  //Set a function state to fetch the recipes for display
+  useEffect(() => {
+    //Define the function to fetch the recipes
+    const fetchRecipes = async () => {
+      try {
+        let responseData
+        //If there is a search parameter then send the fetch request based on that search, otherwise, send a fetch for the random recipes
+        if (searchPattern) {
+          responseData = await sendAPIRequest(`http://localhost:5000/home/${searchPattern}`);
+        }
+        else {
+          responseData = await sendAPIRequest(`http://localhost:5000/home`);
+        }
+        //Set this response to the recipeList state
+        setRecipeList(responseData.recipes);
+      }catch(error) {console.log("Homepage error: "+error); console.log(error);} 
+    };
+    //immediately run the above function
+    fetchRecipes();
+  }, [sendAPIRequest]);//
 
   return (
     <div>
@@ -37,7 +62,8 @@ export const Home = () => {
 
       {recipeList ? (
         //Display recipe cards after the recipes have been successfully fetched from the JSON files
-        <RecipeCards recipes={!searchPattern ? chooseRandomRecipes(recipeList, 3) : recipeList} />
+        //<RecipeCards recipes={!searchPattern ? chooseRandomRecipes(recipeList, 3) : recipeList} />
+        <RecipeCards recipes={recipeList} />
       ) : (
         //Show a loading tag until data is fetched
         <p>Fetching recipe data...</p>
