@@ -1,3 +1,4 @@
+import TextField from '@mui/material/TextField';
 import { default as React, useEffect, useRef, useState } from 'react';
 import { useBlocker, useNavigate } from 'react-router-dom';
 import { ConfirmLeaveModal } from '../pages-content/ConfirmLeaveModal';
@@ -9,6 +10,8 @@ import './RecipeEditor.css';
 
 const reader = new FileReader();
 
+const RECIPE_NAME_ERROR = 'Recipe name is required.';
+const VALIDATION_FORM_ERROR = '* Your recipe has some mistakes. Please, fix them.';
 const SPECIAL_RECIPE_KEYS = ['_id', 'imageSrc', 'ingredients', 'cookingSteps'];
 
 // Checks current recipe for changes done by the user
@@ -39,7 +42,6 @@ export const RecipeEditor = () => {
   const isSubmitRef = useRef(false);
   const [invalidIngredients, setInvalidIngredients] = useState([]); // Store invalid ingredient rows
   const [invalidSteps, setInvalidSteps] = useState([]); // Store invalid steps
-  // const [isSubmit, setIsSubmit] = useState(false);
   const formRef = useRef(null);
 
   // Block navigation elsewhere when there are unsaved changes
@@ -67,11 +69,17 @@ export const RecipeEditor = () => {
   // Handler when the image is uploaded
   const handleImageUpload = e => {
     const file = e.target.files[0]; // Get the selected file
+
     if (file) {
-      reader.onloadend = function () {
-        setImageSrc(reader.result); // Set base64 image to image src
-      };
-      reader.readAsDataURL(file); // Read file
+      const fileSizeInMB = file.size / (1024 * 1024);
+      if (fileSizeInMB > 1) {
+        alert('This file is too big. Maximum File size 1 Mb.');
+      } else {
+        reader.onloadend = function () {
+          setImageSrc(reader.result); // Set base64 image to image src
+        };
+        reader.readAsDataURL(file); // Read file
+      }
     }
   };
 
@@ -106,7 +114,7 @@ export const RecipeEditor = () => {
   // Function to validate required fields
   const validateRecipe = recipe => {
     if (!recipe.recipeName) {
-      setErrorMessage('Recipe name is required.');
+      setErrorMessage(RECIPE_NAME_ERROR);
       return false;
     }
 
@@ -123,7 +131,7 @@ export const RecipeEditor = () => {
     setInvalidIngredients(invalidIngredientIndices); // Store invalid ingredient indices
 
     if (invalidIngredientIndices.length > 0) {
-      setErrorMessage('Please fill in all the ingredient fields.');
+      setErrorMessage(VALIDATION_FORM_ERROR);
       return false;
     }
 
@@ -140,7 +148,7 @@ export const RecipeEditor = () => {
     setInvalidSteps(invalidStepIndices); // Store invalid step indices
 
     if (invalidStepIndices.length > 0) {
-      setErrorMessage('Please fill in all the cooking steps.');
+      setErrorMessage(VALIDATION_FORM_ERROR);
       return false;
     }
 
@@ -165,7 +173,6 @@ export const RecipeEditor = () => {
     const localRecipes = storageLocalRecipes ? JSON.parse(storageLocalRecipes) : [];
     localStorage.setItem('localRecipes', JSON.stringify([...localRecipes, newRecipe]));
 
-    // flushSync(() => setIsSubmit(true));
     isSubmitRef.current = true;
     navigate(`/viewRecipe/${newRecipe._id}`);
   }
@@ -195,21 +202,31 @@ export const RecipeEditor = () => {
       <ImageUpload name="recipeImage" image={imageSrc} onImageUpload={handleImageUpload} />
 
       <label className="recipe-name-title">Name of recipe (*)</label>
-      <textarea
+      <TextField
+        hiddenLabel
         type="text"
         name="recipeName"
         className="textarea-name"
         placeholder="Name of recipe"
-        rows={'1'}
+        variant="filled"
+        {...(errorMessage === RECIPE_NAME_ERROR
+          ? {
+              error: true,
+              helperText: errorMessage,
+            }
+          : null)}
       />
 
       <label className="title-style">Description</label>
-      <textarea
+      <TextField
+        hiddenLabel
         type="text"
         name="recipeDescription"
         className="textarea-name"
         placeholder="Tell the story behind this recipe"
+        multiline
         rows={'4'}
+        variant="filled"
       />
 
       <div className="one-line-class">
@@ -245,7 +262,7 @@ export const RecipeEditor = () => {
       <hr className="hr-separator" />
 
       {/* Display error message if validation fails */}
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {errorMessage && <div className="error-message">{VALIDATION_FORM_ERROR}</div>}
 
       <div className="cancel-submit-button-container">
         {/* Cancel button that triggers the modal */}
