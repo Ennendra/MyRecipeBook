@@ -25,6 +25,7 @@
   display: flex;
   font-size: 22px;
   margin-bottom: 10px;
+  margin-top: 20px;
   font-family: 'Arial', serif;
   margin-right: 5px;
 }
@@ -36,6 +37,7 @@
   margin-bottom: 10px;
   font-family: 'Arial', serif;
   margin-right: 5px;
+  margin-left: 5px;
 }
 
 /*Big margin for line with servings, and cook times*/
@@ -44,18 +46,17 @@
   font-size: 20px;
   margin-bottom: 10px;
   font-family: 'Arial', serif;
-  margin-right: 40px;
+  margin-right: 30px;
+  margin-left: 5px;
 }
 
 /* Title for styling some number inputs */
 .number-input {
   display: flex;
+  background-color: rgb(231, 230, 230);
   font-size: 22px;
-  margin-bottom: 10px;
   font-family: 'Arial', serif;
-  max-width: 50px;
-  margin-right: 5px;
-  margin-left: 5px;
+  max-width: 65px;
   cursor: pointer;
 }
 
@@ -73,15 +74,18 @@
 /* Bold style for some fonts*/
 .title-bold {
   display: flex;
-  /*font-weight: bolder;*/
   font-size: 20px;
   margin-bottom: 10px;
+  margin-right: 5px;
   font-family: 'Arial', serif;
 }
 
 /*Styling for line with servings, and cook times*/
 .one-line-class {
+  margin-top: 30px;
+  margin-bottom: 20px;
   display: flex;
+  align-items: baseline;
 }
 
 /* Separator styling */
@@ -134,11 +138,7 @@
 
 /* Styling error message */
 .error-message {
-  color: rgb(198, 35, 35);
+  color: rgb(202, 72, 72);
   font-size: 20px;
   margin-top: 10px;
-  padding: 10px;
-  background-color: #ffe6e6;
-  border: 1px solid rgb(198, 35, 35);
-  border-radius: 5px;
 }

@@ -1,3 +1,4 @@
+import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 export const handleKeyDown = e => {
   if (e.key === '-' || e.key === 'e' || e.key === 'E') {
@@ -18,15 +19,22 @@ export const NumericInput = ({ name }) => {
   };
 
   return (
-    <input
+    <TextField
+      hiddenLabel
       name={name}
-      className="number-input"
       type="number"
-      min={0}
-      max={99}
+      variant="filled"
+      className="number-input"
+      slotProps={{
+        htmlInput: {
+          max: 99,
+          min: 0,
+        },
+      }}
       value={value}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
+      size="small"
     />
   );
 };
