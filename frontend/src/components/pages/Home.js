@@ -9,12 +9,13 @@ import { useHttpClient } from '../../hooks/HttpHooks';
 export const Home = () => {
   const navigate = useNavigate();
   const { searchPattern } = useParams();
-  //const recipeList = useRecipes(searchPattern);
 
   //Define the backend API connection 
   const {sendAPIRequest} = useHttpClient();
   //Define the recipeList as a state
   const[recipeList, setRecipeList] = useState();
+  
+  
   //Set a function state to fetch the recipes for display
   useEffect(() => {
     //Define the function to fetch the recipes
@@ -30,17 +31,20 @@ export const Home = () => {
         }
         //Set this response to the recipeList state
         setRecipeList(responseData.recipes);
-      }catch(error) {console.log("Homepage error: "+error); console.log(error);} 
+      }catch(error) {console.log("Homepage error: "+error);} 
     };
     //immediately run the above function
     fetchRecipes();
-  }, [sendAPIRequest]);//
+
+  //Dependencies are set so that this useEffect will run when sendAPIRequest is defined (ie, the component is loaded)
+  //And when searchPattern changes (ie, a search is sent)
+  }, [sendAPIRequest, searchPattern]); 
 
   return (
     <div>
       <h1 className="page-title"> MyRecipeBook</h1>
       <SearchBar
-        onSearch={searchString => navigate(`/home/${searchString}`)}
+        onSearch={ searchString => navigate(`/home/${searchString}` ) }
         searchPattern={searchPattern}
       />
 
