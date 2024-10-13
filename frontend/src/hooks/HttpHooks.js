@@ -33,6 +33,7 @@ export const useHttpClient = () => {
             activeHttpRequests.current = activeHttpRequests.current.filter(requestControllers => requestControllers !== abortController);
             //Throw an error if the response code received was not a 200/2xx code (ie, a 404 or 500 error etc was received)
             if (!apiResponse.ok) {
+                console.log(responseData);
                 throw new Error("API response error: " + responseData.message);
             }
 
