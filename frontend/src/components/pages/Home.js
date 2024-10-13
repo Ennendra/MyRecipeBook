@@ -12,8 +12,8 @@ export const Home = () => {
 
   //Define the backend API connection 
   const {sendAPIRequest} = useHttpClient();
-  //Define the recipeList as a state
-  const[recipeList, setRecipeList] = useState();
+  //Define the recipeList as a state (set initially as an empty array)
+  const[recipeList, setRecipeList] = useState([]);
   
   
   //Set a function state to fetch the recipes for display
@@ -29,9 +29,14 @@ export const Home = () => {
         else {
           responseData = await sendAPIRequest(`http://localhost:5000/home`);
         }
-        //Set this response to the recipeList state
-        setRecipeList(responseData.recipes);
-      }catch(error) {console.log("Homepage error: "+error);} 
+        //Set this response to the recipeList state, unless there are no recipes (ie. 'no search results')
+        if (responseData.recipes.length>0) { setRecipeList(responseData.recipes); }
+        
+      }catch(error) {
+        //Something's gone wrong (likely a search that gave no results)
+        //Set the recipe list as an empty array
+        setRecipeList([]);
+      } 
     };
     //immediately run the above function
     fetchRecipes();

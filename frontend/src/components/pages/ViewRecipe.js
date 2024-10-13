@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {  useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useRecipe } from '../../hooks/common';
 import './Styles.css';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { ConvertIngredientData} from '../../hooks/IngredientConversionUtilities';
+
+import { useHttpClient } from '../../hooks/HttpHooks';
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -22,17 +23,11 @@ export function ConvertMinutesToHoursAndMinutes(minutes) {
   return result;
 }
 
-// function TotalTime(){
-//   return ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes) +ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes);
-// }
 // returns each item in the ingredients list as a list item to render
 function ExpandIngredientsList(ingredientList) {
   
   //Creating a direct copy of the ingredient list array to safely convert values
   const revisedIngredientList = JSON.parse(JSON.stringify(ingredientList));
-
-  const localStorageSettings = JSON.parse(localStorage.getItem('localTypesSettings'));
-  console.log(localStorageSettings);
 
   //converting the ingredients to their preferred measurement type, and into fraction form
   revisedIngredientList.forEach(ingredient => {
@@ -161,14 +156,33 @@ function NoRecipeDisplay() {
 }
 
 export const ViewRecipe = () => {
+  //Define the object ID of the recipe in the params and the recipe object itself
   const { id } = useParams();
-  const recipe = useRecipe(id);
+  const[recipe, setRecipe] = useState();
+
+  //Define the backend API connection 
+  const {sendAPIRequest} = useHttpClient();
+  //Set a function state to fetch the recipes for display
+    useEffect(() => {
+    //Define the function to fetch the recipes
+    const fetchRecipes = async () => {
+      try {
+        let responseData
+        //Find the specified recipe
+        responseData = await sendAPIRequest(`http://localhost:5000/viewRecipe/${id}`);
+        //Set this response to the recipeList state
+        setRecipe(responseData.recipes);
+      }catch(error) {console.log("Homepage error: "+error);} 
+    };
+    //immediately run the above function
+    fetchRecipes();
+
+  //Dependencies are set so that this useEffect will run when sendAPIRequest is defined (ie, the component is loaded)
+  }, [sendAPIRequest]); 
+
+  
+
   return (
-    /*<div>
-      <h1 className="page-title"> View recipe page </h1>
-      <p className="textStyle">{recipe ? recipe.recipeName : 'Recipe not found.'}</p>
-      <p className="textStyle">{recipe ? recipe.recipeDescription : ''}</p>
-    </div>*/
     <div>
       {/* <h1 className="page-title"> View recipe page </h1> */}
       {recipe ? DisplayRecipe(recipe) : NoRecipeDisplay()}
