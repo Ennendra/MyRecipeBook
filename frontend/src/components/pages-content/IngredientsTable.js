@@ -62,11 +62,7 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngr
                     align="left"
                     hiddenLabel
                     type="number"
-                    slotProps={{
-                      htmlInput: {
-                        min: 0,
-                      },
-                    }}
+                    inputProps={{ inputMode: 'decimal', pattern: '[0-9]*[.,]?[0-9]*' }}
                     className="table-rows"
                     value={ingredient.amount}
                     onKeyDown={handleKeyDown}
