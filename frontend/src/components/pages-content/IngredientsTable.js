@@ -13,7 +13,7 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngr
   // Handle input changes
   const handleInputChange = (index, field, value) => {
     const updateIngredients = [...ingredients];
-    updateIngredients[index][field] = value;
+    updateIngredients[index] = { ...updateIngredients[index], [field]: value };
     onIngredientsUpdate(updateIngredients);
   };
 
@@ -102,10 +102,10 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngr
                     hiddenLabel
                     type="text"
                     className="table-rows"
-                    value={ingredient.name}
+                    value={ingredient.item}
                     onChange={e => handleInputChange(index, 'item', e.target.value)}
                     variant="filled"
-                    {...(invalidIngredients.includes(index) && !ingredient.name
+                    {...(invalidIngredients.includes(index) && !ingredient.item
                       ? {
                           error: true,
                           helperText: 'Please fill in ingredient name.',

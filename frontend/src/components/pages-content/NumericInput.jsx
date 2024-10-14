@@ -14,7 +14,6 @@ export const NumericInput = ({ name }) => {
     // Regular expression for numbers >= 0
     if (inputValue === '' || (/^\d*\.?\d*$/.test(inputValue) && parseFloat(inputValue) >= 0)) {
       setValue(inputValue);
-      return;
     }
   };
 
