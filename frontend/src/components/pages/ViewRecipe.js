@@ -1,12 +1,20 @@
+import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
+import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecipe } from '../../hooks/common';
+import { ConvertIngredientData } from '../../hooks/IngredientConversionUtilities';
 import './Styles.css';
-import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
-import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import { ConvertIngredientData} from '../../hooks/IngredientConversionUtilities';
+
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -22,12 +30,8 @@ export function ConvertMinutesToHoursAndMinutes(minutes) {
   return result;
 }
 
-// function TotalTime(){
-//   return ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes) +ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes);
-// }
 // returns each item in the ingredients list as a list item to render
 function ExpandIngredientsList(ingredientList) {
-  
   //Creating a direct copy of the ingredient list array to safely convert values
   const revisedIngredientList = JSON.parse(JSON.stringify(ingredientList));
 
@@ -39,45 +43,55 @@ function ExpandIngredientsList(ingredientList) {
     ConvertIngredientData(ingredient);
   });
 
-  const ingredientItems = revisedIngredientList.map((ingredient, index) => 
-    <li key={`ingredientItem${index}`}>
-      {ingredient.amount + ' ' + ingredient.measurement + ' --- ' + ingredient.item}
-    </li>);
+  const ingredientItems = revisedIngredientList.map((ingredient, index) => (
+    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+      <TableCell component="th" scope="row" sx={{ width: 100 }}>
+        {ingredient.amount +
+          ' ' +
+          (ingredient.measurement === 'item' ? '' : ingredient.measurement)}
+      </TableCell>
+      <TableCell>{ingredient.item}</TableCell>
+    </TableRow>
+  ));
 
-  return (
-      <ul>
-          {ingredientItems}
-      </ul>
-  );
+  return ingredientItems;
 }
 //Return each step in the cookingSteps as a list item to render
+
 function ExpandStepsList(stepList) {
-  const stepItems = stepList.map((step, index) => <li key={`stepItem${index}`}>{step}</li>);
-  return <ol>{stepItems}</ol>;
+  const stepItems = stepList.map((step, index) => (
+    <ListItem disablePadding key={index}>
+      <ListItemIcon>
+        <Checkbox />
+      </ListItemIcon>
+      <ListItemText primary={step} />
+    </ListItem>
+  ));
+
+  return <Stack>{stepItems}</Stack>;
 }
 
 function DisplayRecipe(recipe) {
   const preparationTime = ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes);
   const cookingTime = ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes);
-  const totalTime = preparationTime + cookingTime;
+  const totalTime = ConvertMinutesToHoursAndMinutes(
+    recipe.prepDurationMinutes + recipe.cookDurationMinutes
+  );
   return (
     <div className="ViewRecipe">
       <div className="viewRecipeInfo">
         <img
-          //style={imageStyle}
           src={recipe.imageSrc === '' ? 'images/noImageIcon.png' : recipe.imageSrc}
           alt={recipe.recipeName}
-          // className="recipe-image"
           className="recipeImg"
         />
         <div className="recipeNameCard">
           <h2>{recipe.recipeName}</h2>
-          {/* <h1>{recipe.recipeName}</h1> */}
           <p>{recipe.recipeDescription}</p>
         </div>
       </div>
       <hr />
-      {/* <div className="cookInfo"> */}
+
       <Stack spacing={1} sx={{ alignItems: 'left' }}>
         <Stack direction="row" spacing={2}>
           <Chip
@@ -88,70 +102,51 @@ function DisplayRecipe(recipe) {
           ></Chip>
           <Chip
             icon={<QueryBuilderOutlinedIcon />}
-            label={
-              'Preparation Time: ' +
-              preparationTime +
-              '  |  ' +
-              'Cooking Time: ' +
-              cookingTime +
-              '  |  ' +
-              'Total time:' +
-              totalTime
-            }
+            label={'Preparation Time: ' + preparationTime}
             // variant="outlined"
-            color="success"
-          ></Chip>
-        </Stack>
-        <Stack direction="row" spacing={2}>
-          <Chip
-            icon={<RestaurantOutlinedIcon />}
-            label={'Serves: ' + recipe.recipeServings + ' portion(s)'}
-            variant="outlined"
             color="success"
           ></Chip>
           <Chip
             icon={<QueryBuilderOutlinedIcon />}
-            label={
-              'Preparation Time: ' +
-              preparationTime +
-              '  |  ' +
-              'Cooking Time: ' +
-              cookingTime +
-              '  |  ' +
-              'Total time:' +
-              totalTime
-            }
-            variant="outlined"
+            label={'Cooking Time: ' + cookingTime}
+            // variant="outlined"
+            color="success"
+          ></Chip>
+          <Chip
+            icon={<QueryBuilderOutlinedIcon />}
+            label={'Total time:' + totalTime}
+            // variant="outlined"
             color="success"
           ></Chip>
         </Stack>
       </Stack>
 
-      {/* <p>
-          <RestaurantOutlinedIcon /> {'Serves: ' + recipe.recipeServings + ' portion(s)'}
-          <br />
-          <QueryBuilderOutlinedIcon />
-          {'Preparation Time: ' +
-            ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes) +
-            '|' +
-            'Cooking Time: ' +
-            ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes) +
-            '|' +
-            'Total time:'}
-        </p> */}
-      {/* </div> */}
-
-      {/* <hr /> */}
-
       <div>
         <h3>Ingredients:</h3>
-        {ExpandIngredientsList(recipe.ingredients)}
+
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650, backgroundColor: '#eeeeee' }} aria-label="simple table">
+            {/* <TableHead>
+              <TableRow>
+                <TableCell sx={{ width: 150 }}>
+                  <h3>Amount</h3>
+                </TableCell>
+                <TableCell>
+                  <h3>Name</h3>
+                </TableCell>
+              </TableRow>
+            </TableHead> */}
+            <TableBody>{ExpandIngredientsList(recipe.ingredients)}</TableBody>
+          </Table>
+        </TableContainer>
       </div>
       <hr />
 
       <div>
         <h3>Steps:</h3>
-        {ExpandStepsList(recipe.cookingSteps)}
+        <List sx={{ width: '100%', maxWidth: 960, bgcolor: '#eeeeee' }} aria-label="contacts">
+          {ExpandStepsList(recipe.cookingSteps)}
+        </List>
       </div>
     </div>
   );
@@ -163,15 +158,5 @@ function NoRecipeDisplay() {
 export const ViewRecipe = () => {
   const { id } = useParams();
   const recipe = useRecipe(id);
-  return (
-    /*<div>
-      <h1 className="page-title"> View recipe page </h1>
-      <p className="textStyle">{recipe ? recipe.recipeName : 'Recipe not found.'}</p>
-      <p className="textStyle">{recipe ? recipe.recipeDescription : ''}</p>
-    </div>*/
-    <div>
-      {/* <h1 className="page-title"> View recipe page </h1> */}
-      {recipe ? DisplayRecipe(recipe) : NoRecipeDisplay()}
-    </div>
-  );
+  return <div>{recipe ? DisplayRecipe(recipe) : NoRecipeDisplay()}</div>;
 };
