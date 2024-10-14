@@ -113,11 +113,6 @@ export const RecipeEditor = () => {
 
   // Function to validate required fields
   const validateRecipe = recipe => {
-    if (!recipe.recipeName) {
-      setErrorMessage(RECIPE_NAME_ERROR);
-      return false;
-    }
-
     // Validate ingredients
     const invalidIngredientIndices = recipe.ingredients
       .map((ingredient, index) => {
@@ -130,11 +125,6 @@ export const RecipeEditor = () => {
 
     setInvalidIngredients(invalidIngredientIndices); // Store invalid ingredient indices
 
-    if (invalidIngredientIndices.length > 0) {
-      setErrorMessage(VALIDATION_FORM_ERROR);
-      return false;
-    }
-
     // Validate cooking steps
     const invalidStepIndices = recipe.cookingSteps
       .map((step, index) => {
@@ -146,8 +136,10 @@ export const RecipeEditor = () => {
       .filter(index => index !== null);
 
     setInvalidSteps(invalidStepIndices); // Store invalid step indices
-
-    if (invalidStepIndices.length > 0) {
+    if (!recipe.recipeName) {
+      setErrorMessage(RECIPE_NAME_ERROR);
+    }
+    if (invalidIngredientIndices.length > 0 || invalidStepIndices.length > 0) {
       setErrorMessage(VALIDATION_FORM_ERROR);
       return false;
     }
@@ -209,10 +201,10 @@ export const RecipeEditor = () => {
         className="textarea-name"
         placeholder="Name of recipe"
         variant="filled"
-        {...(errorMessage === RECIPE_NAME_ERROR
+        {...(errorMessage === VALIDATION_FORM_ERROR && !formRef.current.recipeName.value
           ? {
               error: true,
-              helperText: errorMessage,
+              helperText: RECIPE_NAME_ERROR,
             }
           : null)}
       />
