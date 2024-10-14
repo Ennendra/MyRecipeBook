@@ -33,6 +33,7 @@ const recipeHasChanges = recipe => {
 };
 
 export const RecipeEditor = () => {
+  const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '' }]);
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
@@ -40,6 +41,7 @@ export const RecipeEditor = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isSubmitRef = useRef(false);
+  const wasSubmitCalledRef = useRef(false);
   const [invalidIngredients, setInvalidIngredients] = useState([]); // Store invalid ingredient rows
   const [invalidSteps, setInvalidSteps] = useState([]); // Store invalid steps
   const formRef = useRef(null);
@@ -59,12 +61,8 @@ export const RecipeEditor = () => {
   }, [blocker]);
 
   useEffect(() => {
-    setInvalidIngredients([]);
-  }, [ingredients]);
-
-  useEffect(() => {
-    setInvalidSteps([]);
-  }, [cookingSteps]);
+    validateRecipe();
+  }, [recipeName, ingredients, cookingSteps]);
 
   // Handler when the image is uploaded
   const handleImageUpload = e => {
@@ -88,7 +86,6 @@ export const RecipeEditor = () => {
     if (target === null) {
       return {};
     }
-    const recipeName = target.recipeName.value;
     const recipeIDNumber = Date.now();
     const recipeDescription = target.recipeDescription.value;
     const prepDurationMinutes =
@@ -112,7 +109,11 @@ export const RecipeEditor = () => {
   };
 
   // Function to validate required fields
-  const validateRecipe = recipe => {
+  const validateRecipe = () => {
+    if (!wasSubmitCalledRef.current) {
+      return;
+    }
+    const recipe = getRecipeData();
     // Validate ingredients
     const invalidIngredientIndices = recipe.ingredients
       .map((ingredient, index) => {
@@ -136,10 +137,12 @@ export const RecipeEditor = () => {
       .filter(index => index !== null);
 
     setInvalidSteps(invalidStepIndices); // Store invalid step indices
-    if (!recipe.recipeName) {
-      setErrorMessage(RECIPE_NAME_ERROR);
-    }
-    if (invalidIngredientIndices.length > 0 || invalidStepIndices.length > 0) {
+
+    if (
+      !recipe.recipeName ||
+      invalidIngredientIndices.length > 0 ||
+      invalidStepIndices.length > 0
+    ) {
       setErrorMessage(VALIDATION_FORM_ERROR);
       return false;
     }
@@ -152,13 +155,14 @@ export const RecipeEditor = () => {
 
   function addNewRecipe(event) {
     event.preventDefault();
-
-    const newRecipe = getRecipeData();
+    wasSubmitCalledRef.current = true;
 
     // Validate required fields before submitting
-    if (!validateRecipe(newRecipe)) {
+    if (!validateRecipe()) {
       return; // Prevent form submission if validation fails
     }
+
+    const newRecipe = getRecipeData();
 
     // Temporal solution to store new recipes since we can't edit JSON file.
     const storageLocalRecipes = localStorage.getItem('localRecipes');
@@ -201,7 +205,12 @@ export const RecipeEditor = () => {
         className="textarea-name"
         placeholder="Name of recipe"
         variant="filled"
-        {...(errorMessage === VALIDATION_FORM_ERROR && !formRef.current.recipeName.value
+        value={recipeName}
+        onChange={e => {
+          const input = e.target;
+          setRecipeName(input.value);
+        }}
+        {...(errorMessage === VALIDATION_FORM_ERROR && wasSubmitCalledRef.current && !recipeName
           ? {
               error: true,
               helperText: RECIPE_NAME_ERROR,
