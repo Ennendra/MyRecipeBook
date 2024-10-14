@@ -27,7 +27,7 @@ export const NumericInput = ({ name }) => {
       className="number-input"
       slotProps={{
         htmlInput: {
-          max: 99,
+          max: 60,
           min: 0,
         },
       }}
