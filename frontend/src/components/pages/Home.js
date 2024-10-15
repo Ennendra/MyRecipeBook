@@ -4,6 +4,10 @@ import { chooseRandomRecipes, useRecipes } from '../../hooks/common';
 import { RecipeCards } from '../pages-content/RecipeCards';
 import { SearchBar } from '../pages-content/SearchBar';
 import './Home.css';
+import Button from '@mui/material/Button';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+
+
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -20,9 +24,9 @@ export const Home = () => {
       />
 
       <div className="add-button-bar">
-        <button className="add-button" onClick={() => navigate('/addNewRecipe')}>
-          + Add recipe
-        </button>
+        <Button className="add-button" onClick={() => navigate('/addNewRecipe')} variant='contained' color='success' startIcon={<AddOutlinedIcon />}>
+          Add recipe
+        </Button>
       </div>
       {/* If users use the search function, check the results, show no results or the results for something */}
       {!searchPattern === false &&

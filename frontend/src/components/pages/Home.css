@@ -25,9 +25,10 @@
 }
 
 /* Add button  hover effect */
-.add-button:hover {
-  background-color: #477748; /* Darker green on hover */
-}
+/* .add-button:hover {
+  background-color: #477748;  */
+  /* Darker green on hover */
+/* } */
 
 /* Add button  bar styling */
 .add-button-bar {

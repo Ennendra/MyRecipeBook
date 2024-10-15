@@ -24,19 +24,20 @@
 
 /* Styling the search button */
 .search-bar button {
-  padding: 10px 20px;
+  /* padding: 10px; */
   margin-left: 10px;
-  background-color: #528a54;
+  /* background-color: #528a54; */
   border: none;
   color: white;
-  font-size: 18px;
-  border-radius: 2px;
+  /* font-size: 18px; */
+  /* border-radius: 2px; */
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: 'Arial', serif;
 }
 
 /* Button hover effect */
-.search-bar button:hover {
-  background-color: #477748; /* Darker green on hover */
-}
+/* .search-bar button:hover { */
+  /* background-color: #477748; */
+  /* Darker green on hover */
+/* } */

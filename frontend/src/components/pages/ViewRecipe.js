@@ -126,16 +126,6 @@ function DisplayRecipe(recipe) {
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650, backgroundColor: '#eeeeee' }} aria-label="simple table">
-            {/* <TableHead>
-              <TableRow>
-                <TableCell sx={{ width: 150 }}>
-                  <h3>Amount</h3>
-                </TableCell>
-                <TableCell>
-                  <h3>Name</h3>
-                </TableCell>
-              </TableRow>
-            </TableHead> */}
             <TableBody>{ExpandIngredientsList(recipe.ingredients)}</TableBody>
           </Table>
         </TableContainer>

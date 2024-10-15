@@ -7,6 +7,7 @@
 
 /* Styling table and confirm button */
 .table-button-center {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +16,7 @@
 /* List styling */
 .listStyle {
   font-family: 'Arial', serif;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 /*Styling calls */
@@ -42,6 +43,7 @@
 }
 
 /* Submit button  hover effect */
-.confirm-button:hover {
-  background-color: #477748; /* Darker green on hover */
-}
+/* .confirm-button:hover {
+  background-color: #477748;  */
+  /* Darker green on hover */
+/* } */
