@@ -50,7 +50,7 @@ export const Settings = () => {
       <div>
         <h1 className="page-title">Settings</h1>
         <h2 className="textStyle">Convert setting</h2>
-        <p className="textStyle">
+        <p className="p-textStyle">
           Convert setting will automatically adjust recipe measurements to your preferred units. For
           example:
         </p>
