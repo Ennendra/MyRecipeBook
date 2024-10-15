@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ImageUpload } from '../pages-content/ImageUpload';
 import { IngredientsTable } from '../pages-content/IngredientsTable';
 import { StepsList } from '../pages-content/StepsList';
+import { Button } from '@mui/material';
 
 import './RecipeEditor.css';
 
@@ -111,13 +112,13 @@ export const RecipeEditor = () => {
       <hr className="hr-separator" />
 
       <div className="cancel-submit-button-container">
-        <button className="cancel-button" type="cancel">
+        <Button className="cancel-button" type="cancel" sx={{backgroundColor:"#9e9e9e", marginRight:'50px'}} variant='contained'>
           Cancel
-        </button>
+        </Button>
 
-        <button className="submit-button" type="submit">
+        <Button className="submit-button" type="submit" color='success' variant='contained'>
           Submit
-        </button>
+        </Button>
       </div>
     </form>
   );

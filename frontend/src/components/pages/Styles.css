@@ -15,7 +15,7 @@
 .textStyle {
   display: flex;
   font-family: 'Arial', serif;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 /* Css for ViewRecipes */
@@ -66,7 +66,7 @@
 .aboutContent {
   float: left;
   font-size: 1.5rem;         /* Smaller font size for paragraph */
-  color: rgb(202, 207, 207);          
+  /* color: rgb(34, 37, 37);           */
   font-family: 'Georgia', serif;
   margin: 0;                 /* Remove default margin */
 }

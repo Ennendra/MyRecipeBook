@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './SearchBar.css';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import Button from '@mui/material/Button';
 
 export const SearchBar = props => {
   const { onSearch, searchPattern } = props;
@@ -34,7 +36,10 @@ export const SearchBar = props => {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
-      <button onClick={searchRecipes}>Search</button>
+      {/* <button onClick={searchRecipes}>Search</button> */}
+      <Button onClick={searchRecipes} startIcon={<SearchOutlinedIcon />} variant='contained' color='success'>
+        Search
+      </Button>
     </div>
   );
 };

@@ -9,12 +9,12 @@
 
 /* Styling the recipe card */
 .recipe-card {
-  width: 250px;
-  background-color: white;
+  width: 270px;
+  background-color: #eeeeee;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  text-align: center;
+  /* text-align: center; */
   transition: transform 0.3s ease;
   cursor: pointer;
 }
@@ -24,11 +24,21 @@
   transform: translateY(-10px);
 }
 
+.imageContainer {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  width: 100%;
+}
+
 /* Styling recipe image */
 .recipe-image {
   width: 250px;
   height: 250px;
   object-fit: contain;
+  border: 10px;
+  margin: 0px 10px;
+  text-align: center;
 }
 
 /* Styling recipe info */
@@ -44,6 +54,7 @@
   font-weight: bolder;
   margin-bottom: 0;
   color: #333;
+  margin-bottom: 10px;
 }
 
 /* Styling recipe additional info */
