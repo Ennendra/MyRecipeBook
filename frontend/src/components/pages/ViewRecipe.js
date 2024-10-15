@@ -3,7 +3,7 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import React, {  useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ConvertIngredientData } from '../../hooks/IngredientConversionUtilities';
 import './Styles.css';
@@ -38,7 +38,7 @@ function ExpandIngredientsList(ingredientList) {
 
   //converting the ingredients to their preferred measurement type, and into fraction form
   revisedIngredientList.forEach(ingredient => {
-    console.log("Converting recipes");
+    console.log('Converting recipes');
     ConvertIngredientData(ingredient);
   });
 
@@ -143,7 +143,10 @@ function DisplayRecipe(recipe) {
 
       <div>
         <h3>Steps:</h3>
-        <List sx={{ width: '100%', maxWidth: 960, bgcolor: '#eeeeee' }} aria-label="contacts">
+        <List
+          sx={{ width: '100%', maxWidth: 960, bgcolor: '#eeeeee', marginBottom: '30px' }}
+          aria-label="contacts"
+        >
           {ExpandStepsList(recipe.cookingSteps)}
         </List>
       </div>
@@ -157,29 +160,29 @@ function NoRecipeDisplay() {
 export const ViewRecipe = () => {
   //Define the object ID of the recipe in the params and the recipe object itself
   const { id } = useParams();
-  const[recipe, setRecipe] = useState();
+  const [recipe, setRecipe] = useState();
 
-  //Define the backend API connection 
-  const {sendAPIRequest} = useHttpClient();
+  //Define the backend API connection
+  const { sendAPIRequest } = useHttpClient();
   //Set a function state to fetch the recipes for display
-    useEffect(() => {
+  useEffect(() => {
     //Define the function to fetch the recipes
     const fetchRecipes = async () => {
       try {
-        let responseData
+        let responseData;
         //Find the specified recipe
         responseData = await sendAPIRequest(`viewRecipe/${id}`);
         //Set this response to the recipeList state
         setRecipe(responseData.recipes);
-      }catch(error) {console.log("Homepage error: "+error);} 
+      } catch (error) {
+        console.log('Homepage error: ' + error);
+      }
     };
     //immediately run the above function
     fetchRecipes();
 
-  //Dependencies are set so that this useEffect will run when sendAPIRequest is defined (ie, the component is loaded)
-  }, [sendAPIRequest]); 
-
-  
+    //Dependencies are set so that this useEffect will run when sendAPIRequest is defined (ie, the component is loaded)
+  }, [sendAPIRequest]);
 
   return (
     <div>
