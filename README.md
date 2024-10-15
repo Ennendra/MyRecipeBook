@@ -18,10 +18,10 @@
 
 ## About the Web application
 
-MyRecipeBook is a web application that display various recipes with customized measure words, at the same time, users are able to share their recipes to this website.
+MyRecipeBook is a web application made for displaying recipes while using measurements customised to your preference. At the same time, users are able to share their recipes to this website.
 
 User group:
-- People who are willing to share their receipe to others
+- People who are willing to share their recipes to others
 - People who enjoy cooking
 - People who are willing to try new recipes
 
@@ -29,13 +29,13 @@ User group:
 
 ![Home page of MyRecipeBook](image.png)
 
-## Technoliges
+## Technologies
 
 <!-- # Getting Started with Create React App -->
-- **React**: For building the user interface.
+- **React**: For building the user interface and front-end.
 - **Material UI**: For implementing pre-designed UI components and ensuring consistent styling across the application.
-- **Node.js**: For backend services.
-- **MongoDB**: For database management.
+- **Node.js**: For back-end services.
+- **MongoDB and Mongoose**: For database management.
 - **Figma**: Used for designing wireframes the user interface. 
 
 <!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). -->
@@ -100,7 +100,7 @@ We adhered to the **Single Responsibility Principle** by ensuring each component
 
 #### Backend:
 
-The backend was designed to follow a RESTful API pattern, keeping the services modular and easy to extend.
+The backend was designed to follow the REST API pattern, keeping the services modular and easy to extend.
 We used MVC (Model-View-Controller) as the primary design pattern to separate business logic from presentation and routing, ensuring a clean architecture.
 
 #### Integration & Deployment:
@@ -112,7 +112,7 @@ After completing individual features, we integrated the frontend and backend, en
 
 #### Version Control and Code Management
 
-We used **GHithub** for **version control**, following a branch-based workflow to manage feature development, code reviews, and merge requests. This ensured that the codebase remained stable throughout the project.
+We used **Github** for **version control**, following a branch-based workflow to manage feature development, code reviews, and merge requests. This ensured that the codebase remained stable throughout the project.
 
 
 ## Licence
