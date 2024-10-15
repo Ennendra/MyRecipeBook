@@ -12,6 +12,7 @@ import { handleKeyDown } from './NumericInput';
 export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngredients }) => {
   // Handle input changes
   const handleInputChange = (index, field, value) => {
+    if (field === 'amount' && value === '-1') return;
     const updateIngredients = [...ingredients];
     updateIngredients[index] = { ...updateIngredients[index], [field]: value };
     onIngredientsUpdate(updateIngredients);
