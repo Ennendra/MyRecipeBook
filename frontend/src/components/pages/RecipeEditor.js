@@ -31,6 +31,7 @@ export const RecipeEditor = () => {
   async function addNewRecipe(event) {
     event.preventDefault();
     const { target } = event;
+    //Get the form information
     const recipeName = target.recipeName.value;
     const recipeDescription = target.recipeDescription.value;
     const prepDurationMinutes =
@@ -39,9 +40,9 @@ export const RecipeEditor = () => {
       Number(target.recipeCookTimeHours.value) * 60 + Number(target.recipeCookTimeMins.value);
     const recipeServings = target.recipeServes.value;
 
+    //Assemble the form into a JSON object
     const newRecipe = {
       recipeName,
-      //_id: recipeIDNumber, //NOTE: This will need to be removed when completing integration with backend
       recipeDescription,
       prepDurationMinutes,
       cookDurationMinutes,
@@ -56,7 +57,7 @@ export const RecipeEditor = () => {
     try {
       
       responseData = await sendAPIRequest(
-        `http://localhost:5000/addNewRecipe`, 
+        `addNewRecipe`, 
         'POST', 
         JSON.stringify(newRecipe), 
         {'Content-Type': 'application/json'}
@@ -65,17 +66,15 @@ export const RecipeEditor = () => {
     } catch(error) {
       console.log("Add New Recipe Error: "+error);
     }
-
     //After the post request is sent, we shall attempt to navigate to the new page
     try{
       const newRecipeID = responseData._id
       navigate(`/viewRecipe/${newRecipeID}`);
+      alert('Successfully added new recipe');
     }catch(error) {
       console.log("Add New Recipe Error (post-API): "+error);
       navigate(`/home`);
     }
-
-    // alert(JSON.stringify(jsonObject, null, 2));
   }
 
   return (

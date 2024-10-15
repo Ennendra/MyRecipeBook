@@ -24,10 +24,10 @@ export const Home = () => {
         let responseData
         //If there is a search parameter then send the fetch request based on that search, otherwise, send a fetch for the random recipes
         if (searchPattern) {
-          responseData = await sendAPIRequest(`http://localhost:5000/home/${searchPattern}`);
+          responseData = await sendAPIRequest(`home/${searchPattern}`);
         }
         else {
-          responseData = await sendAPIRequest(`http://localhost:5000/home`);
+          responseData = await sendAPIRequest(`home`);
         }
         //Set this response to the recipeList state, unless there are no recipes (ie. 'no search results')
         if (responseData.recipes.length>0) { setRecipeList(responseData.recipes); }
