@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ImageUpload } from '../pages-content/ImageUpload';
 import { IngredientsTable } from '../pages-content/IngredientsTable';
 import { StepsList } from '../pages-content/StepsList';
-
+import { useHttpClient } from '../../hooks/HttpHooks';
 import './RecipeEditor.css';
 
 const reader = new FileReader();
@@ -13,6 +13,9 @@ export const RecipeEditor = () => {
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
   const navigate = useNavigate();
+
+  //Define the backend API connection 
+  const {sendAPIRequest} = useHttpClient();
 
   // Handler when the image is uploaded
   const handleImageUpload = e => {
@@ -25,11 +28,10 @@ export const RecipeEditor = () => {
     }
   };
 
-  function addNewRecipe(event) {
+  async function addNewRecipe(event) {
     event.preventDefault();
     const { target } = event;
     const recipeName = target.recipeName.value;
-    const recipeIDNumber = Date.now();
     const recipeDescription = target.recipeDescription.value;
     const prepDurationMinutes =
       Number(target.recipePrepTimeHours.value) * 60 + Number(target.recipePrepTimeMins.value);
@@ -39,7 +41,7 @@ export const RecipeEditor = () => {
 
     const newRecipe = {
       recipeName,
-      _id: recipeIDNumber, //NOTE: This will need to be removed when completing integration with backend
+      //_id: recipeIDNumber, //NOTE: This will need to be removed when completing integration with backend
       recipeDescription,
       prepDurationMinutes,
       cookDurationMinutes,
@@ -49,12 +51,30 @@ export const RecipeEditor = () => {
       cookingSteps,
     };
 
-    // Temporal solution to store new recipes since we can't edit JSON file.
-    const storageLocalRecipes = localStorage.getItem('localRecipes');
-    const localRecipes = storageLocalRecipes ? JSON.parse(storageLocalRecipes) : [];
-    localStorage.setItem('localRecipes', JSON.stringify([...localRecipes, newRecipe]));
+    //Attempt to add the new form to the database
+    let responseData
+    try {
+      
+      responseData = await sendAPIRequest(
+        `http://localhost:5000/addNewRecipe`, 
+        'POST', 
+        JSON.stringify(newRecipe), 
+        {'Content-Type': 'application/json'}
+      );
+      console.log(responseData);
+    } catch(error) {
+      console.log("Add New Recipe Error: "+error);
+    }
 
-    navigate(`/viewRecipe/${newRecipe.recipeIDNumber}`);
+    //After the post request is sent, we shall attempt to navigate to the new page
+    try{
+      const newRecipeID = responseData._id
+      navigate(`/viewRecipe/${newRecipeID}`);
+    }catch(error) {
+      console.log("Add New Recipe Error (post-API): "+error);
+      navigate(`/home`);
+    }
+
     // alert(JSON.stringify(jsonObject, null, 2));
   }
 

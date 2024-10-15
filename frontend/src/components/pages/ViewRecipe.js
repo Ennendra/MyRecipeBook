@@ -38,6 +38,7 @@ function ExpandIngredientsList(ingredientList) {
 
   //converting the ingredients to their preferred measurement type, and into fraction form
   revisedIngredientList.forEach(ingredient => {
+    console.log("Converting recipes");
     ConvertIngredientData(ingredient);
   });
 
