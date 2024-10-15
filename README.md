@@ -92,7 +92,7 @@ The design phase began by creating wireframes via **Figma** based on the require
 ### Development
 #### Frontend:
 
-The frontend was developed using **React**, implementing component-based architecture for reusability and maintainability.
+The frontend was developed as a **Single Page Application (SPA)**  using **React**, implementing component-based architecture for reusability and maintainability.
 
 We adhered to the **Single Responsibility Principle** by ensuring each component had a specific function, improving clarity and making the code easier to test.
 
