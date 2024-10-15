@@ -168,7 +168,7 @@ export const ViewRecipe = () => {
       try {
         let responseData
         //Find the specified recipe
-        responseData = await sendAPIRequest(`http://localhost:5000/viewRecipe/${id}`);
+        responseData = await sendAPIRequest(`viewRecipe/${id}`);
         //Set this response to the recipeList state
         setRecipe(responseData.recipes);
       }catch(error) {console.log("Homepage error: "+error);} 
