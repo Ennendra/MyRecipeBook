@@ -1,7 +1,7 @@
 import React from 'react';
 import './ImageUpload.css';
-import { Button } from '@mui/material';
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+// import { Button } from '@mui/material';
+// import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 
 export const ImageUpload = ({ image, onImageUpload }) => {
   return (
@@ -12,7 +12,7 @@ export const ImageUpload = ({ image, onImageUpload }) => {
       {/* Image upload button */}
       <div>
         <label htmlFor="file-upload" className="upload-button">
-          {/* <svg
+          <svg
             fill="none"
             height="24"
             viewBox="0 0 24 24"
@@ -23,9 +23,9 @@ export const ImageUpload = ({ image, onImageUpload }) => {
               <path d="m3 14v6c0 1.1046.89543 2 2 2h14c1.1046 0 2-.8954 2-2v-6" />
               <path d="m12 17v-14m0 0-5 5.44446m5-5.44446 5 5.44444" />
             </g>
-          </svg>{' '} */}
-          <Button startIcon={<FileUploadOutlinedIcon />} color='success' variant='contained'>Upload image</Button>
-          
+          </svg>{' '}
+          {/* <Button startIcon={<FileUploadOutlinedIcon />} color='success' variant='contained'>Upload image</Button> */}
+          Upload image
         </label>
 
         <input

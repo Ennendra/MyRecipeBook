@@ -1,10 +1,13 @@
 /* Cards styling */
 .recipe-cards {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  /* display: flex; */
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  /* flex-direction: row;
+  flex-wrap: wrap; */
   gap: 20px;
   justify-content: center;
+  /* margin: 0px 10px; */
 }
 
 /* Styling the recipe card */
@@ -17,6 +20,7 @@
   /* text-align: center; */
   transition: transform 0.3s ease;
   cursor: pointer;
+  place-self: center;
 }
 
 /* Recipe card hover effect */

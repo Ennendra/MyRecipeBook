@@ -7,8 +7,6 @@ import './Home.css';
 import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
-
-
 export const Home = () => {
   const navigate = useNavigate();
   const { searchPattern } = useParams();
@@ -24,28 +22,36 @@ export const Home = () => {
       />
 
       <div className="add-button-bar">
-        <Button className="add-button" onClick={() => navigate('/addNewRecipe')} variant='contained' color='success' startIcon={<AddOutlinedIcon />}>
+        <Button
+          className="add-button"
+          onClick={() => navigate('/addNewRecipe')}
+          variant="contained"
+          color="success"
+          startIcon={<AddOutlinedIcon />}
+        >
           Add recipe
         </Button>
       </div>
       {/* If users use the search function, check the results, show no results or the results for something */}
-      {!searchPattern === false &&
-        (recipeList.length === 0 ? (
-          <h2>
-            We could not find any recipes matching your search. Please try using different
-            ingredients or keywords.
-          </h2>
-        ) : (
-          <h2>Results for {searchPattern}</h2>
-        ))}
+      <div>
+        {!searchPattern === false &&
+          (recipeList.length === 0 ? (
+            <h2>
+              We could not find any recipes matching your search. Please try using different
+              ingredients or keywords.
+            </h2>
+          ) : (
+            <h2>Results for {searchPattern}</h2>
+          ))}
 
-      {recipeList ? (
-        //Display recipe cards after the recipes have been successfully fetched from the JSON files
-        <RecipeCards recipes={!searchPattern ? chooseRandomRecipes(recipeList, 3) : recipeList} />
-      ) : (
-        //Show a loading tag until data is fetched
-        <p>Fetching recipe data...</p>
-      )}
+        {recipeList ? (
+          //Display recipe cards after the recipes have been successfully fetched from the JSON files
+          <RecipeCards recipes={!searchPattern ? chooseRandomRecipes(recipeList, 3) : recipeList} />
+        ) : (
+          //Show a loading tag until data is fetched
+          <p>Fetching recipe data...</p>
+        )}
+      </div>
     </div>
   );
 };
