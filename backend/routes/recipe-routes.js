@@ -5,7 +5,7 @@ const recipeController = require('../controllers/recipe-controller');
 const router = express.Router();
 
 /*
-    Routes to remember: These are routes that the frontend will navigate to when interacting with the app (ie. everything after the domain e.g. 'localhose:3000/<route>')
+    Routes to remember: These are routes that the frontend will navigate to when interacting with the app (ie. everything after the domain e.g. 'localhost:3000/<route>')
         /home - view all recipes. Frontend can then sort them and show 3
         /home/:searchParam - Searchbar, find all recipes whose name contains what is searched
         /viewRecipe/:recipeID - search the recipe whose ID matches
@@ -25,6 +25,8 @@ router.get('/viewRecipe/:recipeID', recipeController.getRecipeById);
 //addNewRecipe - Add a new recipe 
 router.post('/addNewRecipe', recipeController.addNewRecipe);
 
+//editRecipe - finding the recipe to edit (will be used for auto-fill info)
+router.get('/editRecipe/:recipeID', recipeController.getRecipeById)
 //editRecipe - Update recipe matching a given param ID
 router.patch('/editRecipe/:recipeID', recipeController.updateRecipe);
 
