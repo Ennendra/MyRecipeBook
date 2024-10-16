@@ -1,4 +1,5 @@
 import { MenuItem, TableHead, TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -43,21 +44,17 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngr
           size="small"
         >
           <TableHead>
-            <TableRow className="table-cell">
-              <TableCell>Amount</TableCell>
-              <TableCell>Measure type</TableCell>
-              <TableCell>Name</TableCell>
+            <TableRow>
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Amount</TableCell>
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Measure type</TableCell>
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Name</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {ingredients.map((ingredient, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                className="table-cell"
-              >
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell className="width-amount" sx={{ padding: 0 }}>
                   <TextField
                     align="left"
@@ -130,9 +127,14 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngr
         </Table>
       </TableContainer>
 
-      <button className="add-ingredient-step-button" onClick={handleAddRow}>
+      <Button
+        className="add-ingredient-step-button"
+        onClick={handleAddRow}
+        variant="contained"
+        color="inherit"
+      >
         + Add ingredient
-      </button>
+      </Button>
     </div>
   );
 };

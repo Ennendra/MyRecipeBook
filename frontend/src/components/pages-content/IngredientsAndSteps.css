@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 /* Styling ingredients table */
@@ -11,39 +12,12 @@
   border: none;
 }
 
-/*Styling calls */
-.table-cell {
-  padding: 5px;
-  text-align: left;
-  font-size: 20px;
-}
-
 /*Styling rows */
 .table-rows {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
-  margin-bottom: 5px;
-  background-color: rgb(231, 230, 230);
-}
-
-/*Styling add button*/
-.add-ingredient-step-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  color: black;
-  background-color: rgb(231, 230, 230);
-  font-size: 20px;
-  border-radius: 2px;
-  cursor: pointer;
-  font-family: 'Arial', serif;
-  margin-bottom: 10px;
-}
-
-/* Add button  hover effect */
-.add-ingredient-step-button:hover {
-  background-color: rgb(178, 177, 177); /* Darker color on hover */
+  background-color: #eeeeee;
 }
 
 /*Styling remove button*/
@@ -69,7 +43,7 @@
 }
 
 .container .MuiTableCell-root {
-  padding-bottom: 15px;
+  padding-bottom: 5px;
   border-style: hidden;
   vertical-align: baseline;
   padding-right: 5px;
@@ -79,8 +53,4 @@
 .container .MuiTableCell-root.remove-row-button {
   width: 10px;
   vertical-align: middle;
-}
-
-.container .MuiTableHead-root .MuiTableCell-root {
-  color: whitesmoke;
 }

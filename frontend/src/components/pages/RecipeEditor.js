@@ -1,3 +1,5 @@
+import { Stack } from '@mui/material';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { default as React, useEffect, useRef, useState } from 'react';
 import { useBlocker, useNavigate } from 'react-router-dom';
@@ -265,7 +267,7 @@ export const RecipeEditor = () => {
         <span className="title-big-margin">{'min'} </span>
       </div>
 
-      <hr className="hr-separator" />
+      <hr />
 
       <label className="title-style">Ingredients(*)</label>
       <IngredientsTable
@@ -277,25 +279,32 @@ export const RecipeEditor = () => {
       <label className="title-style">Instructions(*)</label>
       <StepsList steps={cookingSteps} onStepsUpdate={setCookingSteps} invalidSteps={invalidSteps} />
 
-      <hr className="hr-separator" />
+      <hr />
 
       {/* Display error message if validation fails */}
       {errorMessage && <div className="error-message">{VALIDATION_FORM_ERROR}</div>}
 
-      <div className="cancel-submit-button-container">
-        {/* Cancel button that triggers the modal */}
-        <button className="cancel-button" onClick={handleCancelClick} type="button">
-          Cancel
-        </button>
-        <ConfirmLeaveModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onLeave={handleLeavePage}
-        />
-
-        <button className="submit-button" type="submit">
-          Submit
-        </button>
+      <div className="one-line-class">
+        <Stack direction="row" spacing={5}>
+          {/* Cancel button that triggers the modal */}
+          <Button
+            className="cancel-button"
+            onClick={handleCancelClick}
+            type="button"
+            variant="contained"
+            color="inherit"
+          >
+            Cancel
+          </Button>
+          <ConfirmLeaveModal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            onLeave={handleLeavePage}
+          />
+          <Button className="submit-button" type="submit" variant="contained" color="success">
+            Submit
+          </Button>
+        </Stack>
       </div>
     </form>
   );

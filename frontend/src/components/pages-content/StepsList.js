@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -42,11 +43,7 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
         >
           <TableBody>
             {steps.map((step, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                className="table-cell"
-              >
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell sx={{ padding: 0 }}>
                   <TextField
                     align="left"
@@ -82,9 +79,14 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
         </Table>
       </TableContainer>
 
-      <button className="add-ingredient-step-button" onClick={handleAddRow}>
+      <Button
+        className="add-ingredient-step-button"
+        onClick={handleAddRow}
+        variant="contained"
+        color="inherit"
+      >
         + Add step
-      </button>
+      </Button>
     </div>
   );
 };
