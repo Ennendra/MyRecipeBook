@@ -38,7 +38,7 @@ export const Home = () => {
           (recipeList.length === 0 ? (
             <h2>
               We could not find any recipes matching your search. Please try using different
-              ingredients or keywords.
+              ingredients or keywords.   
             </h2>
           ) : (
             <h2>Results for {searchPattern}</h2>

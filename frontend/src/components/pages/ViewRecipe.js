@@ -1,6 +1,6 @@
 import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
-import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+// import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import React from 'react';
@@ -15,6 +15,9 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+
+import ViewRecipeSteps from '../pages-content/ViewRecipeSteps';
+
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -58,18 +61,23 @@ function ExpandIngredientsList(ingredientList) {
 }
 //Return each step in the cookingSteps as a list item to render
 
-function ExpandStepsList(stepList) {
-  const stepItems = stepList.map((step, index) => (
-    <ListItem disablePadding key={index}>
-      <ListItemIcon>
-        <Checkbox />
-      </ListItemIcon>
-      <ListItemText primary={step} />
-    </ListItem>
-  ));
+// const [isChecked, setIsChecked] = useState(false);
 
-  return <Stack>{stepItems}</Stack>;
-}
+// function handleChecked(){
+//   setIsChecked(true);
+// }
+// function ExpandStepsList(stepList) {
+//   const stepItems = stepList.map((step, index) => (
+//     <ListItem disablePadding key={index}>
+//       <ListItemIcon>
+//         <Checkbox />
+//       </ListItemIcon>
+//       <ListItemText primary={step} sx={{textDecoration: "line-through"}} />
+//     </ListItem>
+//   ));
+
+//   return <Stack>{stepItems}</Stack>;
+// }
 
 function DisplayRecipe(recipe) {
   const preparationTime = ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes);
@@ -92,7 +100,7 @@ function DisplayRecipe(recipe) {
       </div>
       <hr />
 
-      <Stack spacing={1} sx={{ alignItems: 'left' }}>
+      <Stack spacing={1} sx={{ alignItems: 'left', marginLeft: '20px' }}>
         <Stack direction="row" spacing={2}>
           <Chip
             icon={<RestaurantOutlinedIcon />}
@@ -121,23 +129,25 @@ function DisplayRecipe(recipe) {
         </Stack>
       </Stack>
 
-      <div>
+      <div className='viewRecipeContainer'>
         <h3>Ingredients:</h3>
 
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650, backgroundColor: '#eeeeee' }} aria-label="simple table">
+          <Table sx={{ minWidth: 650, backgroundColor: '#eeeeee'}} aria-label="simple table">
             <TableBody>{ExpandIngredientsList(recipe.ingredients)}</TableBody>
           </Table>
         </TableContainer>
       </div>
       <hr />
 
-      <div>
+      {/* <div className='viewRecipeContainer'>
         <h3>Steps:</h3>
         <List sx={{ width: '100%', maxWidth: 960, bgcolor: '#eeeeee' }} aria-label="contacts">
           {ExpandStepsList(recipe.cookingSteps)}
         </List>
-      </div>
+      </div> */}
+
+      <ViewRecipeSteps cookingSteps={recipe.cookingSteps}/>
     </div>
   );
 }
