@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Chip } from "@mui/material";
+import { Stack, Chip} from "@mui/material";
 import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 
@@ -59,15 +59,15 @@ function RecipeInfo(props) {
             <div className="recipe-title"> {props.title} </div>
             <Stack gap={1}>
                 <Chip icon={<QueryBuilderOutlinedIcon />}
-                    label={'Total time: ' + ConvertMinutesToHoursAndMinutes(props.totalTime)}
-                    sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee' }} ></Chip>
-                <Chip icon={<RestaurantOutlinedIcon />}
-                    label={'Serves: ' + props.serves + servesMeasurement(props.serves)}
-                    sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee' }} ></Chip>
-            </Stack>
+                    label={<div className="bold">
+                       Total time: {ConvertMinutesToHoursAndMinutes(props.totalTime)}</div>}
+                sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee' }} ></Chip>
+            <Chip icon={<RestaurantOutlinedIcon />}
+                label={<div className="bold">Serves: {props.serves}  {servesMeasurement(props.serves)}</div>}
+                sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee' }} ></Chip>
+        </Stack>
         </div >
     )
-
 }
 
 export default RecipeInfo;

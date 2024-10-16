@@ -22,9 +22,9 @@ export const RecipeCards = ({ recipes }) => {
             serves={recipe.recipeServings}
           />
           <Button
-            size="small"
+            // size="small"
             endIcon={<ArrowRightAltOutlinedIcon />}
-            sx={{ justifyContent: 'flex-start', marginLeft: '16px', marginBottom: '10px' }}
+            sx={{ justifyContent: 'flex-start', marginLeft: '16px', marginBottom: '10px', fontSize: '12px' }}
             color="success"
           >
             Read more
