@@ -30,36 +30,7 @@
   margin-top: 20px;
 }
 
-/* Leave button  styling */
-.leave-button {
-  background-color: rgb(188, 87, 87);
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  font-family: 'Arial', serif;
-  font-size: 18px;
-}
-
-/* Leave button  hover effect */
-.leave-button:hover {
-  background-color: rgb(191, 62, 62); /* Darker color on hover */
-}
-
-/* Stay button  styling */
-.stay-button {
-  background-color: #528a54;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  font-family: 'Arial', serif;
-  font-size: 18px;
-}
-
 /* Stay button  hover effect */
 .stay-button:hover {
-  background-color: #477748; /* Darker green on hover */
+  background-color: #295f2a; /* Darker green on hover */
 }

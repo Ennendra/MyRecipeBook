@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import React from 'react';
 import './ConfirmLeaveModal.css';
 
@@ -12,12 +13,12 @@ export const ConfirmLeaveModal = ({ isOpen, onClose, onLeave }) => {
           lose your progress. Please confirm if you wish to continue.
         </p>
         <div className="button-container">
-          <button onClick={onLeave} className="leave-button">
+          <Button onClick={onLeave} className="leave-button" variant="contained" color="inherit">
             Leave
-          </button>
-          <button onClick={onClose} className="stay-button">
+          </Button>
+          <Button onClick={onClose} className="stay-button" variant="contained" color="success">
             Stay
-          </button>
+          </Button>
         </div>
       </div>
     </div>
