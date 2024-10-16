@@ -38,6 +38,7 @@ export const RecipeEditor = () => {
   const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '' }]);
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
+  const [imageFile, setImageFile] = useState();
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,6 +80,7 @@ export const RecipeEditor = () => {
       } else {
         reader.onloadend = function () {
           setImageSrc(reader.result); // Set base64 image to image src
+          setImageFile(file);
         };
         reader.readAsDataURL(file); // Read file
       }
@@ -169,12 +171,34 @@ export const RecipeEditor = () => {
 
     isSubmitRef.current = true;
 
+    //assemble the data for the http request as separate form data (this allows the image upload to be a part of this request)
+    const recipeFormData = new FormData();
+    recipeFormData.append('recipeName',newRecipe.recipeName);
+    recipeFormData.append('recipeDescription',newRecipe.recipeDescription);
+    recipeFormData.append('prepDurationMinutes',newRecipe.prepDurationMinutes);
+    recipeFormData.append('cookDurationMinutes',newRecipe.cookDurationMinutes);
+    recipeFormData.append('recipeServings',newRecipe.recipeServings);
+    //Split the ingredients into 3 separate arrays within the form data (which are then reassembled as a JSON object within the backend controller)
+    newRecipe.ingredients.map((ingredient) => {
+      recipeFormData.append(`ingredientsAmount[]`, ingredient.amount);
+      recipeFormData.append(`ingredientsMeasurement[]`, ingredient.measurement);
+      recipeFormData.append(`ingredientsItem[]`, ingredient.item);
+    });
+    recipeFormData.append('imageSrc',newRecipe.imageSrc);
+    newRecipe.cookingSteps.map((step) => {
+      recipeFormData.append('cookingSteps[]',step);
+    });
+    //Add the image file itself to the form data if available
+    if (imageFile) {
+      recipeFormData.append('imageFile',imageFile);
+    }
+
+    console.log(recipeFormData);
+
     //Attempt to add the new form to the database
     let responseData;
     try {
-      responseData = await sendAPIRequest(`addNewRecipe`, 'POST', JSON.stringify(newRecipe), {
-        'Content-Type': 'application/json',
-      });
+      responseData = await sendAPIRequest(`addNewRecipe`, 'POST', recipeFormData);
       console.log(responseData);
     } catch (error) {
       console.log('Add New Recipe Error: ' + error);
@@ -186,7 +210,8 @@ export const RecipeEditor = () => {
       alert('Successfully added new recipe');
     } catch (error) {
       console.log('Add New Recipe Error (post-API): ' + error);
-      navigate(`/home`);
+      alert('Something went wrong, please try again later.');
+      //navigate(`/home`);
     }
   }
 

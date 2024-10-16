@@ -2,6 +2,8 @@ const express = require('express');
 
 const recipeController = require('../controllers/recipe-controller');
 
+const fileUpload = require('../middleware/file-upload')
+
 const router = express.Router();
 
 /*
@@ -23,7 +25,8 @@ router.get('/home/:recipeSearch', recipeController.getRecipeByName);
 router.get('/viewRecipe/:recipeID', recipeController.getRecipeById);
 
 //addNewRecipe - Add a new recipe 
-router.post('/addNewRecipe', recipeController.addNewRecipe);
+//Since this form is being sent as formdata (in order to allow image uploads), we require that extra fileupload argument
+router.post('/addNewRecipe', fileUpload.single('imageFile'), recipeController.addNewRecipe);
 
 //editRecipe - finding the recipe to edit (will be used for auto-fill info)
 router.get('/editRecipe/:recipeID', recipeController.getRecipeById)
