@@ -36,6 +36,7 @@ function convertMinutesToHours(minutes) {
 
 export const RecipeCards = ({ recipes }) => {
   const navigate = useNavigate();
+  const serverPath = 'http://localhost:5000/';
   return (
     <div className="recipe-cards">
       {recipes.map((recipe, i) => (
@@ -45,7 +46,7 @@ export const RecipeCards = ({ recipes }) => {
           onClick={() => navigate(`/viewRecipe/${recipe._id}`)}
         >
           <img
-            src={recipe.imageSrc === '' ? 'images/noImageIcon.png' : recipe.imageSrc}
+            src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
             alt={recipe.recipeName}
             className="recipe-image"
           />

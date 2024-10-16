@@ -71,6 +71,7 @@ function ExpandStepsList(stepList) {
 }
 
 function DisplayRecipe(recipe) {
+  const serverPath = 'http://localhost:5000/';
   const preparationTime = ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes);
   const cookingTime = ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes);
   const totalTime = ConvertMinutesToHoursAndMinutes(
@@ -80,7 +81,7 @@ function DisplayRecipe(recipe) {
     <div className="ViewRecipe">
       <div className="viewRecipeInfo">
         <img
-          src={recipe.imageSrc === '' ? 'images/noImageIcon.png' : recipe.imageSrc}
+          src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
           alt={recipe.recipeName}
           className="recipeImg"
         />

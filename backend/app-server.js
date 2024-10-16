@@ -3,6 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const fs = require('fs');
+const path = require('path');
+
 //importing the router for the recipes and the error handler
 const recipeRoutes = require('./routes/recipe-routes');
 const HttpError = require('./models/httpError');
@@ -14,7 +17,9 @@ const mongooseAPI = require('./mongoose-connect-api');
 const app = express();
 //use the library to automatically parse body requests into JSON format
 app.use(bodyParser.json());
-//
+//Allows requesting the images from the library (arg1=the request url, requested from the frontend)
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+
 //Defining headers
 //This allows the frontend to properly send and receive requests to the backend
 //Otherwise, CORS errors will occur at the frontend whenever trying to communicate with this backend
@@ -30,7 +35,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
   
     next();
-  });
+});
+
+
 
 //Set the port the server-backend will listen through
 const PORT = 5000; 
@@ -45,6 +52,12 @@ app.use((req, res, next) => {
 
 //A middleware route that will act any time an error is returned on other routes
 app.use((error, req, res, next) => {
+    //If the request had a file (e.g. image upload), then delete that file
+    if (req.file) {
+      fs.unlink(req.file.path, err => {
+        console.log(err);
+      })
+    }
     //Check if an error has already been sent
     if (res.headerSent) {
         return next(error);
