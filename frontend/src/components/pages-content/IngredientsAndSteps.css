@@ -29,7 +29,7 @@
 
 /*Styling add button*/
 .add-ingredient-step-button {
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 10px 20px;
   border: none;
   color: black;
@@ -54,11 +54,6 @@
   background-color: transparent;
 }
 
-/*Width remove row*/
-.width-remove-button {
-  width: 10px;
-}
-
 /*Width amount row*/
 .width-amount {
   width: 150px;
@@ -67,4 +62,25 @@
 /*Width measure type row*/
 .width-measure {
   width: 150px;
+}
+
+.error-row {
+  background-color: #fba2a2; /* Light red background for invalid rows */
+}
+
+.container .MuiTableCell-root {
+  padding-bottom: 15px;
+  border-style: hidden;
+  vertical-align: baseline;
+  padding-right: 5px;
+}
+
+/* Remove row button */
+.container .MuiTableCell-root.remove-row-button {
+  width: 10px;
+  vertical-align: middle;
+}
+
+.container .MuiTableHead-root .MuiTableCell-root {
+  color: whitesmoke;
 }
