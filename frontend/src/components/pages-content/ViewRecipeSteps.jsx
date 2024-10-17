@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 
 
 
+//Return each step in the cookingSteps as a list item to render
 
 
 function ExpandStepsList(stepList) {

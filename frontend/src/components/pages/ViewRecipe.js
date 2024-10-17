@@ -47,36 +47,18 @@ function ExpandIngredientsList(ingredientList) {
 
   const ingredientItems = revisedIngredientList.map((ingredient, index) => (
     <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-      <TableCell component="th" scope="row" sx={{ width: 100 }}>
+      <TableCell component="th" scope="row" sx={{ width: 100, fontSize: '1rem' }}>
         {ingredient.amount +
           ' ' +
           (ingredient.measurement === 'item' ? '' : ingredient.measurement)}
       </TableCell>
-      <TableCell>{ingredient.item}</TableCell>
+      <TableCell sx={{ fontSize: '1rem' }}>{ingredient.item}</TableCell>
     </TableRow>
   ));
 
   return ingredientItems;
 }
-//Return each step in the cookingSteps as a list item to render
 
-// const [isChecked, setIsChecked] = useState(false);
-
-// function handleChecked(){
-//   setIsChecked(true);
-// }
-// function ExpandStepsList(stepList) {
-//   const stepItems = stepList.map((step, index) => (
-//     <ListItem disablePadding key={index}>
-//       <ListItemIcon>
-//         <Checkbox />
-//       </ListItemIcon>
-//       <ListItemText primary={step} sx={{textDecoration: "line-through"}} />
-//     </ListItem>
-//   ));
-
-//   return <Stack>{stepItems}</Stack>;
-// }
 
 function DisplayRecipe(recipe) {
   const preparationTime = ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes);
@@ -99,7 +81,7 @@ function DisplayRecipe(recipe) {
       </div>
       <hr />
 
-      <Stack spacing={1} sx={{ alignItems: 'left', marginLeft: '20px' }}>
+      <Stack spacing={1} sx={{ alignItems: 'center', marginLeft: '20px' }}>
         <Stack direction="row" spacing={2}>
           <Chip
             icon={<RestaurantOutlinedIcon />}
