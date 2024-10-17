@@ -6,8 +6,8 @@
 /backend/node_modules
 /.pnp
 .pnp.js
-/backend/mongoose-connect-api.js
 /backend/uploads/images/recipeimage*
+
 
 # testing
 /coverage
@@ -21,6 +21,8 @@
 .env.development.local
 .env.test.local
 .env.production.local
+/backend/nodemon.json
+/frontend/.env
 
 npm-debug.log*
 yarn-debug.log*
