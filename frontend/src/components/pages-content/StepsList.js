@@ -36,7 +36,10 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
 
   return (
     <div className="container">
-      <TableContainer component={Paper} sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+      <TableContainer
+        component={Paper}
+        sx={{ backgroundColor: 'transparent', boxShadow: 'none', marginBottom: '20px' }}
+      >
         <Table
           sx={{ minWidth: 650 }}
           aria-label="customized  table"
@@ -89,10 +92,9 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
 
       <Button
         startIcon={<AddOutlinedIcon />}
-        className="add-ingredient-step-button"
         onClick={handleAddRow}
         variant="contained"
-        color="inherit"
+        color="success"
       >
         Add step
       </Button>
