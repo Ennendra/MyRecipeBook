@@ -67,7 +67,7 @@ export const Home = () => {
         </Button>
       </div>
       {/* If users use the search function, check the results, show no results or the results for something */}
-      <div>
+      <div className='resultInfo'>
         {!searchPattern === false &&
           (recipeList.length === 0 ? (
             <h2>

@@ -37,3 +37,11 @@
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
+
+.resultInfo {
+  font-size: 1rem;
+  font-family: 'Georgia', serif;
+  margin:0px 55px;
+  color: #2e7d32;
+}
