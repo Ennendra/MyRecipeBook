@@ -78,6 +78,8 @@
   margin-bottom: 10px;
   margin-right: 5px;
   font-family: 'Arial', serif;
+  align-items: baseline;
+  justify-content: flex-end;
 }
 
 /*Styling for line with servings, and cook times*/
@@ -123,4 +125,10 @@
   color: rgb(202, 72, 72);
   font-size: 20px;
   margin-top: 10px;
+}
+
+.MuiSvgIcon-root {
+  align-self: center;
+  padding-bottom: 5px;
+  padding-right: 5px;
 }

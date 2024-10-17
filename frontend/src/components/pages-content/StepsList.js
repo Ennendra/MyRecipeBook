@@ -1,3 +1,5 @@
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
@@ -25,7 +27,7 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
 
   // Step removing
   const handleRemoveRow = (e, index) => {
-    if (index != 0) {
+    if (steps.length > 1) {
       e.preventDefault();
       const updatedSteps = steps.filter((_, i) => i !== index);
       onStepsUpdate(updatedSteps);
@@ -65,13 +67,19 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
                 </TableCell>
 
                 <TableCell align="center" className="remove-row-button" sx={{ padding: 0 }}>
-                  <button
+                  <Button
+                    sx={{
+                      ':active': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                    size="big"
+                    startIcon={<DeleteOutlineOutlinedIcon />}
+                    color="black"
                     className="remove-ingredient-step-button "
                     onClick={e => handleRemoveRow(e, index)}
                     title="remove step"
-                  >
-                    🗑️
-                  </button>
+                  ></Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -80,12 +88,13 @@ export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
       </TableContainer>
 
       <Button
+        startIcon={<AddOutlinedIcon />}
         className="add-ingredient-step-button"
         onClick={handleAddRow}
         variant="contained"
         color="inherit"
       >
-        + Add step
+        Add step
       </Button>
     </div>
   );
