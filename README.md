@@ -31,10 +31,12 @@ MyRecipeBook is a web application made for displaying recipes while using measur
 ## Technologies
 
 <!-- # Getting Started with Create React App -->
+- **Design**
+  - **Figma**: Used for designing wireframes the user interface.
 - **Front-end**
   - **React**: For building the user interface and front-end.
   - **Material UI**: For implementing pre-designed UI components and ensuring consistent styling across the application.
-  - **Figma**: Used for designing wireframes the user interface.
+
 - **Back-end**
   - **Node.js and Express**: For back-end services.
   - **Multer**: For file management
