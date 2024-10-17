@@ -10,9 +10,6 @@ const path = require('path');
 const recipeRoutes = require('./routes/recipe-routes');
 const HttpError = require('./models/httpError');
 
-//Holds the function to connect Mongoose to the mongoDB API
-const mongooseAPI = require('./mongoose-connect-api');
-
 //initialise the express API
 const app = express();
 //use the library to automatically parse body requests into JSON format
@@ -37,10 +34,8 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
 //Set the port the server-backend will listen through
-const PORT = 5000; 
+const PORT = process.env.PORT; 
 
 //The routes that check for recipes
 app.use('', recipeRoutes);
@@ -68,4 +63,9 @@ app.use((error, req, res, next) => {
 });
 
 //establish a connection to the MongoDB database and start the server listening when successful
-mongooseAPI.ConnectMongooseDBAPI(app, PORT);
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@myrecipebookdb.bmiie.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=MyRecipeBookDB`)
+.then(() => {
+    app.listen(PORT);
+}).catch((err) => {
+    console.log(err);
+});
