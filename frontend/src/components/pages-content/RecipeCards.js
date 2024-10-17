@@ -6,7 +6,7 @@ import RecipeInfo from './RecipeInfo';
 import { Button } from '@mui/material';
 import ArrowRightAltOutlinedIcon from '@mui/icons-material/ArrowRightAltOutlined';
 
-const serverPath = 'http://localhost:5000/';
+const serverPath = process.env.REACT_APP_BACKEND_URL;
 
 // Function convert minutes into hours + minutes format.
 // function convertMinutesToHours(minutes) {
