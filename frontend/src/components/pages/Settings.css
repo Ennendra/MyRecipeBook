@@ -3,6 +3,7 @@
   width: 40%;
   border: none;
   align-content: center;
+  margin-bottom: 20px;
 }
 
 /* Styling table and confirm button */
@@ -11,6 +12,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Temporary text styling */
+.p-textStyle {
+  display: flex;
+
+  font-size: 1.5rem; /* Smaller font size for paragraph */
+  font-family: 'Georgia', serif;
 }
 
 /* List styling */
@@ -24,22 +33,9 @@
   width: 100%;
   padding: 5px;
   text-align: left;
-  margin-bottom: 10px;
-  font-size: 20px;
+  margin-bottom: 5px;
+  font-size: 18px;
   vertical-align: top;
-}
-
-/* Submit button styling */
-.confirm-button {
-  padding: 10px 20px;
-  background-color: #528a54;
-  border: none;
-  color: white;
-  font-size: 20px;
-  border-radius: 2px;
-  cursor: pointer;
-  font-family: 'Arial', serif;
-  margin-top: 30px;
 }
 
 /* Submit button  hover effect */

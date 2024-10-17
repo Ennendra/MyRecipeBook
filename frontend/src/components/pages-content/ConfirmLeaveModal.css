@@ -1,0 +1,36 @@
+/* Modal window overlay styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', serif;
+  font-size: 20px;
+}
+
+/* Modal window content styling */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 2px;
+  width: 550px;
+  text-align: center;
+  color: black;
+}
+
+/* Button container styling */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Stay button  hover effect */
+.stay-button:hover {
+  background-color: #295f2a; /* Darker green on hover */
+}

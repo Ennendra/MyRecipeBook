@@ -3,9 +3,8 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 // import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useRecipe } from '../../hooks/common';
 import { ConvertIngredientData } from '../../hooks/IngredientConversionUtilities';
 import './Styles.css';
 
@@ -18,6 +17,8 @@ import TableRow from '@mui/material/TableRow';
 
 import ViewRecipeSteps from '../pages-content/ViewRecipeSteps';
 
+
+import { useHttpClient } from '../../hooks/HttpHooks';
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -38,11 +39,9 @@ function ExpandIngredientsList(ingredientList) {
   //Creating a direct copy of the ingredient list array to safely convert values
   const revisedIngredientList = JSON.parse(JSON.stringify(ingredientList));
 
-  const localStorageSettings = JSON.parse(localStorage.getItem('localTypesSettings'));
-  console.log(localStorageSettings);
-
   //converting the ingredients to their preferred measurement type, and into fraction form
   revisedIngredientList.forEach(ingredient => {
+    console.log('Converting recipes');
     ConvertIngredientData(ingredient);
   });
 
@@ -142,7 +141,10 @@ function DisplayRecipe(recipe) {
 
       {/* <div className='viewRecipeContainer'>
         <h3>Steps:</h3>
-        <List sx={{ width: '100%', maxWidth: 960, bgcolor: '#eeeeee' }} aria-label="contacts">
+        <List
+          sx={{ width: '100%', maxWidth: 960, bgcolor: '#eeeeee', marginBottom: '30px' }}
+          aria-label="contacts"
+        >
           {ExpandStepsList(recipe.cookingSteps)}
         </List>
       </div> */}
@@ -156,7 +158,36 @@ function NoRecipeDisplay() {
 }
 
 export const ViewRecipe = () => {
+  //Define the object ID of the recipe in the params and the recipe object itself
   const { id } = useParams();
-  const recipe = useRecipe(id);
-  return <div>{recipe ? DisplayRecipe(recipe) : NoRecipeDisplay()}</div>;
+  const [recipe, setRecipe] = useState();
+
+  //Define the backend API connection
+  const { sendAPIRequest } = useHttpClient();
+  //Set a function state to fetch the recipes for display
+  useEffect(() => {
+    //Define the function to fetch the recipes
+    const fetchRecipes = async () => {
+      try {
+        let responseData;
+        //Find the specified recipe
+        responseData = await sendAPIRequest(`viewRecipe/${id}`);
+        //Set this response to the recipeList state
+        setRecipe(responseData.recipes);
+      } catch (error) {
+        console.log('Homepage error: ' + error);
+      }
+    };
+    //immediately run the above function
+    fetchRecipes();
+
+    //Dependencies are set so that this useEffect will run when sendAPIRequest is defined (ie, the component is loaded)
+  }, [sendAPIRequest]);
+
+  return (
+    <div>
+      {/* <h1 className="page-title"> View recipe page </h1> */}
+      {recipe ? DisplayRecipe(recipe) : NoRecipeDisplay()}
+    </div>
+  );
 };
