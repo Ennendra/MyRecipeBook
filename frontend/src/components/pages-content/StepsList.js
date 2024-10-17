@@ -1,7 +1,15 @@
+import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
 import React from 'react';
 import './IngredientsAndSteps.css';
 
-export const StepsList = ({ steps, onStepsUpdate }) => {
+export const StepsList = ({ steps, onStepsUpdate, invalidSteps }) => {
   // Handle input changes
   const handleInputChange = (index, value) => {
     const updateSteps = [...steps];
@@ -26,37 +34,59 @@ export const StepsList = ({ steps, onStepsUpdate }) => {
 
   return (
     <div className="container">
-      <table className="ingredient-step-table">
-        <tbody>
-          {steps.map((step, index) => (
-            <tr className="table-cell" key={index}>
-              <td>
-                <textarea
-                  className="table-rows"
-                  type="text"
-                  value={step}
-                  onChange={e => handleInputChange(index, e.target.value)}
-                  placeholder=""
-                  rows={'3'}
-                />
-              </td>
-              <td className="width-remove-button">
-                <button
-                  className="remove-ingredient-step-button "
-                  onClick={e => handleRemoveRow(e, index)}
-                  title="remove step"
-                >
-                  🗑️
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper} sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+        <Table
+          sx={{ minWidth: 650 }}
+          aria-label="customized  table"
+          className="ingredient-step-table"
+          size="small"
+        >
+          <TableBody>
+            {steps.map((step, index) => (
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell sx={{ padding: 0 }}>
+                  <TextField
+                    align="left"
+                    hiddenLabel
+                    type="text"
+                    className="table-rows"
+                    multiline
+                    value={step}
+                    onChange={e => handleInputChange(index, e.target.value)}
+                    rows={'2'}
+                    variant="filled"
+                    {...(invalidSteps.includes(index)
+                      ? {
+                          error: true,
+                          helperText: 'Please fill in all the instructions. Or remove empty step.',
+                        }
+                      : null)}
+                  />
+                </TableCell>
 
-      <button className="add-ingredient-step-button" onClick={handleAddRow}>
+                <TableCell align="center" className="remove-row-button" sx={{ padding: 0 }}>
+                  <button
+                    className="remove-ingredient-step-button "
+                    onClick={e => handleRemoveRow(e, index)}
+                    title="remove step"
+                  >
+                    🗑️
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Button
+        className="add-ingredient-step-button"
+        onClick={handleAddRow}
+        variant="contained"
+        color="inherit"
+      >
         + Add step
-      </button>
+      </Button>
     </div>
   );
 };

@@ -42,10 +42,13 @@ const searchRecipesByName = async (req, res, next) => {
     try {
         recipes = await Recipe.find({recipeName: recipeName}).exec();
     } catch(error) {
-        console.log('Error finding recipe by id:' + error);
+        console.log('Error finding recipe by name:' + error);
         return next(error);
     }
-    
+    if (!recipes) {
+        console.log("returning empty");
+        return {recipes: []};
+    }
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 //Creating a new recipe

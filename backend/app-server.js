@@ -14,19 +14,23 @@ const mongooseAPI = require('./mongoose-connect-api');
 const app = express();
 //use the library to automatically parse body requests into JSON format
 app.use(bodyParser.json());
-
+//
 //Defining headers
-//LEAVING COMMENTED UNTIL I UNDERSTAND WHAT THEY DO
-/*app.use((req, res, next) => {
+//This allows the frontend to properly send and receive requests to the backend
+//Otherwise, CORS errors will occur at the frontend whenever trying to communicate with this backend
+//First header defines what domains can send requests
+//Second header specifies which headers are allowed to be sent
+//Third header specifies what http-request types are allowed to be received
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
       'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
   
     next();
-  });*/
+  });
 
 //Set the port the server-backend will listen through
 const PORT = 5000; 
@@ -37,7 +41,8 @@ app.use('', recipeRoutes);
 app.use((req, res, next) => {
     const error = new HttpError(404,'Could not find this route')
     throw error;
-});//
+});
+
 //A middleware route that will act any time an error is returned on other routes
 app.use((error, req, res, next) => {
     //Check if an error has already been sent

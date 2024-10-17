@@ -1,18 +1,28 @@
-import React from 'react';
+import { MenuItem, TableHead, TextField } from '@mui/material';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import { default as React } from 'react';
 import './IngredientsAndSteps.css';
+import { handleKeyDown } from './NumericInput';
 
-export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
+export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngredients }) => {
   // Handle input changes
   const handleInputChange = (index, field, value) => {
+    if (field === 'amount' && value === '-1') return;
     const updateIngredients = [...ingredients];
-    updateIngredients[index][field] = value;
+    updateIngredients[index] = { ...updateIngredients[index], [field]: value };
     onIngredientsUpdate(updateIngredients);
   };
 
   // Adding ingredient
   const handleAddRow = e => {
     e.preventDefault();
-    onIngredientsUpdate([...ingredients, { amount: '', measurement: '', item: '' }]);
+    onIngredientsUpdate([...ingredients, { amount: '', measurement: 'items', item: '' }]);
   };
 
   // Ingredient removing
@@ -26,67 +36,105 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate }) => {
 
   return (
     <div className="container">
-      <table className="ingredient-step-table">
-        <thead>
-          <tr className="table-cell">
-            <th>Amount</th>
-            <th>Measure type</th>
-            <th>Name</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {ingredients.map((ingredient, index) => (
-            <tr className="table-cell" key={index}>
-              <td className="width-amount">
-                <input
-                  className="table-rows"
-                  //type="number"
-                  value={ingredient.amount}
-                  onChange={e => handleInputChange(index, 'amount', e.target.value)}
-                  placeholder="Amount"
-                />
-              </td>
-              <td className="width-measure">
-                <select
-                  className="table-rows"
-                  value={ingredient.measurement}
-                  onChange={e => handleInputChange(index, 'measurement', e.target.value)}
-                >
-                  <option value="items">item(s)</option>
-                  <option value="g">g</option>
-                  <option value="oz">oz</option>
-                  <option value="cup">cup</option>
-                  <option value="tbsp">tbsp</option>
-                  <option value="tsp">tsp</option>
-                </select>
-              </td>
-              <td>
-                <input
-                  className="table-rows"
-                  type="text"
-                  value={ingredient.name}
-                  onChange={e => handleInputChange(index, 'item', e.target.value)}
-                  placeholder="Ingredient name"
-                />
-              </td>
-              <td className="width-remove-button">
-                <button
-                  className="remove-ingredient-step-button"
-                  onClick={e => handleRemoveRow(e, index)}
-                  title="remove ingredient"
-                >
-                  🗑️
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper} sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+        <Table
+          sx={{ minWidth: 650 }}
+          aria-label="customized  table"
+          className="ingredient-step-table"
+          size="small"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Amount</TableCell>
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Measure type</TableCell>
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Name</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
 
-      <button className="add-ingredient-step-button" onClick={handleAddRow}>
+          <TableBody>
+            {ingredients.map((ingredient, index) => (
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell className="width-amount" sx={{ padding: 0 }}>
+                  <TextField
+                    align="left"
+                    hiddenLabel
+                    type="number"
+                    inputProps={{ inputMode: 'decimal', pattern: '[0-9]*[.,]?[0-9]*' }}
+                    className="table-rows"
+                    value={ingredient.amount}
+                    onKeyDown={handleKeyDown}
+                    onChange={e => handleInputChange(index, 'amount', e.target.value)}
+                    variant="filled"
+                    {...(invalidIngredients.includes(index) && !ingredient.amount
+                      ? {
+                          error: true,
+                          helperText: 'Please fill in amount.',
+                        }
+                      : null)}
+                  />
+                </TableCell>
+
+                <TableCell className="width-measure" sx={{ padding: 0 }}>
+                  <TextField
+                    align="left"
+                    hiddenLabel
+                    select
+                    className="table-rows"
+                    value={ingredient.measurement}
+                    onChange={e => handleInputChange(index, 'measurement', e.target.value)}
+                    variant="filled"
+                  >
+                    <MenuItem value="items">item(s)</MenuItem>
+                    <MenuItem value="g">g</MenuItem>
+                    <MenuItem value="oz">oz</MenuItem>
+                    <MenuItem value="cup">cup</MenuItem>
+                    <MenuItem value="tbsp">tbsp</MenuItem>
+                    <MenuItem value="tsp">tsp</MenuItem>
+                  </TextField>
+                </TableCell>
+
+                <TableCell sx={{ padding: 0 }}>
+                  <TextField
+                    align="left"
+                    hiddenLabel
+                    type="text"
+                    className="table-rows"
+                    value={ingredient.item}
+                    onChange={e => handleInputChange(index, 'item', e.target.value)}
+                    variant="filled"
+                    {...(invalidIngredients.includes(index) && !ingredient.item
+                      ? {
+                          error: true,
+                          helperText: 'Please fill in ingredient name.',
+                        }
+                      : null)}
+                  />
+                </TableCell>
+
+                <TableCell align="center" className="remove-row-button" sx={{ padding: 0 }}>
+                  <button
+                    className="remove-ingredient-step-button "
+                    onClick={e => handleRemoveRow(e, index)}
+                    title="remove ingredient"
+                  >
+                    🗑️
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Button
+        className="add-ingredient-step-button"
+        onClick={handleAddRow}
+        variant="contained"
+        color="inherit"
+      >
         + Add ingredient
-      </button>
+      </Button>
     </div>
   );
 };
