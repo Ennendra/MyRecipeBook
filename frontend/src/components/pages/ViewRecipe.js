@@ -20,6 +20,8 @@ import ViewRecipeSteps from '../pages-content/ViewRecipeSteps';
 
 import { useHttpClient } from '../../hooks/HttpHooks';
 
+const serverPath = 'http://localhost:5000/';
+
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
   var result = ``;
@@ -61,6 +63,7 @@ function ExpandIngredientsList(ingredientList) {
 
 
 function DisplayRecipe(recipe) {
+  
   const preparationTime = ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes);
   const cookingTime = ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes);
   const totalTime = ConvertMinutesToHoursAndMinutes(
@@ -70,7 +73,8 @@ function DisplayRecipe(recipe) {
     <div className="ViewRecipe">
       <div className="viewRecipeInfo">
         <img
-          src={recipe.imageSrc === '' ? 'images/noImageIcon.png' : recipe.imageSrc}
+          src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
+          onError={(e)=>{e.target.onError = null; e.target.src = `${serverPath}uploads/images/noImageIcon.png`}}
           alt={recipe.recipeName}
           className="recipeImg"
         />
