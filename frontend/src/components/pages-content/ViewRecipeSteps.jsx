@@ -20,6 +20,7 @@ function ExpandStepsList(stepList) {
                 <ListItemButton onClick={()=> handleToggle(index)}>
                     <ListItemIcon>
                         <Checkbox 
+                        color="success"
                         checked = {checked[index] || false}
                         onChange={() => handleToggle(index)}
                         />
