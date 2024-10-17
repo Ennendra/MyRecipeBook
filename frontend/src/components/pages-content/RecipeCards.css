@@ -2,12 +2,13 @@
 .recipe-cards {
   /* display: flex; */
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   /* flex-direction: row;
   flex-wrap: wrap; */
   gap: 20px;
   justify-content: center;
   margin: 0px 55px;
+  margin-bottom: 20px;
 }
 
 /* Styling the recipe card */
@@ -30,8 +31,8 @@
 
 .imageContainer {
   display: flex;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
   width: 100%;
 }
 
