@@ -321,6 +321,7 @@ export const RecipeEditor = () => {
             type="button"
             variant="contained"
             color="inherit"
+            size="large"
           >
             Cancel
           </Button>
@@ -329,7 +330,13 @@ export const RecipeEditor = () => {
             onClose={handleCloseModal}
             onLeave={handleLeavePage}
           />
-          <Button className="submit-button" type="submit" variant="contained" color="success">
+          <Button
+            className="submit-button"
+            type="submit"
+            variant="contained"
+            color="success"
+            size="large"
+          >
             Submit
           </Button>
         </Stack>
