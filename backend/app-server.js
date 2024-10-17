@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 //Set the port the server-backend will listen through
-const PORT = process.env.PORT; 
+const PORT = process.env.PORT || 5000; 
 
 //The routes that check for recipes
 app.use('', recipeRoutes);
