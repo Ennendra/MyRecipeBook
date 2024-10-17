@@ -24,7 +24,7 @@ export const ImageUpload = ({ image, onImageUpload }) => {
           <Button
             variant="contained"
             component="span"
-            color="inherit"
+            color="success"
             startIcon={
               <svg
                 fill="none"
@@ -33,7 +33,7 @@ export const ImageUpload = ({ image, onImageUpload }) => {
                 width="24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                <g stroke="#FFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
                   <path d="m3 14v6c0 1.1046.89543 2 2 2h14c1.1046 0 2-.8954 2-2v-6" />
                   <path d="m12 17v-14m0 0-5 5.44446m5-5.44446 5 5.44444" />
                 </g>
