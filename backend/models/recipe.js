@@ -10,7 +10,7 @@ const ingredientSchema = new mongoose.Schema( {
 //Schema for the full recipe
 const recipeSchema = new mongoose.Schema( {
     recipeName: {type: String, required: true},
-    recipeDescription: {type: String, required: true},
+    recipeDescription: {type: String},
     imageSrc: String,
     prepDurationMinutes : Number,
     cookDurationMinutes : Number,
