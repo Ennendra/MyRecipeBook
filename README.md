@@ -20,15 +20,14 @@
 
 MyRecipeBook is a web application made for displaying recipes while using measurements customised to your preference. At the same time, users are able to share their recipes to this website.
 
-User group:
-- People who are willing to share their recipes to others
-- People who enjoy cooking
-- People who are willing to try new recipes
+> User group:
+> - People who are willing to share their recipes to others
+> - People who enjoy cooking
+> - People who are willing to try new recipes
 
 ## Screenshots
 
-![Home page of MyRecipeBook](image.png)
-
+![Home page of MyRecipeBook](image-2.png)
 ## Technologies
 
 <!-- # Getting Started with Create React App -->
@@ -45,50 +44,75 @@ User group:
 
 ## Setup
 
-Perform the tasks below to run your own local version of MyRecipeBook
+To get started with your own local version of MyRecipeBook, follow these steps:
 
-### - Download and extract the project
 
-### - Install dependancies
+1. Clone this repository to your local machine: 
 
-Using a code terminal in your editor of choice, run 'npm install' in both the frontend and backend folder (use 'cd frontend' and 'cd backend' respectively to navigate to these folders)
+> If you want to fork this project first, then run `git clone https://github.com/your-username/MyRecipeBook`
 
-### - Set up MongoDB database
+> If you only want to run this project in your local machine, run `git clone git@github.com:Ennendra/MyRecipeBook.git`
+
+2. Install the required dependancies for both the backend and frontend:
+
+> `cd MyRecipeBook`
+>
+> To frontend folder `cd frontend`, and run `npm install`
+>
+> To backend folder  `cd backend`, and run `npm install`
+
+3. Set up MongoDB database
+
 - Initial database setup
   - This project uses a MongoDB atlas database to function, set up an account [here](https://www.mongodb.com/products/platform/atlas-database)
   - Once signed in, follow the sidebar to Database -> Clusters and create a database cluster
   - From that new cluster, click on 'connect' then connect by 'drivers', copy the connection link below for later
+
 - Setting up the user
   - From the sidebar, go to Security -> Database Access and 'Add new database user'
   - Give the user any username or password of your choice, take note of these for later
+
 - Setting up the database collection
   - In your cluster, click on "Create Database"
   - Enter the database name of your choice (e.g. "RecipeBook") and the collection name 'recipes'. Leave the preference selection as is.
+
 - Setting up the API connection to the collection
-  - In your backend directory (in the same directory as app-server.js), add a new file: mongoose-connect-api.js
-  - Add the following code to this file:
-```
-const mongoose = require('mongoose');
-function ConnectMongooseDBAPI(expressAPI, PORT) {
-    mongoose.connect('CONNECTION')
-.then(() => {
-    expressAPI.listen(PORT);
-}).catch((err) => {
-    console.log(err);
-});
-}
-exports.ConnectMongooseDBAPI = ConnectMongooseDBAPI;
-```
-  - Where it is marked CONNECTION, place the connection string obtained in the initial database setup,:
-  - Replace <db_username> and <db_password> with the username and password you generated in the 'Setting up the user' step
+  - In your backend directory (in the same directory as app-server.js), add a new file: **mongoose-connect-api.js** and paste the following code to it:
+> ```
+> const mongoose = require('mongoose');
+> function ConnectMongooseDBAPI(expressAPI, PORT) {
+>    mongoose.connect('CONNECTION')
+> .then(() => {
+>     expressAPI.listen(PORT);
+> }).catch((err) => {
+>     console.log(err);
+> });
+> }
+> exports.ConnectMongooseDBAPI = ConnectMongooseDBAPI;
+> ```
+
+  - Where it is marked CONNECTION, place the connection string obtained in the initial database setup,
+  - Replace **<db_username>** and **<db_password>** with the username and password you generated in the 'Setting up the user' step
   - Just before '?retryWrites', add the name of your database created in the 'Setting up the database collection' step
 
-Your database should now be ready to go
+Your database should now be ready to go.
 
-### - Starting the application
-- In two separate terminals, navigate to the frontend and backend respectively ('cd frontend' etc)
-- Run 'npm start' in each terminal, starting with the backend.
-- The web application should begin running on localhost:3000 (with the backend running on localhost:5000 in the background)
+4. Start the backend server:
+
+> `cd backend`
+>
+> `npm start`
+
+5. Start the frontend application:
+
+> `cd frontend`
+>
+> `npm start`
+
+6. Access the application in your web browser at http://localhost:3000/home
+
+7. Access http://localhost:5000/home to see if the backend loads anything
+
 
 
 ## Approach
