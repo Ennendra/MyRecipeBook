@@ -1,7 +1,6 @@
 import Button from '@mui/material/Button';
 import React, { useEffect, useState } from 'react';
 import './Settings.css';
-import { Button } from '@mui/material';
 
 //temporary setup of localstorage preferences
 /*const tempSettings = {
@@ -97,7 +96,6 @@ export const Settings = () => {
 
         <Button className="confirm-button" type="submit" variant='contained' color='success' sx={{marginTop: '30px'}}>
           Confirm
-        </Button>
         </Button>
       </div>
     </form>

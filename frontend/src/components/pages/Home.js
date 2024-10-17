@@ -77,14 +77,6 @@ export const Home = () => {
           ) : (
             <h2>Results for {searchPattern}</h2>
           ))}
-
-        {recipeList ? (
-          //Display recipe cards after the recipes have been successfully fetched from the JSON files
-          <RecipeCards recipes={!searchPattern ? chooseRandomRecipes(recipeList, 3) : recipeList} />
-        ) : (
-          //Show a loading tag until data is fetched
-          <p>Fetching recipe data...</p>
-        )}
       </div>
       {recipeList ? (
         //Display recipe cards after the recipes have been successfully fetched from the JSON files
