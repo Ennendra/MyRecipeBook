@@ -1,9 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="refresh" content="0; URL='./'" />
-    <title>Page Not Found</title>
+    <meta charset="utf-8" />
+    <title>React App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
+  <body>
+    <script>
+      // Redirect all routes to index.html
+      var redirectTo = window.location.pathname.split('/').slice(1).join('/');
+      window.location.href = '/' + redirectTo;
+    </script>
+  </body>
 </html>
