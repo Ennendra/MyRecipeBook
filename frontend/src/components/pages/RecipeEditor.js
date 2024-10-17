@@ -186,7 +186,7 @@ export const RecipeEditor = () => {
       recipeFormData.append(`ingredientsMeasurement[]`, ingredient.measurement);
       recipeFormData.append(`ingredientsItem[]`, ingredient.item);
     });
-    recipeFormData.append('imageSrc',newRecipe.imageSrc);
+    recipeFormData.append('imageSrc','');
     newRecipe.cookingSteps.map((step) => {
       recipeFormData.append('cookingSteps[]',step);
     });
