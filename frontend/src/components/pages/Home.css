@@ -40,8 +40,9 @@
 
 
 .resultInfo {
-  font-size: 1rem;
   font-family: 'Georgia', serif;
   margin:0px 55px;
-  color: #2e7d32;
+  /* color: #2e7d32; */
+  font-size: 1.5rem; 
+  font-family: 'Georgia', serif;
 }

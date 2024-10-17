@@ -70,12 +70,12 @@ export const Home = () => {
       <div className='resultInfo'>
         {!searchPattern === false &&
           (recipeList.length === 0 ? (
-            <h2>
+            <p>
               We could not find any recipes matching your search. Please try using different
               ingredients or keywords.   
-            </h2>
+            </p>
           ) : (
-            <h2>Results for {searchPattern}</h2>
+            <p>Results for {searchPattern}</p>
           ))}
       </div>
       {recipeList ? (
