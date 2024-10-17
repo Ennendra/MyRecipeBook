@@ -8,7 +8,7 @@
 ## Table of Content
 1. [About the Web application](#about-the-web-application)
 2. [Screenshots](#screenshots)
-3. [Technoliges](#technoliges)
+3. [Technologies](#technologies)
 4. [Setup](#setup)
 5. [Approach](#approach)
 6. [Licence](#licence)
