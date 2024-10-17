@@ -63,21 +63,21 @@ To get started with your own local version of MyRecipeBook, follow these steps:
 
 3. Set up MongoDB database
 
-- Initial database setup
-  - This project uses a MongoDB atlas database to function, set up an account [here](https://www.mongodb.com/products/platform/atlas-database)
-  - Once signed in, follow the sidebar to Database -> Clusters and create a database cluster
-  - From that new cluster, click on 'connect' then connect by 'drivers', copy the connection link below for later
+  - Initial database setup
+    - This project uses a MongoDB atlas database to function, set up an account [here](https://www.mongodb.com/products/platform/atlas-database)
+    - Once signed in, follow the sidebar to Database -> Clusters and create a database cluster
+    - From that new cluster, click on 'connect' then connect by 'drivers', copy the connection link below for later
 
-- Setting up the user
-  - From the sidebar, go to Security -> Database Access and 'Add new database user'
-  - Give the user any username or password of your choice, take note of these for later
+  - Setting up the user
+    - From the sidebar, go to Security -> Database Access and 'Add new database user'
+    - Give the user any username or password of your choice, take note of these for later
 
-- Setting up the database collection
-  - In your cluster, click on "Create Database"
-  - Enter the database name of your choice (e.g. "RecipeBook") and the collection name 'recipes'. Leave the preference selection as is.
+  - Setting up the database collection
+    - In your cluster, click on "Create Database"
+    - Enter the database name of your choice (e.g. "RecipeBook") and the collection name 'recipes'. Leave the preference selection as is.
 
-- Setting up the API connection to the collection
-  - In your backend directory (in the same directory as app-server.js), add a new file: **mongoose-connect-api.js** and paste the following code to it:
+  - Setting up the API connection to the collection
+    - In your backend directory (in the same directory as app-server.js), add a new file: **mongoose-connect-api.js** and paste the following code to it:
 > ```
 > const mongoose = require('mongoose');
 > function ConnectMongooseDBAPI(expressAPI, PORT) {
@@ -95,7 +95,7 @@ To get started with your own local version of MyRecipeBook, follow these steps:
   - Replace **<db_username>** and **<db_password>** with the username and password you generated in the 'Setting up the user' step
   - Just before '?retryWrites', add the name of your database created in the 'Setting up the database collection' step
 
-Your database should now be ready to go.
+  > Your database should now be ready to go.
 
 4. Start the backend server:
 
