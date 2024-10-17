@@ -57,14 +57,14 @@ function RecipeInfo(props) {
     return (
         <div className="recipe-info">
             <div className="recipe-title"> {props.title} </div>
-            <Stack gap={1}>
+            <Stack gap={0}>
                 <Chip icon={<QueryBuilderOutlinedIcon />}
                     label={<div className="bold">
                        Total time: {ConvertMinutesToHoursAndMinutes(props.totalTime)}</div>}
-                sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee' }} ></Chip>
+                sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee', height: '25px' }} ></Chip>
             <Chip icon={<RestaurantOutlinedIcon />}
                 label={<div className="bold">Serves: {props.serves}  {servesMeasurement(props.serves)}</div>}
-                sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee' }} ></Chip>
+                sx={{ justifyContent: 'flex-start', backgroundColor: '#eeeeee', height: '25px' }} ></Chip>
         </Stack>
         </div >
     )
