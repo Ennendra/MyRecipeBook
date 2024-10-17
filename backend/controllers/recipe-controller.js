@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 //Schema models and the error handler model
 const HttpError = require('../models/httpError');
 const Recipe = require('../models/recipe');
@@ -82,6 +82,20 @@ const addNewRecipe = async (req, res, next) => {
     //Assemble the request into a JSON object
     let createdRecipe
     try {
+        console.log(req.body);
+        console.log(req.body.recipeName);
+        console.log(req.file);
+        //First, assemble the ingredients from the form into an array
+        const ingredientList = new Array(req.body.ingredientsAmount.length);
+        for (i=0; i<req.body.ingredientsAmount.length; i++) {
+            const newIngredient = {
+                'amount' : req.body.ingredientsAmount[i],
+                'measurement' : req.body.ingredientsMeasurement[i],
+                'item' : req.body.ingredientsItem[i] 
+            };
+            ingredientList[i] = newIngredient;
+        }
+        //Then, assemble the rest of the recipe form
         createdRecipe = new Recipe( { 
             recipeName: req.body.recipeName,
             recipeDescription: req.body.recipeDescription,
@@ -89,11 +103,19 @@ const addNewRecipe = async (req, res, next) => {
             prepDurationMinutes : req.body.prepDurationMinutes,
             cookDurationMinutes : req.body.cookDurationMinutes,
             recipeServings: req.body.recipeServings,
-            ingredients: req.body.ingredients,
+            ingredients: ingredientList,
             cookingSteps: req.body.cookingSteps
         });
+        //Change the image src if we did have a file uploaded, or have it blank otherwise
+        if (req.file) {
+            createdRecipe.imageSrc = req.file.path
+        } else {
+            createdRecipe.imageSrc = '';
+        }
+        
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong assembling the request body: ");
+        const newError = new HttpError(500,"Something went wrong assembling the request body: "+error);
+        console.log(error);
         return next(newError);
     }
     
@@ -171,6 +193,8 @@ const deleteRecipe = async (req, res, next) => {
         return next(newError);
     }
 
+    const imagePath = recipeToDelete.imageSrc;
+
     try {
         await recipeToDelete.deleteOne();
     }
@@ -178,6 +202,10 @@ const deleteRecipe = async (req, res, next) => {
         const newError = new HttpError(500,"Something went wrong attempting to delete recipe."+error);
         return next(newError);
     }
+
+    fs.unlink(imagePath, err => {
+        console.log(err);
+    });
 
     res.status(200).json({message: "Successfully deleted recipe."});
 };

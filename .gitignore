@@ -7,6 +7,7 @@
 /.pnp
 .pnp.js
 /backend/mongoose-connect-api.js
+/backend/uploads/images/recipeimage*
 
 # testing
 /coverage
