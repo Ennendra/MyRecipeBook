@@ -17,6 +17,8 @@ import TableRow from '@mui/material/TableRow';
 
 import { useHttpClient } from '../../hooks/HttpHooks';
 
+const serverPath = 'http://localhost:5000/';
+
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
   var result = ``;
@@ -71,7 +73,7 @@ function ExpandStepsList(stepList) {
 }
 
 function DisplayRecipe(recipe) {
-  const serverPath = 'http://localhost:5000/';
+  
   const preparationTime = ConvertMinutesToHoursAndMinutes(recipe.prepDurationMinutes);
   const cookingTime = ConvertMinutesToHoursAndMinutes(recipe.cookDurationMinutes);
   const totalTime = ConvertMinutesToHoursAndMinutes(
@@ -82,6 +84,7 @@ function DisplayRecipe(recipe) {
       <div className="viewRecipeInfo">
         <img
           src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
+          onError={(e)=>{e.target.onError = null; e.target.src = `${serverPath}uploads/images/noImageIcon.png`}}
           alt={recipe.recipeName}
           className="recipeImg"
         />

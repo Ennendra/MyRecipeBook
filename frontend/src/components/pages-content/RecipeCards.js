@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RecipeCards.css';
 
+const serverPath = 'http://localhost:5000/';
+
 // Function convert minutes into hours + minutes format.
 function convertMinutesToHours(minutes) {
   let result = [];
@@ -36,7 +38,7 @@ function convertMinutesToHours(minutes) {
 
 export const RecipeCards = ({ recipes }) => {
   const navigate = useNavigate();
-  const serverPath = 'http://localhost:5000/';
+  
   return (
     <div className="recipe-cards">
       {recipes.map((recipe, i) => (
@@ -46,7 +48,8 @@ export const RecipeCards = ({ recipes }) => {
           onClick={() => navigate(`/viewRecipe/${recipe._id}`)}
         >
           <img
-            src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
+            src={(recipe.imageSrc === '') ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
+            onError={(e)=>{e.target.onError = null; e.target.src = `${serverPath}uploads/images/noImageIcon.png`}}
             alt={recipe.recipeName}
             className="recipe-image"
           />
