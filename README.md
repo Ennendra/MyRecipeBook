@@ -32,53 +32,63 @@ User group:
 ## Technologies
 
 <!-- # Getting Started with Create React App -->
-- **React**: For building the user interface and front-end.
-- **Material UI**: For implementing pre-designed UI components and ensuring consistent styling across the application.
-- **Node.js**: For back-end services.
-- **MongoDB and Mongoose**: For database management.
-- **Figma**: Used for designing wireframes the user interface. 
+- **Front-end**
+  - **React**: For building the user interface and front-end.
+  - **Material UI**: For implementing pre-designed UI components and ensuring consistent styling across the application.
+  - **Figma**: Used for designing wireframes the user interface.
+- **Back-end**
+  - **Node.js and Express**: For back-end services.
+  - **Multer**: For file management
+  - **MongoDB and Mongoose**: For database management.
 
 <!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). -->
 
 ## Setup
 
-In the project directory, you can run:
+Perform the tasks below to run your own local version of MyRecipeBook
 
-### `npm install`
-To run this React application, you need to install all the required packages and dependencies. This is necessary because the source code relies on external libraries and modules that are listed in the package.json file.
+### - Download and extract the project
 
-### `npm start`
+### - Install dependancies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Using a code terminal in your editor of choice, run 'npm install' in both the frontend and backend folder (use 'cd frontend' and 'cd backend' respectively to navigate to these folders)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### - Set up MongoDB database
+- Initial database setup
+  - This project uses a MongoDB atlas database to function, set up an account [here](https://www.mongodb.com/products/platform/atlas-database)
+  - Once signed in, follow the sidebar to Database -> Clusters and create a database cluster
+  - From that new cluster, click on 'connect' then connect by 'drivers', copy the connection link below for later
+- Setting up the user
+  - From the sidebar, go to Security -> Database Access and 'Add new database user'
+  - Give the user any username or password of your choice, take note of these for later
+- Setting up the database collection
+  - In your cluster, click on "Create Database"
+  - Enter the database name of your choice (e.g. "RecipeBook") and the collection name 'recipes'. Leave the preference selection as is.
+- Setting up the API connection to the collection
+  - In your backend directory (in the same directory as app-server.js), add a new file: mongoose-connect-api.js
+  - Add the following code to this file:
+```
+const mongoose = require('mongoose');
+function ConnectMongooseDBAPI(expressAPI, PORT) {
+    mongoose.connect('CONNECTION')
+.then(() => {
+    expressAPI.listen(PORT);
+}).catch((err) => {
+    console.log(err);
+});
+}
+exports.ConnectMongooseDBAPI = ConnectMongooseDBAPI;
+```
+  - Where it is marked CONNECTION, place the connection string obtained in the initial database setup,:
+  - Replace <db_username> and <db_password> with the username and password you generated in the 'Setting up the user' step
+  - Just before '?retryWrites', add the name of your database created in the 'Setting up the database collection' step
 
-### `npm test`
+Your database should now be ready to go
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### - Starting the application
+- In two separate terminals, navigate to the frontend and backend respectively ('cd frontend' etc)
+- Run 'npm start' in each terminal, starting with the backend.
+- The web application should begin running on localhost:3000 (with the backend running on localhost:5000 in the background)
 
 
 ## Approach
