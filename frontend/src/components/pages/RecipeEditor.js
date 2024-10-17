@@ -1,3 +1,5 @@
+import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -9,6 +11,7 @@ import { ImageUpload } from '../pages-content/ImageUpload';
 import { IngredientsTable } from '../pages-content/IngredientsTable';
 import { NumericInput } from '../pages-content/NumericInput';
 import { StepsList } from '../pages-content/StepsList';
+
 import './RecipeEditor.css';
 
 const reader = new FileReader();
@@ -175,24 +178,24 @@ export const RecipeEditor = () => {
 
     //assemble the data for the http request as separate form data (this allows the image upload to be a part of this request)
     const recipeFormData = new FormData();
-    recipeFormData.append('recipeName',newRecipe.recipeName);
-    recipeFormData.append('recipeDescription',newRecipe.recipeDescription);
-    recipeFormData.append('prepDurationMinutes',newRecipe.prepDurationMinutes);
-    recipeFormData.append('cookDurationMinutes',newRecipe.cookDurationMinutes);
-    recipeFormData.append('recipeServings',newRecipe.recipeServings);
+    recipeFormData.append('recipeName', newRecipe.recipeName);
+    recipeFormData.append('recipeDescription', newRecipe.recipeDescription);
+    recipeFormData.append('prepDurationMinutes', newRecipe.prepDurationMinutes);
+    recipeFormData.append('cookDurationMinutes', newRecipe.cookDurationMinutes);
+    recipeFormData.append('recipeServings', newRecipe.recipeServings);
     //Split the ingredients into 3 separate arrays within the form data (which are then reassembled as a JSON object within the backend controller)
-    newRecipe.ingredients.map((ingredient) => {
+    newRecipe.ingredients.map(ingredient => {
       recipeFormData.append(`ingredientsAmount[]`, ingredient.amount);
       recipeFormData.append(`ingredientsMeasurement[]`, ingredient.measurement);
       recipeFormData.append(`ingredientsItem[]`, ingredient.item);
     });
-    recipeFormData.append('imageSrc','');
-    newRecipe.cookingSteps.map((step) => {
-      recipeFormData.append('cookingSteps[]',step);
+    recipeFormData.append('imageSrc', '');
+    newRecipe.cookingSteps.map(step => {
+      recipeFormData.append('cookingSteps[]', step);
     });
     //Add the image file itself to the form data if available
     if (imageFile) {
-      recipeFormData.append('imageFile',imageFile);
+      recipeFormData.append('imageFile', imageFile);
     }
 
     console.log(recipeFormData);
@@ -275,16 +278,16 @@ export const RecipeEditor = () => {
       />
 
       <div className="one-line-class">
-        <span className="title-bold">{'🍴 Serves: '} </span>
+        {<RestaurantOutlinedIcon />}
+        <span className="title-bold">{' Serves: '}</span>
         <NumericInput name="recipeServes" />
         <span className="title-big-margin">{'persons'} </span>
-
-        <span className="title-bold">{' 🕒 Prep. time: '} </span>
+        {<QueryBuilderOutlinedIcon />}
+        <span className="title-bold">{' Prep. time: '}</span>
         <NumericInput name="recipePrepTimeHours" />
         <span className="title">{'h'} </span>
         <NumericInput name="recipePrepTimeMins" />
         <span className="title-big-margin">{'min'} </span>
-
         <span className="title-bold">{' Cook time: '} </span>
         <NumericInput name="recipeCookTimeHours" />
         <span className="title">{'h'} </span>
