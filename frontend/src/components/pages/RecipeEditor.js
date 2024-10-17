@@ -82,13 +82,17 @@ export const RecipeEditor = () => {
       const fileSizeInMB = file.size / (1024 * 1024);
       if (fileSizeInMB > 1) {
         alert('This file is too big. Maximum File size 1 Mb.');
-      } else {
+        return;
+      }
+      if (!file.name.match(/\.(jpg|jpeg|png)$/)) {
+        alert('Invalid file type. Accepting jpg, jpeg and png.');
+        return;
+      }
         reader.onloadend = function () {
           setImageSrc(reader.result); // Set base64 image to image src
           setImageFile(file);
         };
         reader.readAsDataURL(file); // Read file
-      }
     }
   };
 
