@@ -53,7 +53,7 @@
 /* Title for styling some number inputs */
 .number-input {
   display: flex;
-  background-color: #eeeeee;
+  background-color: #fbfafa;
   font-size: 22px;
   font-family: 'Arial', serif;
   max-width: 65px;
@@ -65,7 +65,7 @@
   display: flex;
   width: 100%;
   font-size: 20px;
-  background-color: #eeeeee;
+  background-color: #fbfafa;
   margin-bottom: 20px;
   cursor: pointer;
   font-family: 'Arial', serif;
