@@ -13,7 +13,8 @@
 /coverage
 
 # production
-/build
+/frontend/build
+/backend/build
 
 # misc
 .DS_Store
@@ -22,7 +23,7 @@
 .env.test.local
 .env.production.local
 /backend/nodemon.json
-/frontend/.env
+/frontend/.env*
 
 npm-debug.log*
 yarn-debug.log*
