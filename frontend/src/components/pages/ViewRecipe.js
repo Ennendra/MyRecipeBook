@@ -20,7 +20,7 @@ import ViewRecipeSteps from '../pages-content/ViewRecipeSteps';
 
 import { useHttpClient } from '../../hooks/HttpHooks';
 
-const serverPath = 'http://localhost:5000/';
+const serverPath = process.env.REACT_APP_BACKEND_URL;
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
