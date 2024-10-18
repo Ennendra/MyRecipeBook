@@ -20,7 +20,7 @@ export const useHttpClient = () => {
 
         try {
             //Send the request to backend and define the response
-            const apiResponse = await fetch('http://localhost:5000/' + url, {
+            const apiResponse = await fetch(process.env.REACT_APP_BACKEND_URL + url, {
                 method, 
                 body, 
                 headers,

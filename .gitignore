@@ -5,10 +5,11 @@
 /frontend/node_modules
 /frontend/build
 /backend/node_modules
+/backend/.gitignore
 /.pnp
 .pnp.js
-/backend/mongoose-connect-api.js
 /backend/uploads/images/recipeimage*
+
 
 # testing
 /coverage
@@ -17,6 +18,8 @@
 /build
 frontend/.env*
 backend/.gitignore
+/frontend/build
+/backend/build
 
 # misc
 .DS_Store
@@ -25,6 +28,9 @@ backend/.gitignore
 .env.development.local
 .env.test.local
 .env.production.local
+/backend/nodemon.json
+/frontend/.env*
+/backend/mongoo
 
 npm-debug.log*
 yarn-debug.log*
