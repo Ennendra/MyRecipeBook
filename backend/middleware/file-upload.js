@@ -4,7 +4,11 @@ const multer = require('multer');
 const imageTypeMap = {
     'image/png': 'png',
     'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg'
+    'image/jpg': 'jpg',
+    'image/gif': 'gif',
+    'image/svg': 'svg',
+    'image/webp': 'webp',
+    'image/bmp': 'bmp'
 };
 
 const fileUpload = multer({
