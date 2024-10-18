@@ -16,25 +16,25 @@ const router = express.Router();
         /deleteRecipe/:recipeID - find the recipe that matches the ID and DELETE it
 */
 //Home - find all recipes (Frontend will then show 3 random recipes)
-router.get('/home', recipeController.getRandomRecipes);
+router.get('/#/home', recipeController.getRandomRecipes);
 
 //Home/:recipeSearch - Find all recipes containing the phrase in the recipe search
-router.get('/home/:recipeSearch', recipeController.getRecipeByName);
+router.get('/#/home/:recipeSearch', recipeController.getRecipeByName);
 
 //viewRecipe - show the recipe matching the given param ID
-router.get('/viewRecipe/:recipeID', recipeController.getRecipeById);
+router.get('/#/viewRecipe/:recipeID', recipeController.getRecipeById);
 
 //addNewRecipe - Add a new recipe 
 //Since this form is being sent as formdata (in order to allow image uploads), we require that extra fileupload argument
-router.post('/addNewRecipe', fileUpload.single('imageFile'), recipeController.addNewRecipe);
+router.post('/#/addNewRecipe', fileUpload.single('imageFile'), recipeController.addNewRecipe);
 
 //editRecipe - finding the recipe to edit (will be used for auto-fill info)
-router.get('/editRecipe/:recipeID', recipeController.getRecipeById)
+router.get('/#/editRecipe/:recipeID', recipeController.getRecipeById)
 //editRecipe - Update recipe matching a given param ID
-router.patch('/editRecipe/:recipeID', recipeController.updateRecipe);
+router.patch('/#/editRecipe/:recipeID', recipeController.updateRecipe);
 
 //deleteRecipe - delete recipe matching a given param ID
-router.delete('/deleteRecipe/:recipeID', recipeController.deleteRecipe)
+router.delete('/#/deleteRecipe/:recipeID', recipeController.deleteRecipe)
 
 
 module.exports = router;
