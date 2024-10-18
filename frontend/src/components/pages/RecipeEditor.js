@@ -16,6 +16,7 @@ import './RecipeEditor.css';
 
 const reader = new FileReader();
 
+const NO_IMAGE_URL = `${process.env.PUBLIC_URL}/images/noImageIcon.png`;
 const RECIPE_NAME_ERROR = 'Recipe name is required.';
 const VALIDATION_FORM_ERROR = '* Your recipe has some mistakes. Please, fix them.';
 const SPECIAL_RECIPE_KEYS = ['_id', 'imageSrc', 'ingredients', 'cookingSteps'];
@@ -25,7 +26,7 @@ const recipeHasChanges = recipe => {
   const keys = Object.keys(recipe);
   let hasChanges = keys.some(key => !SPECIAL_RECIPE_KEYS.includes(key) && recipe[key]);
   if (!hasChanges) {
-    hasChanges = recipe?.imageSrc !== '/images/noImageIcon.png';
+    hasChanges = recipe?.imageSrc !== NO_IMAGE_URL;
   }
   if (!hasChanges) {
     hasChanges = recipe?.ingredients.some(
@@ -42,7 +43,7 @@ export const RecipeEditor = () => {
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '' }]);
   const [cookingSteps, setCookingSteps] = useState(['']);
-  const [imageSrc, setImageSrc] = useState('/images/noImageIcon.png');
+  const [imageSrc, setImageSrc] = useState(NO_IMAGE_URL);
   const [imageFile, setImageFile] = useState();
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
