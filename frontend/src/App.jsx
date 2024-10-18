@@ -1,6 +1,6 @@
 import { default as React } from 'react';
 import {
-  createBrowserRouter,
+  createHashRouter,
   createRoutesFromElements,
   Navigate,
   Outlet,
@@ -17,7 +17,7 @@ import { Settings } from './components/pages/Settings';
 import { ViewRecipe } from './components/pages/ViewRecipe';
 // import Divider from '@mui/material/Divider';
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       {/* Redirect from "/" to "/home" */}

@@ -6,6 +6,7 @@
 /frontend/build
 /backend/node_modules
 /backend/.gitignore
+/backend/mongoose-connect-api.js
 /.pnp
 .pnp.js
 /backend/uploads/images/recipeimage*
