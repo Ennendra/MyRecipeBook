@@ -15,7 +15,7 @@ export const ImageUpload = ({ image, onImageUpload }) => {
         <input
           id="file-upload"
           type="file"
-          accept="image/*"
+          accept=".png, .jpeg, .jpg, .gif, .svg, .webp, .bmp"
           onChange={onImageUpload}
           className="file-input"
           style={{ display: 'none' }} // Hide the actual input element
