@@ -13,13 +13,14 @@ export const useHttpClient = () => {
     //Run as a useCallBack to avoid it running on every re-render (which will prevent infinite loop errors)
     const sendAPIRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
-        
+        console.log(url);
         //Define a controller in case we need to abort this request
         const abortController = new AbortController();
         activeHttpRequests.current.push(abortController);
 
         try {
             //Send the request to backend and define the response
+            console.log("API Request " + process.env.REACT_APP_BACKEND_URL + url);
             const apiResponse = await fetch(process.env.REACT_APP_BACKEND_URL + url, {
                 method, 
                 body, 

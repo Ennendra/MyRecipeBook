@@ -29,6 +29,7 @@ export const Home = () => {
           responseData = await sendAPIRequest(`home/${searchPattern}`);
         }
         else {
+          console.log("Home request");
           responseData = await sendAPIRequest(`home`);
         }
         //Set this response to the recipeList state, unless there are no recipes (ie. 'no search results')
@@ -37,6 +38,7 @@ export const Home = () => {
       }catch(error) {
         //Something's gone wrong (likely a search that gave no results)
         //Set the recipe list as an empty array
+        console.log("Request catch");
         setRecipeList([]);
       } 
     };

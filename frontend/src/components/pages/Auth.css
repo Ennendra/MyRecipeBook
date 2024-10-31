@@ -1,0 +1,66 @@
+/* Overall form styling */
+
+
+/* title header */
+.auth-title {
+    display: flex;
+  justify-content: center;
+  font-family: 'Montserrat';
+  font-size: 52px;
+  font-weight: bold;
+  color: #528a54;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Labels for each text input */
+.input-label {
+    display: flex;
+    font-size: 22px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-family: 'Arial', serif;
+}
+
+/* input text boxes */
+.input-text {
+    display: flex;
+    width: 80%;
+    font-size: 20px;
+    background-color: #fbfafa;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-family: 'Arial', serif;
+}
+
+/* Submit button */
+.submit-button {
+    padding: 10px 20px;
+    background-color: #528a54;
+    border: none;
+    color: white;
+    font-size: 20px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Arial', serif;
+  }
+.submit-button:hover {
+    background-color: #477748; /* Darker colour on hover */
+  }
+
+/* Error messages */
+.input-error {
+  color: rgb(202, 72, 72);
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+/*Styling to allow multiple items in one line*/
+.one-line-class {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+  }

@@ -19,6 +19,7 @@ const getAllRecipes = async (req, res, next) => {
 };
 
 const getRandomRecipes = async (req, res, next) => {
+    console.log("DB Check going")
     //Define the result
     let recipes;
     //Attempt to find all recipes
@@ -30,6 +31,8 @@ const getRandomRecipes = async (req, res, next) => {
     }
 
     const randomisedRecipes = [...recipes].sort(() => 0.5 - Math.random()).slice(0,3);
+
+    console.log(randomisedRecipes);
 
     res.json({recipes: randomisedRecipes.map(recipe => recipe.toObject( {getters:true} )) });
 };

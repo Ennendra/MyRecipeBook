@@ -15,6 +15,7 @@ import { Home } from './components/pages/Home';
 import { RecipeEditor } from './components/pages/RecipeEditor';
 import { Settings } from './components/pages/Settings';
 import { ViewRecipe } from './components/pages/ViewRecipe';
+import { Login } from './components/pages/Login';
 // import Divider from '@mui/material/Divider';
 
 const router = createHashRouter(
@@ -24,6 +25,7 @@ const router = createHashRouter(
       <Route index element={<Navigate to="/home" />} />
       <Route path="home/:searchPattern?" element={<Home />} />
       <Route path="addNewRecipe" element={<RecipeEditor />} />
+      <Route path="/login" element={<Login />} />
       <Route path="about" element={<About />} />
       <Route path="settings" element={<Settings />} />
       <Route path="viewRecipe/:id" element={<ViewRecipe />} />
