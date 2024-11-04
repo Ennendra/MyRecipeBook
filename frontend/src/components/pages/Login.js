@@ -75,7 +75,7 @@ export const Login = () => {
 
     const onSwitchToSignup = (e) => {
         e.preventDefault();
-        navigate(`/signup`); // Navigate without showing modal if no changes
+        navigate(`/signup`);
     }
 
     //called when the submit button is pressed
@@ -97,17 +97,21 @@ export const Login = () => {
                 <label htmlFor="loginEmail" className="input-label">Email (*)</label>
                 <TextField
                     hiddenLabel
-                    type="email"
+                    //type="email"
                     id="email"
                     name="loginEmail"
                     className="input-text"
                     placeholder="Email"
                     variant="filled"
                     value={loginEmail}
-                    onChange={e => {setLoginEmail(e.target.value);}}
-                    required
+                    onChange={e => {
+                        setEmailError('');
+                        setLoginEmail(e.target.value);
+                    }}
+                    error={!!emailError} //Is true if the error isn't empty (ie. not-not-true)
+                    helperText={emailError}
+                    //required
                 />
-                {emailError && (    <div className="input-error">{emailError}</div>    )}
 
                 <label htmlFor="loginPassword" className="input-label">Password (*)</label>
                 <TextField
@@ -119,10 +123,15 @@ export const Login = () => {
                     placeholder="Password"
                     variant="filled"
                     value={loginPassword}
-                    onChange={e => {setLoginPassword(e.target.value);}}
-                    required
+                    onChange={e => {
+                        setPasswordError('');
+                        setLoginPassword(e.target.value);
+                    }}
+                    error={!!passwordError} //Is true if the error isn't empty (ie. not-not-true)
+                    helperText={passwordError}
+                    //required
                 />
-                {passwordError && (    <div className="input-error">{passwordError}</div>    )}
+
                 <hr />
                 <div className="one-line-class">
                     <Stack direction="row" spacing={5}>
