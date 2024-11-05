@@ -117,7 +117,7 @@ const addNewRecipe = async (req, res, next) => {
         }
         
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong assembling the request body: "+error);
+        const newError = new HttpError(500,"Something went wrong assembling the request body: ");
         console.log(error);
         return next(newError);
     }
@@ -128,7 +128,7 @@ const addNewRecipe = async (req, res, next) => {
         result = await createdRecipe.save();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong creating the recipe: "+error);
+        const newError = new HttpError(500,"Something went wrong creating the recipe: ");
         return next(newError);
     }
 
@@ -202,7 +202,7 @@ const deleteRecipe = async (req, res, next) => {
         await recipeToDelete.deleteOne();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong attempting to delete recipe."+error);
+        const newError = new HttpError(500,"Something went wrong attempting to delete recipe.");
         return next(newError);
     }
 

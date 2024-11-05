@@ -1,4 +1,5 @@
 const express = require('express');
+const {check} = require('express-validator');
 
 const recipeController = require('../controllers/recipe-controller');
 
@@ -20,14 +21,19 @@ const router = express.Router();
 router.get(`/home`, recipeController.getRandomRecipes);
 
 //Home/:recipeSearch - Find all recipes containing the phrase in the recipe search
-router.get(`/home/:recipeSearch`, recipeController.getRecipeByName);
+router.get(`/search/:recipeSearch`, recipeController.getRecipeByName);
 
 //viewRecipe - show the recipe matching the given param ID
 router.get(`/viewRecipe/:recipeID`, recipeController.getRecipeById);
 
 //addNewRecipe - Add a new recipe 
 //Since this form is being sent as formdata (in order to allow image uploads), we require that extra fileupload argument
-router.post(`/addNewRecipe`, fileUpload.single('imageFile'), recipeController.addNewRecipe);
+router.post(`/addNewRecipe`, 
+    fileUpload.single('imageFile'), 
+    [
+        check('recipeName').not().isEmpty(),
+    ],
+    recipeController.addNewRecipe);
 
 //editRecipe - finding the recipe to edit (will be used for auto-fill info)
 router.get(`/editRecipe/:recipeID`, recipeController.getRecipeById)

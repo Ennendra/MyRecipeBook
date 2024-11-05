@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from 'react';
+import React, {  useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 //import { chooseRandomRecipes, useRecipes } from '../../hooks/common';
 import { RecipeCards } from '../pages-content/RecipeCards';
@@ -7,10 +7,12 @@ import './Home.css';
 import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useHttpClient } from '../../hooks/HttpHooks';
+import { AuthContext } from '../common/context/auth-context';
 
 export const Home = () => {
   const navigate = useNavigate();
   const { searchPattern } = useParams();
+  const auth = useContext(AuthContext);
 
   //Define the backend API connection 
   const {sendAPIRequest} = useHttpClient();
@@ -26,7 +28,7 @@ export const Home = () => {
         let responseData
         //If there is a search parameter then send the fetch request based on that search, otherwise, send a fetch for the random recipes
         if (searchPattern) {
-          responseData = await sendAPIRequest(`home/${searchPattern}`);
+          responseData = await sendAPIRequest(`search/${searchPattern}`);
         }
         else {
           console.log("Home request");
@@ -53,21 +55,25 @@ export const Home = () => {
     <div>
       <h1 className="page-title"> MyRecipeBook</h1>
       <SearchBar
-        onSearch={ searchString => navigate(`/home/${searchString}` ) }
+        onSearch={ searchString => navigate(`/search/${searchString}` ) }
         searchPattern={searchPattern}
       />
 
-      <div className="add-button-bar">
-        <Button
-          className="add-button"
-          onClick={() => navigate('/addNewRecipe')}
-          variant="contained"
-          color="success"
-          startIcon={<AddOutlinedIcon />}
-        >
-          Add recipe
-        </Button>
-      </div>
+      
+        <div className="add-button-bar">
+          {auth.isLoggedIn && (
+            <Button
+              className="add-button"
+              onClick={() => navigate('/addNewRecipe')}
+              variant="contained"
+              color="success"
+              startIcon={<AddOutlinedIcon />}
+            >
+              Add recipe
+            </Button>
+          )}
+        </div>
+        
       {/* If users use the search function, check the results, show no results or the results for something */}
       <div className='resultInfo'>
         {!searchPattern === false &&

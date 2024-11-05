@@ -4,11 +4,13 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
-import React from 'react';
+import {React, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
+import { AuthContext } from './context/auth-context';
 
 export const Header = () => {
+  const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
   const homeNavigation = () => {
@@ -29,14 +31,16 @@ export const Header = () => {
         >
           Home
         </Button>
-        <Button
+        {auth.isLoggedIn && (
+          <Button
           onClick={() => navigate('/addNewRecipe')}
           startIcon={<AddOutlinedIcon />}
           variant="contained"
           color="success"
-        >
+          >
           Add recipe
         </Button>
+        )}
         <Button
           onClick={() => navigate('/about')}
           startIcon={<InfoOutlinedIcon />}
@@ -53,6 +57,22 @@ export const Header = () => {
         >
           Settings
         </Button>
+        {!auth.isLoggedIn && (
+          <Button onClick={() => navigate('/login')}
+          startIcon={<SettingsOutlinedIcon />}
+          variant="contained"
+          color="success">
+            Login
+          </Button>
+        )} 
+        {auth.isLoggedIn && (
+          <Button onClick={auth.logout}
+          startIcon={<SettingsOutlinedIcon />}
+          variant="contained"
+          color="success">
+            Logout
+          </Button>
+        )}
       </Stack>
       {/* <nav className="nav">
         <button className="nav-button" onClick={() => navigate('/home')}>
