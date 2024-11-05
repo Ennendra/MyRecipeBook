@@ -1,13 +1,15 @@
-import {React, useState, useRef} from 'react';
+import {React, useState, useRef, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 //@MUI html styles
 import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { AuthContext } from '../common/context/auth-context';
 
 export const Login = () => {
-
+    //Getting the auth context (letting us know if we are logged in)
+    const auth = useContext(AuthContext);
     //Setting the form data as states
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -88,6 +90,7 @@ export const Login = () => {
 
         //TODO: API CALL HERE
         alert("Successful validation: API would call now");
+        auth.login();
     }
 
     return (
@@ -110,7 +113,6 @@ export const Login = () => {
                     }}
                     error={!!emailError} //Is true if the error isn't empty (ie. not-not-true)
                     helperText={emailError}
-                    //required
                 />
 
                 <label htmlFor="loginPassword" className="input-label">Password (*)</label>
@@ -129,7 +131,6 @@ export const Login = () => {
                     }}
                     error={!!passwordError} //Is true if the error isn't empty (ie. not-not-true)
                     helperText={passwordError}
-                    //required
                 />
 
                 <hr />
