@@ -17,6 +17,45 @@ const router = express.Router();
         /deleteRecipe/:recipeID - find the recipe that matches the ID and DELETE it
 */
 
+const recipeFormValidation = [
+    //Check that the recipe name is not empty
+    check('recipeName').notEmpty(),
+
+    //IngredientAmount: Check that it is an array with at least one element and that all elements are numbers
+    check('ingredientsAmount')
+        .isArray({min: 1}).withMessage(`There are no ingredientAmount elements`)
+        .bail() //If the above check fails, don't bother running the following checks. Will help with error handling
+        .custom((value) => {
+            for (let i=0; i<value.length;i++) {
+                if (isNaN(value[i])) {
+                    throw new Error(`Ingredient amount at index ${i} is not a number or otherwise invalid`)
+                }
+            }
+        }),
+    //IngredientItem: Similar to above, except making sure the string is not empty
+    check('ingredientsItem')
+        .isArray({min: 1}).withMessage(`There are no ingredientName elements`)
+        .bail() //If the above check fails, don't bother running the following checks. Will help with error handling
+        .custom((value) => {
+            for (let i=0; i<value.length;i++) {
+                if (value[i].trim() === '') {
+                    throw new Error(`Ingredient item at index ${i} has no name`)
+                }
+            }
+        }),
+    //CookingSteps: Exactly like above
+    check('cookingSteps')
+        .isArray({min: 1}).withMessage(`There are no cooking step elements`)
+        .bail() //If the above check fails, don't bother running the following checks. Will help with error handling
+        .custom((value) => {
+            for (let i=0; i<value.length;i++) {
+                if (value[i].trim() === '') {
+                    throw new Error(`Cooking step at index ${i} has nothing added`)
+                }
+            }
+        }),
+];
+
 //Home - find all recipes (Frontend will then show 3 random recipes)
 router.get(`/home`, recipeController.getRandomRecipes);
 
@@ -30,15 +69,16 @@ router.get(`/viewRecipe/:recipeID`, recipeController.getRecipeById);
 //Since this form is being sent as formdata (in order to allow image uploads), we require that extra fileupload argument
 router.post(`/addNewRecipe`, 
     fileUpload.single('imageFile'), 
-    [
-        check('recipeName').not().isEmpty(),
-    ],
+    recipeFormValidation,
     recipeController.addNewRecipe);
 
 //editRecipe - finding the recipe to edit (will be used for auto-fill info)
 router.get(`/editRecipe/:recipeID`, recipeController.getRecipeById)
 //editRecipe - Update recipe matching a given param ID
-router.patch(`/editRecipe/:recipeID`, recipeController.updateRecipe);
+router.patch(`/editRecipe/:recipeID`,
+    fileUpload.single('imageFile'), 
+    recipeFormValidation,
+    recipeController.updateRecipe);
 
 //deleteRecipe - delete recipe matching a given param ID
 router.delete(`/deleteRecipe/:recipeID`, recipeController.deleteRecipe)

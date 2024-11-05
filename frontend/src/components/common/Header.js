@@ -1,4 +1,4 @@
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+//import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
@@ -31,16 +31,16 @@ export const Header = () => {
         >
           Home
         </Button>
-        {auth.isLoggedIn && (
+        {/* {auth.isLoggedIn && (
           <Button
           onClick={() => navigate('/addNewRecipe')}
           startIcon={<AddOutlinedIcon />}
           variant="contained"
           color="success"
           >
-          Add recipe
+          Add Recipe
         </Button>
-        )}
+        )} */}
         <Button
           onClick={() => navigate('/about')}
           startIcon={<InfoOutlinedIcon />}

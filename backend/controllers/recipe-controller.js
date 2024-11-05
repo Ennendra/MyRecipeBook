@@ -1,9 +1,11 @@
 const fs = require('fs');
 //Schema models and the error handler model
+const { validationResult } = require('express-validator');
 const HttpError = require('../models/httpError');
 const Recipe = require('../models/recipe');
 //The mongoose API
 const mongoose = require("mongoose");
+
 
 const getAllRecipes = async (req, res, next) => {
     //Define the result
@@ -81,7 +83,15 @@ const getRecipeByName = async (req, res, next) => {
 };
 
 const addNewRecipe = async (req, res, next) => {
-    
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //return res.status(400).json({ errors: errors.array() });
+        return next(
+            new HttpError(422, 'Invalid inputs were passed in. Please check your data: ')
+        );
+    }
+
     //Assemble the request into a JSON object
     let createdRecipe
     try {
@@ -137,6 +147,15 @@ const addNewRecipe = async (req, res, next) => {
 };
 
 const updateRecipe = async (req, res, next) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //return res.status(400).json({ errors: errors.array() });
+        return next(
+            new HttpError(422, 'Invalid inputs were passed in. Please check your data: ')
+        );
+    }
+    
     //Assemble the request into a JSON object
     let updatedRecipe
     try {
