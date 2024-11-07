@@ -21,6 +21,7 @@ export const useAuthHook = () => {
         setTokenExpirationDate(newTokenExpirationDate);
         localStorage.setItem('userData', JSON.stringify({userId : uid, token: token, expiration: newTokenExpirationDate.toISOString()}));
     }, []);
+    
     //Logout. Clears the token, userID and expiration states and removes those items from localstorage
     const logout = useCallback(() => {
         setToken(null);
@@ -37,6 +38,7 @@ export const useAuthHook = () => {
         } 
             setLoading(false);  // Mark loading as complete if no valid token is found
     }, [login]);
+
     //useEffect to automatically logout once the login token has expired
     useEffect(() => {
         if (token && tokenExpirationDate) {

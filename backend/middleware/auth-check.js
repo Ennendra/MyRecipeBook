@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1]; //e.g. Authorization: 'Bearer TOKEN'
         if (!token) {throw new Error();}
 
-        const decodedToken = jwt.verify(token, 'JWTKEYHERE');
+        const decodedToken = jwt.verify(token, `${process.env.JWT_KEY}`);
         req.userData = {userId: decodedToken.userId};
         next();
 

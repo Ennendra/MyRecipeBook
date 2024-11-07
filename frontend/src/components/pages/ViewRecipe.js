@@ -3,7 +3,7 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 // import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ConvertIngredientData } from '../../hooks/IngredientConversionUtilities';
 import './Styles.css';
@@ -19,8 +19,10 @@ import ViewRecipeSteps from '../pages-content/ViewRecipeSteps';
 
 
 import { useHttpClient } from '../../hooks/HttpHooks';
+import { AuthContext } from '../common/context/auth-context';
 
 const serverPath = process.env.REACT_APP_BACKEND_URL;
+
 
 //Converts a given number of minutes into a string reading '#h ##min'
 export function ConvertMinutesToHoursAndMinutes(minutes) {
@@ -147,6 +149,7 @@ export const ViewRecipe = () => {
   //Define the object ID of the recipe in the params and the recipe object itself
   const { id } = useParams();
   const [recipe, setRecipe] = useState();
+  const auth = useContext(AuthContext);
 
   //Define the backend API connection
   const { sendAPIRequest } = useHttpClient();
@@ -157,7 +160,7 @@ export const ViewRecipe = () => {
       try {
         let responseData;
         //Find the specified recipe
-        responseData = await sendAPIRequest(`viewRecipe/${id}`);
+        responseData = await sendAPIRequest(`viewRecipe/${id}`, 'GET', null, {Authorization: 'Bearer ' + auth.token});
         //Set this response to the recipeList state
         setRecipe(responseData.recipes);
       } catch (error) {

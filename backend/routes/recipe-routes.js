@@ -1,22 +1,13 @@
 const express = require('express');
 const {check} = require('express-validator');
 const checkAuth = require('../middleware/auth-check')
+const secondaryCheckAuth = require('../middleware/auth-check-secondary')
 
 const recipeController = require('../controllers/recipe-controller');
 
 const fileUpload = require('../middleware/file-upload');
 
 const router = express.Router();
-
-/*
-    Routes to remember: These are routes that the frontend will navigate to when interacting with the app (ie. everything after the domain e.g. 'localhost:3000/<route>')
-        /home - view all recipes. Frontend can then sort them and show 3
-        /home/:searchParam - Searchbar, find all recipes whose name contains what is searched
-        /viewRecipe/:recipeID - search the recipe whose ID matches
-        /addNewRecipe - POST the new recipe after the form is validated
-        /editRecipe/:recipeID - find the recipe that matches the ID and PATCH it (or UPDATE), using the formatted form
-        /deleteRecipe/:recipeID - find the recipe that matches the ID and DELETE it
-*/
 
 //The validation for a recipe form (add or edit recipe)
 const recipeFormValidation = [
@@ -68,9 +59,16 @@ router.get(`/home`, recipeController.getRandomRecipes);
 router.get(`/search/:recipeSearch`, recipeController.getRecipeByName);
 
 //viewRecipe - show the recipe matching the given param ID
-router.get(`/viewRecipe/:recipeID`, recipeController.getRecipeById);
+router.get(`/viewRecipe/:recipeID`, secondaryCheckAuth, recipeController.getRecipeById);
 
-//Beyond this point, any other calls require authenication
+//userRecipe - show recipes whose creator matches the given param ID
+//Checks for authentication to see whether or not to show private recipes
+router.get('/profile/recipes/:uid', secondaryCheckAuth, recipeController.getRecipeByUser)
+
+
+
+
+//Beyond this point, any other calls require authenication or will fail --------------------------------
 router.use(checkAuth);
 
 //addNewRecipe - Add a new recipe 
@@ -90,6 +88,9 @@ router.patch(`/editRecipe/:recipeID`,
 
 //deleteRecipe - delete recipe matching a given param ID
 router.delete(`/deleteRecipe/:recipeID`, recipeController.deleteRecipe)
+
+
+
 
 
 module.exports = router;

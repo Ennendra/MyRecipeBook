@@ -25,7 +25,7 @@ const getRandomRecipes = async (req, res, next) => {
     let recipes;
     //Attempt to find all recipes
     try {
-        recipes = await Recipe.find({});
+        recipes = (await Recipe.find({isPrivate: false}));
     } catch(error) {
         return next( new HttpError(500,'Something went wrong obtaining the recipe list') );
     }
@@ -51,6 +51,14 @@ const getRecipeById = async (req, res, next) => {
     if (!recipe) {
         return next( new HttpError(404,'Could not find a recipe with the given ID.') );
     }
+
+    //If the recipe is private and the current user is not authenticated as the creator, act as if the recipe does not exist
+    if (recipe.isPrivate) {
+        if (!(req.userData && recipe.creator.toString() === req.userData.userId)) {
+            console.log("Recipe found but not right auth")
+            return next( new HttpError(404,'Could not find a recipe with the given ID.') );
+        }
+    }
     
     res.json({recipes: recipe.toObject({getters: true}) });
 };
@@ -61,9 +69,13 @@ const getRecipeByName = async (req, res, next) => {
 
     let recipes;
     try {
-        recipes = await Recipe.find().searchByName(recipeSearch);
+        //Checks that the recipe is not private and the search matches the beginning of any word in the recipe name
+        recipes = await Recipe.find({
+            isPrivate: false,
+            recipeName: { $regex: `\\b${recipeSearch}`, $options: 'i' }
+        });
     } catch(error) {
-        return next( new HttpError(500, 'Something went wrong when searching for a recipe by name') );
+        return next( new HttpError(500, 'Something went wrong when searching for a recipe by name' + error) );
     }
 
     if (!recipes || recipes.length === 0) {
@@ -76,20 +88,42 @@ const getRecipeByName = async (req, res, next) => {
 const getRecipeByUser = async (req, res, next) => {
     const userId = req.params.uid;
 
-
-    let userWithRecipes;;
-    try {
-        userWithRecipes = await User.findById(userId).populate('recipes')
-    } catch(error) {
-        return next( new HttpError(500,'Something went wrong when searching for a recipe by ID') );
+    let isAuthenticatedUser=false;
+    if (req.userData){console.log(userId + ' --- ' + req.userData.userId)} else {console.log("no login data")}
+    if (req.userData && userId === req.userData.userId) {
+        console.log("This is authenticated user, will show private")
+        isAuthenticatedUser=true;
     }
+    let userWithRecipes;
+    if (req.userData && userId === req.userData.userId) {
+        try {
+            //userWithRecipes = await User.findById(userId).populate('recipes')
+            userWithRecipes = await Recipe.find({
+                //isPrivate: false,
+                creator: userId
+            });
+        } catch(error) {
+            return next( new HttpError(500,'Something went wrong when searching for a recipe by ID') );
+        }
+    } else {
+        try {
+            userWithRecipes = await Recipe.find({
+                isPrivate: false,
+                creator: userId
+            });
+            //userWithRecipes = await User.findById(userId).populate('recipes')
+        } catch(error) {
+            return next( new HttpError(500,'Something went wrong when searching for a recipe by ID') );
+        }
+    }
+    
 
     //If we can't find the user or if the user has no recipes
-    if (!userWithRecipes || userWithRecipes.recipes.length === 0) {
+    if (!userWithRecipes || userWithRecipes.length === 0) {
         return next( new HttpError(404,'Could not find recipes for the given user') );
     }
 
-    res.json({recipes: userWithRecipes.recipes.map( recipe => recipe.toObject({getters:true}) )})
+    res.json({recipes: userWithRecipes.map( recipe => recipe.toObject({getters:true}) )})
 }
 
 const addNewRecipe = async (req, res, next) => {
@@ -99,6 +133,8 @@ const addNewRecipe = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return next( new HttpError(422, 'Invalid inputs were passed in. Please check your data: ') );
     }
+
+    console.log(req.body);
 
     //Assemble the request into a JSON object
     let createdRecipe
@@ -178,8 +214,6 @@ const updateRecipe = async (req, res, next) => {
         );
     }
 
-
-    
     //Assemble the request into a JSON object
     let updatedRecipe
     try {
@@ -267,7 +301,7 @@ const deleteRecipe = async (req, res, next) => {
     }
     //Prevent deleting the recipe if the user attempting to delete isn't the creator
     console.log(recipeToDelete.creator.id + ' --- ' + req.userData.userId)
-    if (recipeToDelete.creator.toString() !== req.userData.userId) {
+    if (recipeToDelete.creator.id !== req.userData.userId) {
         return next( new HttpError(401,'Forbidden from deleting the place') );
     }
 
@@ -281,13 +315,13 @@ const deleteRecipe = async (req, res, next) => {
         // - Remove the reference to the recipe from the user's recipes section
         const session = await mongoose.startSession();
         session.startTransaction();
-        await recipeToDelete.remove({session: session});
+        await recipeToDelete.deleteOne({ _id: recipeToDelete._id }, {session: session});
         recipeToDelete.creator.recipes.pull(recipeToDelete);
         await recipeToDelete.creator.save({session: session});
         await session.commitTransaction();
     }
     catch(error) {
-        return next( new HttpError(500,'Something went wrong attempting to delete recipe.') );
+        return next( new HttpError(500,'Something went wrong attempting to delete recipe. ' + error) );
     }
 
     //Delete the image file
