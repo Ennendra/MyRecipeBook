@@ -28,7 +28,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
       'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     );
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
   
@@ -39,8 +39,8 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 5000; 
 
 //The routes that check for recipes
-app.use('', recipeRoutes);
 app.use('', userRoutes);
+app.use('', recipeRoutes);
 //An error to be thrown if the url route is not a defined one in the routes js files
 app.use((req, res, next) => {
     const error = new HttpError(404,'Could not find this route')

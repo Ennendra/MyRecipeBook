@@ -6,6 +6,7 @@ import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { AuthContext } from '../common/context/auth-context';
+import { useHttpClient } from '../../hooks/HttpHooks';
 
 export const Login = () => {
     //Getting the auth context (letting us know if we are logged in)
@@ -20,6 +21,8 @@ export const Login = () => {
     const formRef = useRef(null);
     //navigation
     const navigate = useNavigate();
+    //Sending requests to the backend
+    const { sendAPIRequest } = useHttpClient();
 
     //Assembles the inputs into an object form
     const getLoginData = () => {
@@ -81,16 +84,22 @@ export const Login = () => {
     }
 
     //called when the submit button is pressed
-    const onSubmitLogin = (e) => {
+    const onSubmitLogin = async (e) => {
         e.preventDefault();
 
         wasSubmitCalledRef.current=true;
 
         if (!validateLogin()) { return; }
 
-        //TODO: API CALL HERE
-        alert("Successful validation: API would call now");
-        auth.login();
+        try {
+            const newLogin = 
+            JSON.stringify(
+                getLoginData()
+            );
+            const responseData = await sendAPIRequest(`login`, 'POST', newLogin, {'Content-Type': 'application/json'})
+            auth.login(responseData.userId, responseData.token);
+        } catch(error) { console.log("Error with login" + error); }
+
     }
 
     return (

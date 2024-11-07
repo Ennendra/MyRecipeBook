@@ -1,10 +1,11 @@
 import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
-import { Stack } from '@mui/material';
+import { Stack, Checkbox } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { default as React, useEffect, useRef, useState } from 'react';
+import { default as React, useEffect, useRef, useState, useContext } from 'react';
 import { useBlocker, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../common/context/auth-context';
 import { useHttpClient } from '../../hooks/HttpHooks';
 import { ConfirmLeaveModal } from '../pages-content/ConfirmLeaveModal';
 import { ImageUpload } from '../pages-content/ImageUpload';
@@ -40,19 +41,26 @@ const recipeHasChanges = recipe => {
 };
 
 export const RecipeEditor = () => {
+  //form elements as states
+  const formRef = useRef(null);
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '' }]);
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState(NO_IMAGE_URL);
   const [imageFile, setImageFile] = useState();
+  const [isPrivate, setIsPrivate] = useState(false);
+  //Error handling
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const isSubmitRef = useRef(false);
-  const wasSubmitCalledRef = useRef(false);
   const [invalidIngredients, setInvalidIngredients] = useState([]); // Store invalid ingredient rows
   const [invalidSteps, setInvalidSteps] = useState([]); // Store invalid steps
-  const formRef = useRef(null);
+  //submission references
+  const isSubmitRef = useRef(false);
+  const wasSubmitCalledRef = useRef(false);
+
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  //checking that we have login authorization
+  const auth = useContext(AuthContext);
 
   // Block navigation elsewhere when there are unsaved changes
   let blocker = useBlocker(({ currentLocation, nextLocation }) => {
@@ -202,14 +210,14 @@ export const RecipeEditor = () => {
     if (imageFile) {
       recipeFormData.append('imageFile', imageFile);
     }
-
+    //TODO: Adding isPrivate via form
+    recipeFormData.append('isPrivate', isPrivate);
+    
     console.log(recipeFormData);
-
     //Attempt to add the new form to the database
     let responseData;
     try {
-      responseData = await sendAPIRequest(`addNewRecipe`, 'POST', recipeFormData);
-      console.log(responseData);
+      responseData = await sendAPIRequest(`addNewRecipe`, 'POST', recipeFormData, {Authorization: 'Bearer ' + auth.token});
     } catch (error) {
       console.log('Add New Recipe Error: ' + error);
     }
@@ -243,6 +251,13 @@ export const RecipeEditor = () => {
     event.preventDefault();
     blocker.proceed(); // Proceed with the navigation
   };
+
+  //Function to handle the isPrivate checkbox
+  const handlePrivateToggle = () => {
+    var newPrivateStatus = isPrivate;
+    newPrivateStatus = !newPrivateStatus;
+    setIsPrivate(newPrivateStatus);
+  }
 
   return (
     <form onSubmit={addNewRecipe} ref={formRef}>
@@ -311,6 +326,16 @@ export const RecipeEditor = () => {
 
       <label className="title-style">Instructions(*)</label>
       <StepsList steps={cookingSteps} onStepsUpdate={setCookingSteps} invalidSteps={invalidSteps} />
+
+      <hr />
+
+      <label className="title-style">Make this recipe private</label>
+      <Checkbox 
+      color="success"
+      checked = {isPrivate || false}
+      onChange={() => handlePrivateToggle()}
+      />
+      
 
       <hr />
 

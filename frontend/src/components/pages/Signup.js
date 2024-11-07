@@ -6,6 +6,7 @@ import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { AuthContext } from '../common/context/auth-context';
+import { useHttpClient } from '../../hooks/HttpHooks';
 
 export const Signup = () => {
     //Getting the auth context (letting us know if we are logged in)
@@ -20,11 +21,13 @@ export const Signup = () => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [passwordMismatchError, setPasswordMismatchError] = useState('');
-
+    //Form and submission references
     const wasSubmitCalledRef = useRef(false);
     const formRef = useRef(null);
     //navigation
     const navigate = useNavigate();
+    //Sending requests to the backend
+    const { sendAPIRequest } = useHttpClient();
 
     //Assembles the inputs into an object form
     const getSignupData = () => {
@@ -116,16 +119,23 @@ export const Signup = () => {
     }
 
     //called when the submit button is pressed
-    const onSubmitSignup = (e) => {
+    const onSubmitSignup = async (e) => {
         e.preventDefault();
 
         wasSubmitCalledRef.current=true;
 
         if (!validateSignup()) { return; }
 
-        //TODO: API CALL HERE
-        alert("Successful validation: API would call now");
-        auth.login();
+        try {
+            const newSignup = getSignupData();
+            const newSignupForm = new FormData();
+            newSignupForm.append('signupName', newSignup.signupName);
+            newSignupForm.append('signupEmail', newSignup.signupEmail);
+            newSignupForm.append('signupPassword', newSignup.signupPassword);
+            newSignupForm.append('signupConfirmPassword', newSignup.signupConfirmPassword);
+            const responseData = await sendAPIRequest(`signup`, 'POST', newSignupForm);
+            auth.login(responseData.userId, responseData.token);
+        } catch(error) { console.log("Error with sending signup form"); }
     }
 
     return (

@@ -1,4 +1,4 @@
-import { default as React, useState, useCallback } from 'react';
+import { default as React } from 'react';
 import {
   //Route, Routes,
   Navigate,
@@ -18,11 +18,10 @@ import { ViewRecipe } from './components/pages/ViewRecipe';
 import { Login } from './components/pages/Login';
 import { Signup } from './components/pages/Signup';
 import { AuthContext } from './components/common/context/auth-context';
-
+import { useAuthHook } from './hooks/AuthHooks';
 
 function App() {
-  //An app-wide login state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {token, login, logout, userId, loading} = useAuthHook();
 
   //A check to see if the search parameter in search/:searchPattern? is blank or not.
   //If it is, redirect back to homepage. If not, continue the render
@@ -50,10 +49,16 @@ function App() {
     );
   }
 
+
+  // Check if loading is still happening, then show a loading screen or placeholder
+  if (loading) {
+    return <div>Loading...</div>;  // Replace with any loading spinner or placeholder component you prefer
+  }
+
   //Defining the routes the app can take
   //Split between whether or not the user is logged in (e.g. a non-logged-in user cannot add a recipe)
   let routes;
-  if (isLoggedIn) {
+  if (token) {
     routes = [
       {
         path: '/',
@@ -88,18 +93,17 @@ function App() {
     ];
   }
 
-  //Set callback functions for logging in or logging out
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
-
   const router = createBrowserRouter(routes);
 
   return (
-  <AuthContext.Provider value={{isLoggedIn: isLoggedIn, login: login, logout: logout}} >
+  <AuthContext.Provider value={{
+    isLoggedIn: !!token, 
+    token: token, 
+    userId: userId, 
+    login: login, 
+    logout: logout
+    }} 
+  >
     {/*<RouterProvider router={router} />*/}
     <RouterProvider router={router}>
       {/* <Header />

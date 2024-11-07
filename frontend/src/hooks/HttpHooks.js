@@ -13,14 +13,12 @@ export const useHttpClient = () => {
     //Run as a useCallBack to avoid it running on every re-render (which will prevent infinite loop errors)
     const sendAPIRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
-        console.log(url);
         //Define a controller in case we need to abort this request
         const abortController = new AbortController();
         activeHttpRequests.current.push(abortController);
 
         try {
             //Send the request to backend and define the response
-            console.log("API Request " + process.env.REACT_APP_BACKEND_URL + url);
             const apiResponse = await fetch(process.env.REACT_APP_BACKEND_URL + url, {
                 method, 
                 body, 
@@ -34,7 +32,6 @@ export const useHttpClient = () => {
             activeHttpRequests.current = activeHttpRequests.current.filter(requestControllers => requestControllers !== abortController);
             //Throw an error if the response code received was not a 200/2xx code (ie, a 404 or 500 error etc was received)
             if (!apiResponse.ok) {
-                console.log(responseData);
                 throw new Error("API response error: " + responseData.message);
             }
 
@@ -42,7 +39,7 @@ export const useHttpClient = () => {
             return responseData;
         }
         catch(error) {
-            console.log("Httphook error: "+error);
+            console.log("Something went wrong with the API request")
             throw error;
         }
     }, 

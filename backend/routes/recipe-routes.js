@@ -1,5 +1,6 @@
 const express = require('express');
 const {check} = require('express-validator');
+const checkAuth = require('../middleware/auth-check')
 
 const recipeController = require('../controllers/recipe-controller');
 
@@ -17,6 +18,7 @@ const router = express.Router();
         /deleteRecipe/:recipeID - find the recipe that matches the ID and DELETE it
 */
 
+//The validation for a recipe form (add or edit recipe)
 const recipeFormValidation = [
     //Check that the recipe name is not empty
     check('recipeName').notEmpty(),
@@ -28,9 +30,10 @@ const recipeFormValidation = [
         .custom((value) => {
             for (let i=0; i<value.length;i++) {
                 if (isNaN(value[i])) {
-                    throw new Error(`Ingredient amount at index ${i} is not a number or otherwise invalid`)
+                    throw new Error(`Ingredient amount at index ${i} is not a valid number`)
                 }
             }
+            return true;
         }),
     //IngredientItem: Similar to above, except making sure the string is not empty
     check('ingredientsItem')
@@ -42,6 +45,7 @@ const recipeFormValidation = [
                     throw new Error(`Ingredient item at index ${i} has no name`)
                 }
             }
+            return true;
         }),
     //CookingSteps: Exactly like above
     check('cookingSteps')
@@ -53,6 +57,7 @@ const recipeFormValidation = [
                     throw new Error(`Cooking step at index ${i} has nothing added`)
                 }
             }
+            return true;
         }),
 ];
 
@@ -64,6 +69,9 @@ router.get(`/search/:recipeSearch`, recipeController.getRecipeByName);
 
 //viewRecipe - show the recipe matching the given param ID
 router.get(`/viewRecipe/:recipeID`, recipeController.getRecipeById);
+
+//Beyond this point, any other calls require authenication
+router.use(checkAuth);
 
 //addNewRecipe - Add a new recipe 
 //Since this form is being sent as formdata (in order to allow image uploads), we require that extra fileupload argument

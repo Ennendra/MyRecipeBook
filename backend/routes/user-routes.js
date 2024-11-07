@@ -1,6 +1,7 @@
 const express = require('express');
 
 const userController = require('../controllers/user-controller');
+const { check } = require('express-validator');
 
 const router = express.Router();
 
@@ -11,11 +12,20 @@ const router = express.Router();
         /signup - POST the new user after the form is validated
 */
 
-
 router.get(`/getUsers`, userController.getAllUsers);
 
 router.post(`/login`, userController.login);
 
-router.post(`/signup`, userController.signup);
+router.post(`/signup`, [
+    check('signupName').not().isEmpty(),
+    check('signupEmail').normalizeEmail().isEmail(),
+    check('signupPassword').isLength({min: 6})
+    .custom((value, {req, loc, path}) => {
+        if (value !== req.body.signupConfirmPassword) 
+            { throw new Error ("Passwords don't match"); }
+        else 
+            { return value; }
+    })
+], userController.signup);
 
 module.exports = router;

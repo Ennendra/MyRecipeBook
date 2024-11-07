@@ -3,8 +3,9 @@ const fs = require('fs');
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/httpError');
 const Recipe = require('../models/recipe');
+const User = require('../models/users');
 //The mongoose API
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 
 const getAllRecipes = async (req, res, next) => {
@@ -14,27 +15,23 @@ const getAllRecipes = async (req, res, next) => {
     try {
         recipes = await Recipe.find({});
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong obtaining the recipe list: ");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong obtaining the recipe list') );
     }
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 
 const getRandomRecipes = async (req, res, next) => {
-    console.log("DB Check going")
     //Define the result
     let recipes;
     //Attempt to find all recipes
     try {
         recipes = await Recipe.find({});
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong obtaining the recipe list: ");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong obtaining the recipe list') );
     }
 
+    //Randomise the recipes and get the first 3 of them
     const randomisedRecipes = [...recipes].sort(() => 0.5 - Math.random()).slice(0,3);
-
-    console.log(randomisedRecipes);
 
     res.json({recipes: randomisedRecipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
@@ -48,13 +45,11 @@ const getRecipeById = async (req, res, next) => {
     try {
         recipe = await Recipe.findById(recipeId);
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong when searching for a recipe by ID: ");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong when searching for a recipe by ID') );
     }
     //return a 404 error if no recipe is found
     if (!recipe) {
-        const newError = new HttpError(404,"Could not find a recipe with the given ID.");
-        return next(newError);
+        return next( new HttpError(404,'Could not find a recipe with the given ID.') );
     }
     
     res.json({recipes: recipe.toObject({getters: true}) });
@@ -63,41 +58,51 @@ const getRecipeById = async (req, res, next) => {
 const getRecipeByName = async (req, res, next) => {
     //define the search parameter, convert the parameter into utf format
     const recipeSearch = encodeURIComponent(req.params.recipeSearch);
-    
-    console.log(recipeSearch);
-    
+
     let recipes;
     try {
         recipes = await Recipe.find().searchByName(recipeSearch);
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong when searching for a recipe by name: ");
-        return next(newError);
+        return next( new HttpError(500, 'Something went wrong when searching for a recipe by name') );
     }
 
     if (!recipes || recipes.length === 0) {
-        const newError = new HttpError(404,"Could not find any recipes with a name containing the search term.");
-        return next(newError);
+        return next( new HttpError(404, 'Could not find any recipes with a name containing the search term.') );
     }
     
     res.json({recipes: recipes.map(recipe => recipe.toObject( {getters:true} )) });
 };
 
+const getRecipeByUser = async (req, res, next) => {
+    const userId = req.params.uid;
+
+
+    let userWithRecipes;;
+    try {
+        userWithRecipes = await User.findById(userId).populate('recipes')
+    } catch(error) {
+        return next( new HttpError(500,'Something went wrong when searching for a recipe by ID') );
+    }
+
+    //If we can't find the user or if the user has no recipes
+    if (!userWithRecipes || userWithRecipes.recipes.length === 0) {
+        return next( new HttpError(404,'Could not find recipes for the given user') );
+    }
+
+    res.json({recipes: userWithRecipes.recipes.map( recipe => recipe.toObject({getters:true}) )})
+}
+
 const addNewRecipe = async (req, res, next) => {
 
+    //Check if there were any validation errors defined in recipe-routes
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        //return res.status(400).json({ errors: errors.array() });
-        return next(
-            new HttpError(422, 'Invalid inputs were passed in. Please check your data: ')
-        );
+        return next( new HttpError(422, 'Invalid inputs were passed in. Please check your data: ') );
     }
 
     //Assemble the request into a JSON object
     let createdRecipe
     try {
-        console.log(req.body);
-        console.log(req.body.recipeName);
-        console.log(req.file);
         //First, assemble the ingredients from the form into an array
         const ingredientList = new Array(req.body.ingredientsAmount.length);
         for (i=0; i<req.body.ingredientsAmount.length; i++) {
@@ -117,48 +122,78 @@ const addNewRecipe = async (req, res, next) => {
             cookDurationMinutes : req.body.cookDurationMinutes,
             recipeServings: req.body.recipeServings,
             ingredients: ingredientList,
-            cookingSteps: req.body.cookingSteps
+            cookingSteps: req.body.cookingSteps,
+            isPrivate: req.body.isPrivate,
+            creator: req.userData.userId
         });
         //Change the image src if we did have a file uploaded, or have it blank otherwise
         if (req.file) {
             createdRecipe.imageSrc = req.file.path
         } else {
             createdRecipe.imageSrc = '';
-        }
-        
+        } 
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong assembling the request body: ");
-        console.log(error);
-        return next(newError);
+        return next( new HttpError(500, 'Something went wrong creating the recipe') );
+    }
+    //Check that a valid user is creating the recipe
+    let user;
+    try{
+        user = await User.findById(req.userData.userId);
+    } catch(error) {
+        return next( new HttpError(500, 'Something went wrong creating the recipe') );
+    }
+    if (!user) {
+        return next( new HttpError(404, 'Could not find a user for provided id') );
     }
     
+    console.log(user);
+
     //save the result to the database
-    let result
+    let result;
     try {
-        result = await createdRecipe.save();
+        //Create a mongoose session to:
+        // - Save the recipe to the database
+        // - Save a reference to the recipe to the user's recipes section
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        result = await createdRecipe.save({session: session});
+        user.recipes.push(createdRecipe);
+        await user.save({session: session});
+        session.commitTransaction();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong creating the recipe: ");
-        return next(newError);
+        return next( new HttpError(500, 'Something went wrong creating the recipe') );
     }
-
-    res.json(result);
-    
+    res.status(201).json(result);
+    //res.status(201).json({ recipe: createdRecipe });
 };
 
 const updateRecipe = async (req, res, next) => {
 
+    //Check if there were any validation errors defined in recipe-routes
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        //return res.status(400).json({ errors: errors.array() });
         return next(
             new HttpError(422, 'Invalid inputs were passed in. Please check your data: ')
         );
     }
+
+
     
     //Assemble the request into a JSON object
     let updatedRecipe
     try {
+        //First, assemble the ingredients from the form into an array
+        const ingredientList = new Array(req.body.ingredientsAmount.length);
+        for (i=0; i<req.body.ingredientsAmount.length; i++) {
+            const newIngredient = {
+                'amount' : req.body.ingredientsAmount[i],
+                'measurement' : req.body.ingredientsMeasurement[i],
+                'item' : req.body.ingredientsItem[i] 
+            };
+            ingredientList[i] = newIngredient;
+        }
+        //Then, assemble the rest of the recipe form
         updatedRecipe = new Recipe( { 
             recipeName: req.body.recipeName,
             recipeDescription: req.body.recipeDescription,
@@ -166,12 +201,19 @@ const updateRecipe = async (req, res, next) => {
             prepDurationMinutes : req.body.prepDurationMinutes,
             cookDurationMinutes : req.body.cookDurationMinutes,
             recipeServings: req.body.recipeServings,
-            ingredients: req.body.ingredients,
-            cookingSteps: req.body.cookingSteps
+            ingredients: ingredientList,
+            cookingSteps: req.body.cookingSteps,
+            isPrivate: req.body.isPrivate,
+            creator: req.userData.userId
         });
+        //Change the image src if we did have a file uploaded, or have it blank otherwise
+        if (req.file) {
+            updatedRecipe.imageSrc = req.file.path
+        } else {
+            updatedRecipe.imageSrc = '';
+        } 
     } catch(error) {
-        const newError = new HttpError(500,"Something went wrong assembling the request body: ");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong assembling the request body') );
     }
 
     //Make sure that we can find the recipe we are updating
@@ -179,8 +221,12 @@ const updateRecipe = async (req, res, next) => {
     try {
         recipeToUpdate = await Recipe.findById(req.params.recipeID);
     } catch(error) {
-        const newError = new HttpError(404,"Could not find recipe to update.");
-        return next(newError);
+        return next( new HttpError(404,'Could not find recipe to update.') );
+    }
+
+    //Prevent updating the recipe if the user attempting to delete isn't the creator
+    if (recipeToUpdate.creator.toString() !== req.userData.userId) {
+        return next( new HttpError(401,'Forbidden from updating the place') );
     }
 
     //Set the new data to the recipe
@@ -192,14 +238,14 @@ const updateRecipe = async (req, res, next) => {
     recipeToUpdate.recipeServings = updatedRecipe.recipeServings;
     recipeToUpdate.ingredients = updatedRecipe.ingredients;
     recipeToUpdate.cookingSteps = updatedRecipe.cookingSteps;
+    recipeToUpdate.isPrivate = updatedRecipe.isPrivate;
 
     //save the result to the database
     try {
         await recipeToUpdate.save();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong updating the recipe.");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong updating the recipe.') );
     }
 
     res.status(200).json({ recipe: recipeToUpdate.toObject({ getters: true }) });
@@ -207,35 +253,56 @@ const updateRecipe = async (req, res, next) => {
 
 const deleteRecipe = async (req, res, next) => {
 
+    //Checks that the recipe to delete exists
     let recipeToDelete;
     try {
-        recipeToDelete = await Recipe.findById(req.params.recipeID);
+        recipeToDelete = await Recipe.findById(req.params.recipeID).populate('creator');
     } catch(error) {
-        const newError = new HttpError(404,"Could not find recipe to delete: ");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong attempting to delete recipe.') );
     }
 
+    //Cannot find the recipe
+    if (!recipeToDelete) {
+        return next( new HttpError(404,'Could not find recipe to delete') );
+    }
+    //Prevent deleting the recipe if the user attempting to delete isn't the creator
+    console.log(recipeToDelete.creator.id + ' --- ' + req.userData.userId)
+    if (recipeToDelete.creator.toString() !== req.userData.userId) {
+        return next( new HttpError(401,'Forbidden from deleting the place') );
+    }
+
+    //Define the image to delete
     const imagePath = recipeToDelete.imageSrc;
 
+    //Attempt to delete the recipe
     try {
-        await recipeToDelete.deleteOne();
+        //Create a mongoose session to:
+        // - Remove the recipe from the database
+        // - Remove the reference to the recipe from the user's recipes section
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        await recipeToDelete.remove({session: session});
+        recipeToDelete.creator.recipes.pull(recipeToDelete);
+        await recipeToDelete.creator.save({session: session});
+        await session.commitTransaction();
     }
     catch(error) {
-        const newError = new HttpError(500,"Something went wrong attempting to delete recipe.");
-        return next(newError);
+        return next( new HttpError(500,'Something went wrong attempting to delete recipe.') );
     }
 
+    //Delete the image file
     fs.unlink(imagePath, err => {
         console.log(err);
     });
 
-    res.status(200).json({message: "Successfully deleted recipe."});
+    res.status(200).json({message: 'Successfully deleted recipe.'});
 };
 
 exports.getAllRecipes = getAllRecipes;
 exports.getRandomRecipes = getRandomRecipes;
 exports.getRecipeById = getRecipeById;
 exports.getRecipeByName = getRecipeByName;
+exports.getRecipeByUser = getRecipeByUser;
 exports.addNewRecipe = addNewRecipe;
 exports.updateRecipe = updateRecipe;
 exports.deleteRecipe = deleteRecipe;

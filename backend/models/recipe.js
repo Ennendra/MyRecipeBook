@@ -16,7 +16,9 @@ const recipeSchema = new mongoose.Schema( {
     cookDurationMinutes : Number,
     recipeServings: Number,
     ingredients: [ingredientSchema],
-    cookingSteps: [String]
+    cookingSteps: [String],
+    isPrivate: Boolean,
+    creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 });
 
 //Create this query helper, which will help with searching by recipe name
