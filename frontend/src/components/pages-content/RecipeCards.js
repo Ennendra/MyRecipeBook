@@ -8,6 +8,18 @@ import ArrowRightAltOutlinedIcon from '@mui/icons-material/ArrowRightAltOutlined
 
 const serverPath = process.env.REACT_APP_BACKEND_URL;
 
+function GetImageSource(recipe) {
+  
+  let imageSource;
+  if (recipe.imageSrc.includes('uploads/images/')) {
+    imageSource = `${serverPath}${recipe.imageSrc}`;
+  } else {
+    imageSource = `${recipe.imageSrc}`;
+  }
+
+  return imageSource;
+}
+
 export const RecipeCards = ({ recipes }) => {
   const navigate = useNavigate();
   
@@ -16,7 +28,7 @@ export const RecipeCards = ({ recipes }) => {
       {recipes.map((recipe, i) => (
         <div key={i} className="recipe-card" onClick={() => navigate(`/viewRecipe/${recipe._id}`)}>
           <RecipeImg
-            src={(recipe.imageSrc === '') ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
+            src={(recipe.imageSrc === '') ? `${serverPath}uploads/images/noImageIcon.png` : GetImageSource(recipe)}
             onError={(e)=>{e.target.onError = null; e.target.src = `${serverPath}uploads/images/noImageIcon.png`}}
             alt={recipe.recipeName}
           />

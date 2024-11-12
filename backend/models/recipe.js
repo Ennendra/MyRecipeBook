@@ -18,7 +18,8 @@ const recipeSchema = new mongoose.Schema( {
     ingredients: [ingredientSchema],
     cookingSteps: [String],
     isPrivate: Boolean,
-    creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
+    creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+    deleteHash: {type: String}
 });
 
 //Create this query helper, which will help with searching by recipe name

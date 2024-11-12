@@ -63,6 +63,23 @@ function ExpandIngredientsList(ingredientList) {
   return ingredientItems;
 }
 
+//Quick failsafe for recipes that contain images not uploaded to imgur
+function DisplayImage(recipe) {
+  
+  let imageSource;
+  if (recipe.imageSrc.includes('uploads/images/')) {
+    imageSource = `${serverPath}${recipe.imageSrc}`;
+  } else {
+    imageSource = `${recipe.imageSrc}`;
+  }
+
+  return <img
+  src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${imageSource}`}
+  onError={(e)=>{e.target.onError = null; e.target.src = `${serverPath}uploads/images/noImageIcon.png`}}
+  alt={recipe.recipeName}
+  className="recipeImg"
+/>
+}
 
 function DisplayRecipe(recipe) {
   
@@ -74,12 +91,7 @@ function DisplayRecipe(recipe) {
   return (
     <div className="ViewRecipe">
       <div className="viewRecipeInfo">
-        <img
-          src={recipe.imageSrc === '' ? `${serverPath}uploads/images/noImageIcon.png` : `${serverPath}${recipe.imageSrc}`}
-          onError={(e)=>{e.target.onError = null; e.target.src = `${serverPath}uploads/images/noImageIcon.png`}}
-          alt={recipe.recipeName}
-          className="recipeImg"
-        />
+        {DisplayImage(recipe)}
         <div className="recipeNameCard">
           <h2>{recipe.recipeName}</h2>
           <p>{recipe.recipeDescription}</p>
