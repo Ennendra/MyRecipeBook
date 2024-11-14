@@ -54,10 +54,10 @@ export const IngredientsTable = ({ ingredients, onIngredientsUpdate, invalidIngr
               <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Amount</TableCell>
               <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Measure type</TableCell>
               <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Name</TableCell>
-              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Type
+              <TableCell sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Density
                 <Tooltip title={
                   <React.Fragment>
-                    <p>{"Defining the item type helps the app more accurately convert measurements. E.g. 1 cup of water = 250g, while 1 cup of honey = 330g."}</p>
+                    <p>{"Defining ingredient density helps to more accurately convert measurements. Density options are made using some common ingredients."}</p>
                     <p>{"If the specific item is not present, picking a similar one is also preferable. Undefined items will default to a standard density (water)."}</p>
                   </React.Fragment>
                 } >
