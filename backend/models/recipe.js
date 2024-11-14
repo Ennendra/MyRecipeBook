@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const ingredientSchema = new mongoose.Schema( {
     amount: Number,
     measurement: String,
-    item: String
+    item: String,
+    itemType: String
 });
 
 //Schema for the full recipe

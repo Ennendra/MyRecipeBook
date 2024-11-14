@@ -44,7 +44,7 @@ export const RecipeEditor = () => {
   //form elements as states
   const formRef = useRef(null);
   const [recipeName, setRecipeName] = useState('');
-  const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '' }]);
+  const [ingredients, setIngredients] = useState([{ amount: '', measurement: 'items', item: '', itemType: '' }]);
   const [cookingSteps, setCookingSteps] = useState(['']);
   const [imageSrc, setImageSrc] = useState(NO_IMAGE_URL);
   const [imageFile, setImageFile] = useState();
@@ -201,6 +201,7 @@ export const RecipeEditor = () => {
       recipeFormData.append(`ingredientsAmount[]`, ingredient.amount);
       recipeFormData.append(`ingredientsMeasurement[]`, ingredient.measurement);
       recipeFormData.append(`ingredientsItem[]`, ingredient.item);
+      recipeFormData.append(`ingredientsItemType[]`, ingredient.itemType);
     });
     recipeFormData.append('imageSrc', '');
     newRecipe.cookingSteps.map(step => {

@@ -162,7 +162,8 @@ const addNewRecipe = async (req, res, next) => {
             const newIngredient = {
                 'amount' : req.body.ingredientsAmount[i],
                 'measurement' : req.body.ingredientsMeasurement[i],
-                'item' : req.body.ingredientsItem[i] 
+                'item' : req.body.ingredientsItem[i], 
+                'itemType' : req.body.ingredientsItemType[i]
             };
             ingredientList[i] = newIngredient;
         }
@@ -271,7 +272,8 @@ const updateRecipe = async (req, res, next) => {
             const newIngredient = {
                 'amount' : req.body.ingredientsAmount[i],
                 'measurement' : req.body.ingredientsMeasurement[i],
-                'item' : req.body.ingredientsItem[i] 
+                'item' : req.body.ingredientsItem[i], 
+                'itemType' : req.body.ingredientsItemType[i]
             };
             ingredientList[i] = newIngredient;
         }
