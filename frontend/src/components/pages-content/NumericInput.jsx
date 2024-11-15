@@ -1,10 +1,12 @@
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
+
 export const handleKeyDown = e => {
-  if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+  if (e.key === '-' || e.key === 'e' || e.key === 'E' || e.key === 'Enter') {
     e.preventDefault(); // Block minus key
   }
 };
+
 export const NumericInput = ({ name }) => {
   const [value, setValue] = useState('');
 
