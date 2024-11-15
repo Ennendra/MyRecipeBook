@@ -45,7 +45,6 @@ function ExpandIngredientsList(ingredientList) {
 
   //converting the ingredients to their preferred measurement type, and into fraction form
   revisedIngredientList.forEach(ingredient => {
-    console.log('Converting recipes');
     ConvertIngredientData(ingredient);
   });
 
@@ -176,7 +175,7 @@ export const ViewRecipe = () => {
         //Set this response to the recipeList state
         setRecipe(responseData.recipes);
       } catch (error) {
-        console.log('Homepage error: ' + error);
+        console.log('Homepage error');
       }
     };
     //immediately run the above function

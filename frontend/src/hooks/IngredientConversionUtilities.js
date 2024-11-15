@@ -107,7 +107,7 @@ function GetDensityFactor(ingredientCode) {
 
         case 'Thyme (ground)':                  return 0.29;
         case 'Basil (ground)':                  return 0.30;
-        case 'Oregano (ground)':                console.log("Got oregano"); return 0.37;
+        case 'Oregano (ground)':                return 0.37;
         case 'Paprika powder':                  return 0.46;
         case 'Chili Powder':                    return 0.54;
         case 'Chili flakes':                    return 0.49;

@@ -11,31 +11,12 @@ const imageTypeMap = {
     'image/bmp': 'bmp'
 };
 
-// const fileUpload = multer({
-//     limits: 1000000, //The filesize limit (in bytes: 1000000 = 1MB)
-//     storage: multer.diskStorage({
-//         destination: (req, file, cb) => {
-//             cb(null, 'uploads/images');
-//         },
-//         filename: (req, file, cb) => {
-//             //get the file extension and define the name that the uploaded file will have
-//             const ext = imageTypeMap[file.mimetype];
-//             cb(null, 'recipeimage-' + Date.now() + '.' + ext)
-//         }
-//     }),
-//     fileFilter: (req, file, cb) => {
-//         const isValid = !!imageTypeMap[file.mimetype];
-//         let error = isValid ? null : new Error('Invalid image file type!');
-//         cb(error, isValid);
-//       }
-// });
-
 //Storing fileuploads as memorystorage (marked as a 'buffer'), which will then be used to send to the imgur API
 const storage = multer.memoryStorage();
 const fileUpload = multer({
     limits: 1000000, //The filesize limit (in bytes: 1000000 = 1MB)
-    storage: storage,
-    fileFilter: (req, file, cb) => {
+    storage: storage, //Using the file buffer as the storage before online upload
+    fileFilter: (req, file, cb) => { 
         const isValid = !!imageTypeMap[file.mimetype];
         let error = isValid ? null : new Error('Invalid image file type!');
         cb(error, isValid);

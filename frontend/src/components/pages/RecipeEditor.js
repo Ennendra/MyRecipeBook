@@ -214,13 +214,12 @@ export const RecipeEditor = () => {
     //TODO: Adding isPrivate via form
     recipeFormData.append('isPrivate', isPrivate);
     
-    console.log(recipeFormData);
     //Attempt to add the new form to the database
     let responseData;
     try {
       responseData = await sendAPIRequest(`addNewRecipe`, 'POST', recipeFormData, {Authorization: 'Bearer ' + auth.token});
     } catch (error) {
-      console.log('Add New Recipe Error: ' + error);
+      console.log('Error adding new recipe (API)');
     }
     //After the post request is sent, we shall attempt to navigate to the new page
     try {
@@ -228,7 +227,6 @@ export const RecipeEditor = () => {
       navigate(`/viewRecipe/${newRecipeID}`);
       alert('Successfully added new recipe');
     } catch (error) {
-      console.log('Add New Recipe Error (post-API): ' + error);
       alert('Something went wrong, please try again later.');
       //navigate(`/home`);
     }

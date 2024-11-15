@@ -70,12 +70,9 @@ const getRecipeById = async (req, res, next) => {
     //If the recipe is private and the current user is not authenticated as the creator, act as if the recipe does not exist
     if (recipe.isPrivate) {
         if (!(req.userData && recipe.creator.toString() === req.userData.userId)) {
-            console.log("Recipe found but not right auth")
             return next( new HttpError(404,'Could not find a recipe with the given ID.') );
         }
     }
-
-    console.log(recipe.toObject());
     
     res.json({recipes: recipe.toObject({getters: true}) });
 };
@@ -106,9 +103,7 @@ const getRecipeByUser = async (req, res, next) => {
     const userId = req.params.uid;
 
     let isAuthenticatedUser=false;
-    if (req.userData){console.log(userId + ' --- ' + req.userData.userId)} else {console.log("no login data")}
     if (req.userData && userId === req.userData.userId) {
-        console.log("This is authenticated user, will show private")
         isAuthenticatedUser=true;
     }
     let userWithRecipes;
@@ -150,8 +145,6 @@ const addNewRecipe = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return next( new HttpError(422, 'Invalid inputs were passed in. Please check your data: ') );
     }
-
-    console.log(req.body);
 
     //Assemble the request into a JSON object
     let createdRecipe
@@ -390,7 +383,6 @@ const deleteRecipe = async (req, res, next) => {
         return next( new HttpError(404,'Could not find recipe to delete') );
     }
     //Prevent deleting the recipe if the user attempting to delete isn't the creator
-    console.log(recipeToDelete.creator.id + ' --- ' + req.userData.userId)
     if (recipeToDelete.creator.id !== req.userData.userId) {
         return next( new HttpError(401,'Forbidden from deleting the place') );
     }

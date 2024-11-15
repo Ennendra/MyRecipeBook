@@ -23,7 +23,6 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-    console.log(req.body);
     const email = req.body.loginEmail;
     const password = req.body.loginPassword;
 
@@ -97,9 +96,7 @@ const signup = async (req, res, next) => {
     //hashing password
     let hashedPassword;
     try {
-        console.log("Pre-hash");
         hashedPassword = await bcrypt.hash(password, 12);
-        console.log(hashedPassword);
     } catch (error) {
         return next( new HttpError(500, 'Something went wrong with signup.') );
     }

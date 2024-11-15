@@ -65,12 +65,10 @@ export const Login = () => {
         let isValid = true;
         if (!validateEmail(newLogin.loginEmail)) {
             setEmailError('Please enter a valid email address');
-            console.log("email error");
             isValid = false;
         }
         if (!validatePassword(newLogin.loginPassword)) {
             setPasswordError('Password input cannot be empty');
-            console.log("password error");
             isValid = false;
         }
 

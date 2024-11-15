@@ -90,22 +90,18 @@ export const Signup = () => {
         //Check validations for the inputs
         let isValid = true;
         if (!validateName(newSignup.signupName)) {
-            console.log("Name error");
             isValid = false;
         }
         if (!validateEmail(newSignup.signupEmail)) {
             setEmailError('Please enter a valid email address');
-            console.log("email error");
             isValid = false;
         }
         if (!validatePassword(newSignup.signupPassword)) {
             setPasswordError('Password input cannot be empty');
-            console.log("password error");
             isValid = false;
         }
         if (!validateConfirmPassword()) {
             setPasswordMismatchError('Passwords to not match');
-            console.log("Confirm Password Error");
             isValid=false;
         }
 
