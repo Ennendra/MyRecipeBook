@@ -8,15 +8,20 @@ const User = require('../models/users');
 const mongoose = require('mongoose');
 const axios = require('axios');
 
-async function DeleteImgurUpload(deleteHash) {
-    try {
-        await axios.delete(`https://api.imgur.com/3/image/${deleteHash}`, {
-            headers: { 'Authorization': `Client-ID ${process.env.IMAGE_CLIENT_ID}` }
-        });
-    } catch(cleanupError) {
-        console.log('Failed deleting image from imgur: ', cleanupError.code);
-    }
+//Uploads an image to imgbb to use for recipes
+async function ImageUpload(buffer) {
+    console.log("Image Uploading to ImgBB");
+    const imageName = `MRBRecipeImage-${Date.now()}`;
+
+    let imageBody = new FormData();
+    imageBody.set('key', process.env.IMGBB_API_KEY);
+    imageBody.append('image', buffer.toString('base64'));
+    imageBody.append('name', imageName);
+
+    const result = await axios.post('https://api.imgbb.com/1/upload',imageBody)
+    return result;
 }
+//Currently, there is no way to use the imgbb api to delete images. A function to do so will appear here when possible
 
 
 const getAllRecipes = async (req, res, next) => {
@@ -156,7 +161,7 @@ const addNewRecipe = async (req, res, next) => {
                 'amount' : req.body.ingredientsAmount[i],
                 'measurement' : req.body.ingredientsMeasurement[i],
                 'item' : req.body.ingredientsItem[i], 
-                'itemType' : req.body.ingredientsItemType[i]
+                'itemType' : req.body.ingredientsItemType[i] || ''
             };
             ingredientList[i] = newIngredient;
         }
@@ -174,6 +179,8 @@ const addNewRecipe = async (req, res, next) => {
             creator: req.userData.userId
         });
     } catch(error) {
+        console.log("Create Recipe Error");
+        console.log(error);
         return next( new HttpError(500, 'Something went wrong creating the recipe') );
     }
     //Check that a valid user is creating the recipe
@@ -181,6 +188,8 @@ const addNewRecipe = async (req, res, next) => {
     try{
         user = await User.findById(req.userData.userId);
     } catch(error) {
+        console.log("Create Recipe Error");
+        console.log(error);
         return next( new HttpError(500, 'Something went wrong creating the recipe') );
     }
     if (!user) {
@@ -188,41 +197,32 @@ const addNewRecipe = async (req, res, next) => {
     }
 
     //Create a mongoose session to:
-    // - Upload an image to Imgur, if applicable
+    // - Upload an image to Imgbb, if applicable
     // - Save the recipe to the database
     // - Save a reference to the recipe to the user's recipes section
     
 
     let result;
-    //define the delete hash (what will be needed to delete the image off of imgur)
-    let deleteHash="";
+    let session;
     try {
-        const session = await mongoose.startSession();
+        session = await mongoose.startSession();
         session.startTransaction();
         
-        //Upload image to imgur, get its URL and apply it to imageSrc
+        //Upload image to imgbb
+        let imageUploadPath, imageDeletePath;
         if (req.file) {
-            //Prepare the API to upload to Imgur
-            //Starting with the image
-            const apiImageData = req.file.buffer;
-            //Then the headers
-            const apiHeaders = {
-                'Authorization': `Client-ID ${process.env.IMAGE_CLIENT_ID}`,
-                'Content-Type': 'application/json'
+            const imageUploadResult = await ImageUpload(req.file.buffer);
+            if (imageUploadResult.status=200) {
+                imageUploadPath = imageUploadResult.data.data.url;
+                imageDeletePath = imageUploadResult.data.data.delete_url;
+                createdRecipe.imageSrc = imageUploadPath;
+                createdRecipe.deleteSrc = imageDeletePath;
             }
-            //Create a form for the Imgur API and set it in base64 format
-            const apiFormData = new FormData();
-            apiFormData.append('image', apiImageData.toString('base64'))
-            //Uploading the image to imgurs API
-            const imgurResult = await axios.post('https://api.imgur.com/3/image', apiFormData, { headers: apiHeaders});
-            //Throw an error if the upload failed
-            if (!imgurResult.data.success) {
-                throw new Error('Imgur upload failed');
+            else {
+                console.log("Error uploading image");
+                createdRecipe.imageSrc = "";
+                createdRecipe.deleteSrc = "";
             }
-            //set the recipe image source to the newly uploaded image on Imgur and the deleteHash for the image
-            createdRecipe.imageSrc = imgurResult.data.data.link;
-            deleteHash = imgurResult.data.data.deletehash;
-            createdRecipe.deleteHash = deleteHash;
         }
 
         //Now that the image, if applicable, has been uploaded, upload the rest of the recipe to the MongoDB database
@@ -235,12 +235,11 @@ const addNewRecipe = async (req, res, next) => {
         //Errors occurred, wait for the MongoDB cleanup first
         await session.abortTransaction();
         session.endSession();
-        //If there was an image uploaded to Imgur, then make sure it is deleted, or make a log if that goes wrong, too
-        if (deleteHash!="") {
-            await DeleteImgurUpload(deleteHash);
-        }
 
         //Finalise returning the error up
+        console.log("Create Recipe Error");
+        console.log(error);
+
         return next( new HttpError(500, 'Something went wrong creating the recipe') );
     }
     res.status(201).json(result);
@@ -297,7 +296,7 @@ const updateRecipe = async (req, res, next) => {
 
     //Prevent updating the recipe if the user attempting to delete isn't the creator
     if (recipeToUpdate.creator.toString() !== req.userData.userId) {
-        return next( new HttpError(401,'Forbidden from updating the place') );
+        return next( new HttpError(401,'Forbidden from updating the recipe') );
     }
 
     //Set the new data to the recipe
@@ -311,58 +310,40 @@ const updateRecipe = async (req, res, next) => {
     recipeToUpdate.cookingSteps = updatedRecipe.cookingSteps;
     recipeToUpdate.isPrivate = updatedRecipe.isPrivate;
 
-    let recipeImageUploaded=false;
-    let oldImageSrc;
-    let oldDeleteHash=recipeToUpdate.deleteHash;
+    let session;
     //save the result to the database
     try {
-        const session = await mongoose.startSession();
+        session = await mongoose.startSession();
         session.startTransaction();
-        //Upload image to imgur, get its URL and apply it to imageSrc
+        //Upload image to imgbb
+        let imageUploadPath, imageDeletePath;
         if (req.file) {
-            //Prepare the API to upload to Imgur
-            //Starting with the image
-            const apiImageData = req.file.buffer;
-            //Then the headers
-            const apiHeaders = {
-                'Authorization': `Client-ID ${process.env.IMAGE_CLIENT_ID}`,
-                'Content-Type': 'application/json'
+            const imageUploadResult = await ImageUpload(req.file.buffer);
+            if (imageUploadResult.status=200) {
+                imageUploadPath = imageUploadResult.data.data.url;
+                imageDeletePath = imageUploadResult.data.data.delete_url;
+                createdRecipe.imageSrc = imageUploadPath;
+                createdRecipe.deleteSrc = imageDeletePath;
             }
-            //Create a form for the Imgur API and set it in base64 format
-            const apiFormData = new FormData();
-            apiFormData.append('image', apiImageData.toString('base64'))
-            //Uploading the image to imgurs API
-            const imgurResult = await axios.post('https://api.imgur.com/3/image', apiFormData, { headers: apiHeaders});
-            //Throw an error if the upload failed
-            if (!imgurResult.data.success) {
-                throw new Error('Imgur upload failed');
+            else {
+                console.log("Error uploading image");
+                createdRecipe.imageSrc = "";
+                createdRecipe.deleteSrc = "";
             }
-            //Mark the old image, the new image source and note that the image has been uploaded
-            oldImageSrc = recipeToUpdate.imageSrc;
-            recipeToUpdate.imageSrc = imgurResult.data.data.link;
-            recipeToUpdate.deleteHash = imgurResult.data.data.deletehash;
-            recipeImageUploaded=true;
         }
 
         //Save the result to the database. If successful, it will mark that the imagesrc has been updated
         await recipeToUpdate.save();
         await session.commitTransaction();
         session.endSession();
-
-        //The update was successful, now we can delete the old image 
-        await DeleteImgurUpload(oldDeleteHash);
     }
     catch(error) {
         //wait until the mongoose session is ended before continuing
         await session.abortTransaction();
         session.endSession();
-        //If the modified image was successfully uploaded to imgur but the database write failed, we will delete the newly uploaded image
-        if (recipeImageUploaded) {
-            await DeleteImgurUpload(recipeToUpdate.deleteHash);
-        }
 
         //Finalise returning the error up
-        return next( new HttpError(500,'Something went wrong updating the recipe.') );
+        return next( new HttpError(500,'Something went wrong updating the recipe.' + error) );
     }
 
     res.status(200).json({ recipe: recipeToUpdate.toObject({ getters: true }) });
@@ -402,10 +383,6 @@ const deleteRecipe = async (req, res, next) => {
         await recipeToDelete.creator.save({session: session});
         await session.commitTransaction();
         session.endSession();
-        //The data was removed successfully, now we just need to delete the image from imgur if applicable
-        if (deleteHash) {
-            await DeleteImgurUpload(deleteHash);
-        }
     }
     catch(error) {
         return next( new HttpError(500,'Something went wrong attempting to delete recipe. ' + error) );

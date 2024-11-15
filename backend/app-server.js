@@ -50,11 +50,11 @@ app.use((req, res, next) => {
 //A middleware route that will act any time an error is returned on other routes
 app.use((error, req, res, next) => {
     //If the request had a file (e.g. image upload), then delete that file
-    if (req.file) {
-      fs.unlink(req.file.path, err => {
-        console.log(err);
-      })
-    }
+    // if (req.file) {
+    //   fs.unlink(req.file.path, err => {
+    //     console.log(err);
+    //   })
+    // }
     //Check if an error has already been sent
     if (res.headerSent) {
         return next(error);

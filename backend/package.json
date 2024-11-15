@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app-server.js",
-    "deploy": "node app-server.js"
+    "start": "node app-server.js",
+    "deploy": "node app-server.js",
+    "localTest": "nodemon app-server.js"
   },
   "author": "",
   "license": "ISC",
