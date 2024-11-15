@@ -93,7 +93,9 @@ function App() {
     ];
   }
 
-  const router = createBrowserRouter(routes);
+  const router = createBrowserRouter(routes, {
+    basename: '/MyRecipeBook',
+  });
 
   return (
   <AuthContext.Provider value={{
